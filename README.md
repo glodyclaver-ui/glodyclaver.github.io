@@ -1,2 +1,1 @@
-# glodyclaver.github.io
 Expert Tech &amp; Digital polyvalent. Je conçois vos projets de A à Z : du développement logiciel à l'administration de bases de données et réseaux (IT Support). Maîtrisant aussi le design (UX/UI, Graphisme, Webdesign) et la performance business (Digital Marketing, Data Analysis), je crée des solutions globales, performantes et sécurisées.
