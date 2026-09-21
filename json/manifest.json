@@ -1,0 +1,52 @@
+{
+  "short_name": "Glody Portfolio",
+  "name": "Glody-Claver | Consultant Tech",
+  "description": "Portfolio professionnel de Glody-Claver, Consultant Tech, Developpeur et Analyste.",
+  "categories": ["business", "personalization", "utilities"],
+  "icons": [
+    {
+      "src": "../images/CLAVER LOGO.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "../images/CLAVER LOGO.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "../images/CLAVER LOGO.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "../index.html",
+  "scope": "../",
+  "id": "/?utm_source=pwa",
+  "background_color": "#030020",
+  "theme_color": "#030020",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "ltr",
+  "lang": "fr-FR",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Voir mon portfolio",
+      "short_name": "Portfolio",
+      "description": "Decouvrez mes realisations techniques",
+      "url": "../index.html#portfolio",
+      "icons": [{ "src": "../images/CLAVER LOGO.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Me contacter",
+      "short_name": "Contact",
+      "description": "Envoyez-moi un message pour une mission",
+      "url": "../index.html#mon-formulaire",
+      "icons": [{ "src": "../images/CLAVER LOGO.png", "sizes": "192x192" }]
+    }
+  ]
+}

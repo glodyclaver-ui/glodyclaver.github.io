@@ -4,11 +4,11 @@
   3.0 license (glody_claver/license)
 */
 
-/* Lien officiel et complet pour charger Workbox depuis le CDN de Google */
+/* Chargement officiel et complet de Workbox depuis le CDN sécurisé de Google */
 importScripts('https://googleapis.com');
 
 if (typeof workbox !== 'undefined') {
-  /* Active la synchronisation en arriere-plan automatique pour js/gtag.js (Google Analytics) */
+  /* Active la synchronisation en arrière-plan automatique pour Google Analytics */
   workbox.googleAnalytics.initialize();
 }
 
@@ -28,19 +28,18 @@ const ASSETS_TO_CACHE = [
   './css/swiper-bundle.min.css',
   './css/style.css',
   
-  /* Fichiers JavaScript (Ordre de cache optimise) */
+  /* Fichiers JavaScript */
   './js/gtag.js',
   './js/scrollreveal.js',
   './js/script.js',
   './js/pwa.js',
   
-  /* Icone officielle de base pour valider l'installation PWA */
+  /* Icônes et images de profil */
   './images/CLAVER%20LOGO.png',
-
   './images/about-me-image.png',
   './images/about-me-1.png',
 
-  /* mes photos de la galerie de travail */
+  /* Galerie de travail */
   './images/travail/ton-travail1.jpg',
   './images/travail/ton-travail2.jpg',
   './images/travail/ton-travail3.jpg',
@@ -48,15 +47,13 @@ const ASSETS_TO_CACHE = [
   './images/travail/ton-travail5.jpg',
   './images/travail/ton-travail6.jpg',
   './images/travail/ton-travail7.jpg',
-
   './images/clients/logo1.png',
 
+  /* Portfolio : Réalisations graphiques et techniques */
   './images/portfolio/Affiche/affiche1.png',
   './images/portfolio/Affiche/affiche2.jpg',
   './images/portfolio/Affiche/affiche3.jpg',
-
   './images/portfolio/BDD/BDD.png',
-
   './images/portfolio/Logiciel/logi1.png',
   './images/portfolio/Logiciel/logi2.png',
   './images/portfolio/Logiciel/logi3.png',
@@ -64,28 +61,26 @@ const ASSETS_TO_CACHE = [
   './images/portfolio/Logiciel/logi5.png',
   './images/portfolio/Logiciel/logi6.png',
   './images/portfolio/Logiciel/logi7.png',
-
   './images/portfolio/Logo/Aleron/logo.png',
   './images/portfolio/Logo/Aleron/logo1.png',
 
-  /* Encodage des accents et des espaces pour GitHub Pages */
+  /* Encodage sécurisé des accents et espaces pour éviter les erreurs 404 de serveurs */
   './images/portfolio/Logo/D%C3%A9couverte%20Inspiration/D%C3%A9couverte%20Inspiration.png',
   './images/portfolio/Logo/geriatrie/logo1.png',
   './images/portfolio/Logo/Honnette%20etablissement/LOGO%20HONNETTE%20ETABLISSEMENT%201.png',
   './images/portfolio/Logo/Parcours/Parcours.png',
   './images/portfolio/Logo/Tajir%20monde/logo1.jpg',
   './images/portfolio/Logo/Tajir%20monde/Tajir%20monde%201.png',
-
   './images/portfolio/Site%20web/web1.png',
 
-  /* mes BDD */
+  /* Fichier Base de données structurelle */
   './BDD/portfolio_messages.sql',
 
-  /* mes documents téléchargeables (Espaces encodés en %20 pour éviter le crash) */
+  /* Fichiers et documents téléchargeables (Espaces et accents totalement encodés) */
   './documents/curriculum%20vitae%20d%C3%A9taill%C3%A9%20OLEKO%20DIOMBA%20Glodi-placide.pdf'
 ];
 
-/* 1. Installation : Mise en cache immediate de toutes tes ressources critiques */
+/* 1. Événement d'installation : Mise en cache immédiate */
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
@@ -95,7 +90,7 @@ self.addEventListener('install', function(event) {
   self.skipWaiting();
 });
 
-/* 2. Activation : Suppression automatique des anciens caches lors d'une mise a jour */
+/* 2. Événement d'activation : Nettoyage des versions obsolètes */
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
@@ -111,7 +106,7 @@ self.addEventListener('activate', function(event) {
   self.clients.claim();
 });
 
-/* 3. Strategie Stale-While-Revalidate : Chargement instantane via le cache + mise a jour discrete */
+/* 3. Stratégie réseau : Stale-While-Revalidate (Vitesse instantanée + mise à jour discrète) */
 self.addEventListener('fetch', function(event) {
   if (event.request.url.includes('google-analytics') || event.request.url.includes('analytics.js') || event.request.url.includes('gtag')) {
     return;
@@ -127,7 +122,7 @@ self.addEventListener('fetch', function(event) {
             });
           }
         }).catch(function() {
-          /* Reste silencieux si le visiteur navigue hors-ligne */
+          /* Reste silencieux si l'utilisateur est totalement hors-ligne */
         });
         
         return cachedResponse;
