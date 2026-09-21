@@ -33,8 +33,8 @@ body {
 
 
 /* ==========================================================================
-  2. VARIABLES SYSTÈME (:ROOT)
-  ========================================================================== */
+2. VARIABLES SYSTÈME (:ROOT)
+========================================================================== */
 :root {
   /* Font Sizes & Family */
   --body-font: 'Poppins', sans-serif;
@@ -87,9 +87,24 @@ body {
   --text-color: #1a1a1a;
   --text-color-gight: #707070;
   --primary-black: #0b0b0b;
-  --section-bg: #030020;
   --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   --blur-effect: blur(12px);
+
+
+  /* Votre couleur de base (Bleu très sombre / presque noir) */
+  --section-bg: #030020;
+
+  /* Option 1 : Différence très subtile (Idéal pour un design épuré) */
+  --section-bg-light-1: #090533;
+
+  /* Option 2 : Différence modérée (Le choix le plus équilibré) */
+  --section-bg-light-2: #0f0a47;
+
+  /* Option 3 : Différence plus marquée (Pour bien séparer les blocs) */
+  --section-bg-light-4: #150f5c;
+
+  /* Option 4 : Version plus lumineuse / électrique */
+  --section-bg-light-5: #1c1575;
 }
 
 /* Font sizes adaptatives pour écrans sous 990px */
@@ -733,7 +748,7 @@ img {
 8. STRUCTURE DE BASE ABOUT SECTION
 ====================================================*/
 .about {
-  background-color: #ffffff !important;
+  background-color: var(--white-color) !important;
   padding: 100px 0;
   overflow: hidden;
   font-family: sans-serif;
@@ -1972,7 +1987,7 @@ img {
 12. SECTION COMPÉTENCES REVISÉE 
 ========================================================================== */
 .skill-section {
-  background: #ffffff;
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%); 
   padding: 50px 0;
   position: relative;
 }
@@ -1986,7 +2001,7 @@ img {
 .skill-section .skill-section-header .skill-section-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #000000;
+  color: #ffffff;
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -2030,8 +2045,11 @@ img {
 
 /* --- LES GRANDS CADRES THUMBNAILS --- */
 .skill-section .skill-thumbnail {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
+  /* PAR DÉFAUT : Le carré a la même couleur que le fond de la section */
+  background: var(--section-bg);
+  
+  /* Bordure initiale discrète */
+  border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 1.2rem;
   padding: 30px 20px; /* Moins de padding pour compacter la hauteur */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
@@ -2040,11 +2058,20 @@ img {
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* --- LE SURVOL : LA SOURIS EST SUR LUI --- */
 .skill-section .skill-thumbnail:hover {
-  background-color: #ffffff;
+  /* AU SURVOL : Il prend le dégradé du formulaire + la boule lumineuse en bas à droite */
+  background: 
+    radial-gradient(circle at 90% 90%, rgba(11, 49, 117, 0.45) 0%, rgba(11, 49, 117, 0) 55%),
+    linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  
+  /* La bordure devient bleue */
   border-color: #0066ff;
+  
   transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0, 102, 255, 0.06);
+  
+  /* Halo bleu très léger autour pour le contraste */
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .skill-section .skill-thumbnail h2 {
@@ -2055,7 +2082,7 @@ img {
   margin-bottom: 30px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: #000000;
+  color: #e2e8f0;
 }
 
 /* --- LA GRILLE INTERNE : 2 COLONNES STRICTES ET COMPACTES --- */
@@ -2094,10 +2121,12 @@ img {
   justify-content: center;
   margin-right: 10px; /* Écart idéal avec le texte */
   border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
   
-  /* Glassmorphism unifié */
-  background: rgba(255, 255, 255, 0.45);
+  /* MODIFICATION : Bordure initiale discrète adaptée au fond sombre */
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  
+  /* MODIFICATION : Glassmorphism sombre avec notre bleu #0b3175 */
+  background: rgba(11, 49, 117, 0.25);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   
@@ -2108,30 +2137,33 @@ img {
 .skill-section .skill-icon-box i {
   font-size: 1.25rem; /* Taille harmonisée pour l'icône */
   line-height: 1;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* --- COULEURS DES ICÔNES --- */
+/* --- COULEURS DES ICÔNES (Légèrement ajustées pour le fond sombre) --- */
 .skill-section .column-fondamentale .skill-icon-box i { 
-  color: #f0d43a; 
+  color: #ffeb60; /* Jaune un peu plus lumineux */
 }
 
 .skill-section .column-specifique .skill-icon-box i {
-  color: #ff0000; 
+  color: #ff4d4d; /* Rouge un peu plus éclatant */
 }
 
 .skill-section .column-technique .skill-icon-box i { 
-  color: #0088ff; 
+  color: #38bdf8; /* Bleu ciel azur parfaitement visible */
 }
 
-/* --- SURVOL GLOBAL DE LA COMPÉTENCE --- */
+/* --- SURVOL GLOBAL DE LA COMPÉTENCE (Style sombre inversé) --- */
 .skill-section .skill-item:hover .skill-icon-box {
-  background: rgba(255, 255, 255, 0.85);
+  /* MODIFICATION : Le carré prend le fond de la section au survol */
+  background: var(--section-bg);
   border-color: #0066ff; /* Contour devient bleu solide */
-  box-shadow: 0 5px 10px rgba(0, 102, 255, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 102, 255, 0.15);
 }
 
 .skill-section .skill-item:hover .skill-icon-box i {
+  /* MODIFICATION : Les icônes prennent toutes le bleu électrique au survol */
+  color: #0066ff !important;
   transform: scale(1.1) rotate(3deg);
 }
 
@@ -2148,7 +2180,7 @@ img {
 .skill-section .skill-name {
   font-size: 0.72rem;
   font-weight: 800;
-  color: #000000;
+  color: #94a3b8;
   letter-spacing: 0.3px;
   text-transform: uppercase;
   display: block;
@@ -2226,12 +2258,14 @@ img {
 
 
 
+
 /*==========================================================================
 13. START FEAUTES CSS
 ==========================================================================*/
 .Feautes {
   padding: 60px 0 40px 0;
-  background-color: var(--section-pale-purple);
+  /* Le dégradé sombre est appliqué uniquement sur le fond global de la section */
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
 }
 .Feautes.index2 {
   padding-top: 100px;
@@ -2261,7 +2295,7 @@ img {
 .Feautes .section-header .section-title {
   font-size: 2.2rem;
   font-weight: 800;
-  color: var(--section-bg); 
+  color: var(--white-color); 
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -2281,12 +2315,28 @@ img {
   border-radius: 2px;
 }
 
-/* ==================== GRILLE DE PRESENTATION PUR CSS NATIF ==================== */
+/* ==================== GRILLE DE PRESENTATION PUR CSS NATIF RESPONSIVE ==================== */
 .feautes-grid-pure {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colonnes fixes et proportionnelles sur PC */
-  gap: 2rem;
+  /* 1. PAR DÉFAUT SUR MOBILE : 1 seule colonne verticale */
+  grid-template-columns: 1fr; 
+  gap: 3rem;
   width: 100%;
+}
+
+/* 2. SUR TABLETTE (max-width: 992px et min-width: 768px) : Strictement 2 colonnes par ligne */
+@media screen and (min-width: 768px) {
+  .feautes-grid-pure {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* 3. SUR ORDINATEUR (min-width: 992px) : Strictement 3 colonnes fixes et proportionnelles */
+@media screen and (min-width: 992px) {
+  .feautes-grid-pure {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .feautes-item {
@@ -2336,19 +2386,19 @@ img {
 
 .Feautes .single-features h3 {
   padding-top: 128px;
-  color: #2C2D3F;
+  color: #f1f5f9;
   font-weight: 600;
   font-size: 1.4rem;
 }
 
 .Feautes .single-features p {
   margin-top: 20px;
-  color: #868686;
+  color: #94a3b8; /* Couleur demandée pour la description */
   font-size: 1.3rem;
 }
 
 .Feautes .single-features h2 {
-  color: #2C2D3F;
+  color: #f1f5f9;
 }
 
 /* ==================== SERVICES ADJACENTS ELEMENTS ==================== */
@@ -2377,11 +2427,11 @@ img {
 .Feautes .single-service h4 {
   text-transform: capitalize;
   margin-bottom: 25px;
-  color: #2C2D3F;
+  color: #f1f5f9;
 }
 
 .Feautes .single-service h4 a {
-  color: #2C2D3F;
+  color: #f1f5f9;
   font-size: 1.4rem;
   font-weight: 600;
 }
@@ -2392,24 +2442,14 @@ img {
 }
 
 .Feautes .single-service p {
-  color: #868686;
+  color: #94a3b8; /* Couleur demandée pour la description */
   font-size: 1.3rem;
 }
 
-/* ==================== CONVERSION DE SECURITE PORTABLE ET TABLETTE ==================== */
-@media screen and (max-width: 992px) {
-  .feautes-grid-pure {
-    grid-template-columns: repeat(2, 1fr); /* Bascule propre en 2 colonnes sur tablette */
-  }
-}
-
+/* Ajustements responsive complémentaires pour l'en-tête de section */
 @media screen and (max-width: 768px) {
   .Feautes .section-header p {
     width: 85%;
-  }
-  .feautes-grid-pure {
-    grid-template-columns: 1fr; /* Aligné droit sur une seule colonne verticale sans se déformer */
-    gap: 3rem;
   }
 }
 /*==========================================================================
@@ -2609,81 +2649,87 @@ img {
 
 
 
-
 /*==========================================================================
 15. SERVICES SECTION
 ==========================================================================*/
 #services {
-  background-color: var(--white-color);
-  padding: 60px 0 40px 0;
+  background-color: var(--section-bg);
+  padding: 50px 0 30px 0;
   box-shadow: var(--border-color);
+  overflow: hidden;
 }
 
-/* --- STRUCTURE NATIVE HORS BOOTSTRAP (Version resserrée et aérée) --- */
+@media (min-width: 768px) {
+  #services {
+    padding: 60px 0 40px 0;
+  }
+}
+
+/* --- STRUCTURE PURE ADAPTATIVE (GRID SYSTEM) --- */
 #services .services-container {
-  max-width: 1140px; /* Légèrement plus petit pour ne pas coller aux grands écrans */
+  max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 30px; /* Plus d'espace par rapport aux bords de l'écran */
+  padding-right: 30px; 
   padding-left: 30px;
   box-sizing: border-box;
 }
 
+@media (min-width: 992px) {
+  #services .services-container {
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+}
+
 #services .services-grid {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -20px; /* Compense le grand espace interne des cartes */
-  margin-left: -20px;
+  display: grid;
+  grid-template-columns: 1fr; /* 1 colonne verticale sur Mobile */
+  gap: 20px; /* Espace entre les lignes sur Mobile */
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  #services .services-grid {
+    grid-template-columns: 1fr 1fr; /* 2 colonnes sur tablette et PC portable */
+    gap: 30px; /* Espace parfait de 30px entre TOUTES les boîtes (côtés et bas) */
+  }
 }
 
 #services .services-card {
   position: relative;
   width: 100%;
-  padding-right: 20px; /* Plus d'espace vide (gap) entre les blocs */
-  padding-left: 20px;
   box-sizing: border-box;
-  flex: 0 0 100%;
-  max-width: 100%; 
-}
-
-/* Écrans Tablettes et PC (>= 768px) */
-@media (min-width: 768px) {
-  #services .services-card {
-    flex: 0 0 50%;
-    max-width: 50%; 
-  }
 }
 
 /* --- EN-TÊTE DE LA SECTION --- */
 #services .services-section-header {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   width: 100%;
 }
 
-#services .services-section-header span {
-  color: var(--white-color);
-}
-
-#services .services-section-header p {
-  color: var(--text-color-light);
-  text-align: center;
-  margin: auto;
-  margin-bottom: 50px;
-  font-size: 15px;
-  padding-bottom: 60px;
-  width: 50%;
+@media (min-width: 768px) {
+  #services .services-section-header {
+    margin-bottom: 50px;
+  }
 }
 
 #services .services-section-header .services-section-title {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  color: #000000;
+  color: var(--white-color);
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
   display: inline-block;
   margin: 0;
+}
+
+@media (min-width: 768px) {
+  #services .services-section-header .services-section-title {
+    font-size: 2.4rem;
+  }
 }
 
 #services .services-section-header .services-section-title::after {
@@ -2698,19 +2744,40 @@ img {
   border-radius: 2px;
 }
 
-/* --- LES BOÎTES DE SERVICES (Taille interne ajustée) --- */
+/* --- STRUCTURE INTERNE DES BOÎTES (CORRIGÉE SANS VIDE EN BAS) --- */
 #services .box {
-  padding: 40px 30px 35px; /* Un peu moins de padding vertical pour réduire la taille globale */
+  padding: 25px 20px 20px; /* Un padding du bas très serré pour couper le vide */
   position: relative;
   overflow: hidden;
-  border-radius: 1.2rem;   /* Arrondi légèrement plus discret */
-  margin-bottom: 40px;     /* Suppression des marges horizontales inutiles */
-  background: #f8fafc;
+  border-radius: 1.2rem;   
+  
+  /* CORRECTIF : La boîte épouse strictement la hauteur du texte, sans s'étirer inutilement */
+  height: auto; 
+  /* CORRECTIF : Suppression du margin-bottom qui créait un double espace vide avec la grille */
+  margin-bottom: 0; 
+  
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  border: 1px solid rgba(0, 102, 255, 0.3);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  border: 1px solid #e2e8f0;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+@media (min-width: 768px) {
+  #services .box {
+    padding: 30px 25px 25px; /* Équilibre parfait pour ordinateur portable */
+  }
+}
+
+/* --- LE SURVOL --- */
+#services .box:hover {
+  transform: translateY(-5px);
+  background: var(--section-bg); 
+  border-color: #0066ff; 
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Ligne animée supérieure */
 #services .box::before {
   content: '';
   position: absolute;
@@ -2729,63 +2796,85 @@ img {
   transform: scaleX(1);
 }
 
-#services .box:hover {
-  transform: translateY(-5px);
-  background: #ffffff; /* Le fond devient blanc pur */
-  border-color: #0066ff; /* La bordure devient bleue */
-  box-shadow: 0 20px 40px rgba(0, 102, 255, 0.08);
-}
-
-/* Positionnement de l'icône ancrée à gauche */
+/* POSITIONNEMENT DE L'ICÔNE EN ANCRAGE ABSOLU (VOTRE CODE NATIF) */
 #services .icon {
   position: absolute;
   left: -10px;
-  top: calc(50% - 32px);
+  top: 22px; /* Aligné précisément sur la zone du titre */
+}
+
+@media (min-width: 768px) {
+  #services .icon {
+    top: 24px; 
+  }
 }
 
 /* Style de base de l'icône */
 #services .icon i {
-  font-size: 64px;
+  font-size: 40px; 
   line-height: 1;
   transition: color 0.4s ease, transform 0.5s ease;
 }
 
-/* SURVOL DYNAMIQUE : L'icône prend la couleur de la bordure et l'écrase */
-#services .box:hover .icon i {
-  color: #0066ff !important; /* Devient bleu et écrase la couleur du HTML */
+@media (min-width: 768px) {
+  #services .icon i {
+    font-size: 52px; 
+  }
 }
 
-/* Alignement et styles du titre (Poussé à 45px pour plus d'espace) */
+#services .box:hover .icon i {
+  color: #0066ff !important; 
+}
+
+/* --- TITRES --- */
 #services .title {
-  margin-left: 45px;
+  margin-left: 45px; /* Conserve votre décalage d'origine pour l'icône */
   font-weight: 700;
-  margin-bottom: 15px;
-  font-size: 1.4rem;
+  margin-bottom: 10px;
+  font-size: 1.25rem; 
+  display: flex;
+  align-items: center;
+  min-height: 40px; /* Centre virtuellement le titre face à l'icône */
+}
+
+@media (min-width: 768px) {
+  #services .title {
+    font-size: 1.45rem; 
+    margin-bottom: 14px;
+    min-height: 52px; 
+  }
 }
 
 #services .title a {
-  color: #1A76D1;
+  color: #f1f5f9;
   transition: color 0.3s ease;
-}
-
-/* Le titre passe au rouge uniquement si on le survole directement */
-#services .box .title a:hover {
-  color: #1A76D1;
   text-decoration: none;
 }
 
-/* Alignement et styles de la description (Poussé à 45px pour plus d'espace) */
+#services .box .title a:hover {
+  color: #0066ff;
+}
+
+/* --- DESCRIPTIONS --- */
 #services .description {
-  font-size: 1.3rem;
-  margin-left: 45px;
-  line-height: 24px;
+  margin-left: 45px; /* Conserve votre décalage d'origine */
+  line-height: 20px;
   margin-bottom: 0;
   text-align: justify;
-  color: #868686;
+  color: #94a3b8;
+  font-size: 1.15rem; 
+}
+
+@media (min-width: 768px) {
+  #services .description {
+    font-size: 1.35rem; 
+    line-height: 26px;
+  }
 }
 /*==========================================================================
 15. SERVICES SECTION FIN
 ==========================================================================*/
+
 
 
 
@@ -2801,7 +2890,7 @@ img {
 .resume-section .section-header .section-title {
   font-size: 1.9rem;
   font-weight: 800;
-  color: var(--section-bg);
+  color: var(--white-color);
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -2824,9 +2913,10 @@ img {
 
 /* --- STRUCTURE GLOBALE ET BORDS TRÈS ESPACÉS --- */
 .resume-section {
-  background-color: var(--section-pale-purple);
+  background-color: var(--section-bg);
   padding: 100px 80px;
   font-family: var(--body-font);
+  color: #ffcc02;
 }
 
 .resume-section .resume-container {
@@ -2864,7 +2954,7 @@ img {
 .resume-section .column-title h2 {
   font-size: 1.6rem;
   font-weight: var(--font-semi-bold);
-  color: var(--text-color);
+  color: #1a6ee4;
   margin: 0;
 }
 
@@ -2875,7 +2965,7 @@ img {
   vertical-align: middle;
   display: inline-flex;
   align-items: center;
-  color: var(--color); /* Ton bleu principal */
+  color: var(--white-color); /* Ton bleu principal */
 }
 
 /* --- LIGNE TEMPORELLE ET POINTS EN BLEU (●) --- */
@@ -2910,7 +3000,7 @@ img {
 /* --- BLOC BENTO BLANC COMPACT --- */
 .resume-section .resume-block.bento-card {
   position: relative;
-  background-color: var(--white-color);
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
   padding: 40px 30px 30px; /* Grand espace en haut pour éviter que ça colle */
   border-radius: 8px;
   box-shadow: var(--box-shadow);
@@ -2923,9 +3013,15 @@ img {
 /* Effet au survol : Décale à droite, fine bordure bleue */
 .resume-section .resume-block.bento-card:hover {
   transform: translateX(10px);
-  border-color: var(--color);
-  background: var(--white-color);
-  box-shadow: 0 10px 25px rgba(0, 102, 255, 0.05);
+  
+  /* La bordure devient bleue */
+  border-color: #0066ff;
+  
+  /* Le fond change pour prendre la couleur de la section */
+  background: var(--section-bg);
+  
+  /* Le halo bleu très léger autour pour le contraste */
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .resume-section .timeline-item:hover .timeline-dot {
@@ -2969,7 +3065,7 @@ img {
 }
 
 .resume-section .bento-header h3 {
-  color: var(--text-color-right);
+  color: #e2e8f0;
   font-size: var(--small-font);
   font-weight: var(--font-medium);
   margin: 0;
@@ -2979,14 +3075,14 @@ img {
 .resume-section .block-post-title {
   font-size: 1.5rem;
   font-weight: var(--font-semi-bold);
-  color: var(--text-color);
+  color: #94a3b8;
   margin: 0 0 4px 0;
 }
 
 .resume-section .block-entity {
   display: inline-block;
   font-size: var(--normal-font);
-  color: var(--text-color-gight);
+  color: #95a7c0;
   font-weight: var(--font-regular);
   margin-bottom: 6px;
 }
@@ -2996,13 +3092,13 @@ img {
   align-items: center;
   gap: 6px;
   font-size: var(--small-font);
-  color: var(--p-color);
+  color: #94a3b8;
   margin-bottom: 10px;
 }
 
 .resume-section .block-description-company {
   font-size: var(--smaller-font);
-  color: var(--p-color);
+  color: #94a3b8;
   margin-bottom: 15px;
   line-height: 1.4;
   text-align: justify;
@@ -3010,7 +3106,7 @@ img {
 
 /* --- SOUS-BLOC DES TECHNOLOGIES ET BADGES BENTO --- */
 .resume-section .tech-container {
-  background-color: var(--section-pale-purple);
+  background-color: rgba(255, 255, 255, 0.03);
   padding: 10px 12px;
   border-radius: 6px;
   display: flex;
@@ -3021,7 +3117,8 @@ img {
 .resume-section .tech-title {
   font-size: var(--smaller-font);
   font-weight: var(--font-medium);
-  color: var(--text-color-right);
+  /* MODIFICATION : Couleur ajustée en bleu-gris doux pour le fond sombre */
+  color: #94a3b8;
 }
 
 .resume-section .bento-sub-list {
@@ -3032,22 +3129,29 @@ img {
   padding: 0;
 }
 
-/* Badges blancs individuels */
+/* Badges individuels (Version Sombre) */
 .resume-section .sub-item {
   font-size: 1.2rem;
-  color: var(--text-color);
-  background: var(--white-color);
+  /* Texte en blanc doux / bleu glacier */
+  color: #e2e8f0;
+  /* Fond bleu-nuit fort au lieu du blanc */
+  background: #110d42;
   padding: 4px 10px;
   border-radius: 6px;
-  border: 1px solid #e2e8f0;
+  /* Bordure initiale très discrète */
+  border: 1px solid rgba(148, 163, 184, 0.15);
   font-weight: var(--font-medium);
   transition: var(--transition-smooth);
 }
 
+/* --- EFFET AU SURVOL DE LA CARTE BENTO --- */
 .resume-section .resume-block.bento-card:hover .sub-item {
-  color: var(--text-color-right);
-  border-color: var(--color);
-  background: var(--white-color);
+  /* Le texte s'illumine au survol */
+  color: #ffffff;
+  /* La bordure des badges devient bleue pour s'accorder au reste */
+  border-color: #0066ff;
+  /* Le fond reste sombre (pas de blanc) */
+  background: #110d42;
 }
 
 /* --- RESPONSIVE DESIGN --- */
@@ -3094,7 +3198,7 @@ img {
 
 /* --- LE FOND ULTRA-PÂLE DE LA SECTION --- */
 .certlang-global-section {
-  background-color: var(--white-color);
+  background-color: var(--section-bg);
   padding: 100px 80px;
   font-family: var(--body-font);
   width: 100%;
@@ -3116,7 +3220,7 @@ img {
 .certlang-global-section .certlang-section-title {
   font-size: 1.9rem;
   font-weight: 800;
-  color: var(--section-bg);
+  color: var(--white-color);
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -3171,7 +3275,7 @@ img {
 .certlang-global-section .certlang-column-headline h2 {
   font-size: 1.6rem;
   font-weight: var(--font-semi-bold);
-  color: var(--text-color);
+  color: #1a6ee4;;
   margin: 0;
 }
 
@@ -3183,6 +3287,95 @@ img {
   margin-left: 10px;
   width: 100%;
 }
+
+/* ==========================================================================
+   SECTION SERVICES
+   ========================================================================== */
+
+#services .services-card {
+  position: relative;
+  width: 100%;
+  padding-right: 20px; /* Plus d'espace vide (gap) entre les blocs */
+  padding-left: 20px;
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  max-width: 100%; 
+}
+
+/* --- LES BOÎTES DE SERVICES (Version Sombre Dégradée) --- */
+#services .box {
+  padding: 40px 30px 35px; /* Un peu moins de padding vertical pour réduire la taille globale */
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.2rem;   /* Arrondi légèrement plus discret */
+  margin-bottom: 40px;     /* Suppression des marges horizontales inutiles */
+  
+  /* Fond dégradé au repos (couleur du formulaire) */
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  
+  /* Bordure initiale discrète (bleu-gris fondu) */
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#services .box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+      var(--accent-purple),
+      var(--accent-blue),
+      var(--accent-green));
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+#services .box:hover::before {
+  transform: scaleX(1);
+}
+
+/* --- LE SURVOL DES SERVICES --- */
+#services .box:hover {
+  transform: translateY(-5px);
+  
+  /* Le fond prend la couleur exacte de la section */
+  background: var(--section-bg);
+  
+  /* La bordure devient bleue */
+  border-color: #0066ff;
+  
+  /* Halo bleu très léger autour pour le contraste */
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Positionnement de l'icône ancrée à gauche */
+#services .icon {
+  position: absolute;
+  left: -10px;
+  top: calc(50% - 32px);
+}
+
+/* Style de base de l'icône */
+#services .icon i {
+  font-size: 64px;
+  line-height: 1;
+  transition: color 0.4s ease, transform 0.5s ease;
+}
+
+/* SURVOL DYNAMIQUE : L'icône prend la couleur de la bordure et l'écrase */
+#services .box:hover .icon i {
+  color: #0066ff !important; /* Devient bleu et écrase la couleur du HTML */
+}
+
+
+/* ==========================================================================
+   SECTION CERTIFICATS / LIGNE TEMPORELLE
+   ========================================================================== */
 
 .certlang-global-section .certlang-track-node {
   position: relative;
@@ -3202,16 +3395,23 @@ img {
   height: 10px;
   border-radius: 50%;
   background-color: var(--color);
-  border: 2px solid var(--white-color);
+  /* Bordure du marqueur adaptée au fond sombre */
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-/* --- LE BLOC EN BLANC ULTRA-SÉCURISÉ --- */
+/* --- LE BLOC EN DÉGRADÉ SOMBRE SÉCURISÉ --- */
 .certlang-global-section .certlang-inner-block-white {
   position: relative;
-  background-color: #f8fafc;
+  
+  /* Fond dégradé au repos (couleur formulaire) */
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  border: 1px solid #e2e8f0;
+  
+  /* Bordure initiale discrète (bleu-gris fondu) */
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  
   z-index: 1;
   overflow: hidden; /* Empêche physiquement le débordement de tout élément */
   width: 100%;
@@ -3219,12 +3419,18 @@ img {
   transition: var(--transition-smooth);
 }
 
-/* Décalage à droite au survol */
+/* --- LE SURVOL DES CERTIFICATS --- */
 .certlang-global-section .certlang-inner-block-white:hover {
   transform: translateX(10px);
+  
+  /* La bordure devient bleue */
   border-color: #0066ff;
-  background-color: #ffffff; /* Fond devient blanc pur */
-  box-shadow: 0 20px 40px rgba(0, 102, 255, 0.08);
+  
+  /* Le fond prend la couleur exacte de la section au survol */
+  background: var(--section-bg);
+  
+  /* Halo bleu très léger autour pour le contraste */
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .certlang-global-section .certlang-track-node:hover .certlang-node-marker {
@@ -3238,16 +3444,18 @@ img {
   bottom: -0.5rem;
   font-size: 4.5rem;
   font-weight: 900;
-  color: rgba(15, 23, 42, 0.02);
+  /* Couleur du numéro adaptée pour fond sombre (opacité très légère) */
+  color: rgba(255, 255, 255, 0.03);
   user-select: none;
   z-index: -1;
   transition: var(--transition-smooth);
 }
 
 .certlang-global-section .certlang-inner-block-white:hover .certlang-bg-watermark {
-  color: rgba(0, 102, 255, 0.04);
+  color: rgba(0, 102, 255, 0.06);
   transform: scale(1.05) translateY(-3px);
 }
+
 
 /* --- CONTENU DE LA CARTE DE CERTIFICAT --- */
 .certlang-global-section .certlang-block-top {
@@ -3261,7 +3469,7 @@ img {
 .certlang-global-section .certlang-block-top i,
 .certlang-global-section .certlang-item-geo i {
   font-size: 1.1em;
-  color: var(--color);
+  color: #ffffff;
 }
 
 .certlang-global-section .certlang-block-top i {
@@ -3274,7 +3482,7 @@ img {
 }
 
 .certlang-global-section .certlang-block-top h3 {
-  color: var(--text-color-right);
+  color: #e2e8f0;
   font-size: 1.7rem;
   font-weight: var(--font-medium);
   margin: 0;
@@ -3283,7 +3491,7 @@ img {
 .certlang-global-section .certlang-item-subtitle {
   font-size: 1.5rem;
   font-weight: var(--font-semi-bold);
-  color: var(--text-color);
+  color: #94a3b8;
   margin: 0 0 4px 0;
 }
 
@@ -3324,7 +3532,10 @@ img {
   justify-content: center;
   width: 40px;
   height: 40px;
-  background-color: var(--section-pale-purple);
+  
+  /* MODIFICATION : Le fond prend notre bleu foncé au repos */
+  background-color: #0b3175;
+  
   border-radius: 8px;
   border: 1px solid rgba(0, 102, 255, 0.1);
   flex-shrink: 0;
@@ -3333,16 +3544,24 @@ img {
 
 .certlang-global-section .certlang-icon-square-box i {
   font-size: 1.2rem !important;
-  color: var(--color) !important;
+  
+  /* MODIFICATION : L'icône prend une couleur visible au repos (blanc glacier) */
+  color: #e2e8f0 !important;
+  
   transition: transform var(--tran-0-3) ease;
 }
 
 .certlang-global-section .certlang-inner-block-white:hover .certlang-icon-square-box {
-  background-color: var(--white-color);
+  /* MODIFICATION : Au survol, le carré prend la couleur de la section */
+  background-color: var(--section-bg);
+  
   border-color: var(--color);
 }
 
 .certlang-global-section .certlang-inner-block-white:hover .certlang-icon-square-box i {
+  /* MODIFICATION : L'icône s'illumine en bleu au survol */
+  color: #0066ff !important;
+  
   transform: scale(1.1) rotate(-10deg);
 }
 
@@ -3357,18 +3576,18 @@ img {
   margin: 0 !important;
   font-size: var(--small-font);
   font-weight: var(--font-medium);
-  color: var(--text-color-right);
+  color: #e2e8f0;
 }
 
 .certlang-global-section .certlang-text-level {
   font-size: var(--smaller-font);
   color: var(--p-color);
-  font-weight: var(--font-regular);
+  font-weight: #94a3b8;
 }
 
 /* --- ARCHITECTURE INVIOLABLE DE LA BARRE DE PROGRESSION --- */
 .certlang-global-section .certlang-badge-holder-mauve {
-  background-color: var(--section-pale-purple);
+  background-color: rgba(255, 255, 255, 0.03);
   padding: 10px 12px;
   border-radius: 6px;
   display: flex;
@@ -3380,7 +3599,7 @@ img {
 .certlang-global-section .certlang-badge-holder-title {
   font-size: var(--smaller-font);
   font-weight: var(--font-medium);
-  color: var(--text-color-right);
+  color: #94a3b8;
 }
 
 .certlang-global-section .certlang-gauge-container-safe {
@@ -3388,11 +3607,10 @@ img {
   display: block;
 }
 
-
 .certlang-global-section .certlang-gauge-track-gray {
   width: 100%;
   height: 6px;
-  background-color: #e2e8f0;
+  background-color: #110d42; /* Bleu de fond arrière plus fort et marqué */
   border-radius: 10px;
   overflow: hidden; /* Force le bleu à ne jamais déborder */
   position: relative;
@@ -3400,14 +3618,14 @@ img {
 
 .certlang-global-section .certlang-gauge-fill-blue {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent-blue, #00a8ff), var(--color));
+  background: linear-gradient(90deg, #0066ff, #00a8ff); /* Jauge en dégradé bleu */
   border-radius: 10px;
   max-width: 100% !important; /* Bouclier technique ultime anti-débordement */
   transition: box-shadow var(--tran-0-3);
 }
 
 .certlang-global-section .certlang-inner-block-white:hover .certlang-gauge-fill-blue {
-box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
+  box-shadow: 0 0 10px #00a8ff, 0 0 5px #0066ff;
 }
 
 /* --- RESPONSIVE DESIGN TOTALEMENT ISOLE --- */
@@ -3447,7 +3665,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 17. SECTION CODEUR
 ====================================================*/
 .Codeur {
-  background-color: var(--section-pale-purple) !important; 
+  background-color: var(--section-bg) !important; 
   padding: 60px 0; 
   width: 100%;
   display: flex;
@@ -3471,7 +3689,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 .Codeur .section-header .section-title {
   font-size: 2.2rem;
   font-weight: 800;
-  color: #0F172A;
+  color: #ffffff;
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -3492,7 +3710,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 }
 
 .Codeur .section-header .section-subtitle {
-  color: #004bb4; 
+  color: #1a6ee4; 
   text-align: center;
   margin: 20px auto 0; 
   font-size: 13px; 
@@ -3524,7 +3742,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 .cyber-card {
   position: relative;
   padding: 40px 30px;
-  background: rgba(255, 255, 255, 0.45); 
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%); 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
@@ -3539,7 +3757,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 
 .card-master {
   transform: translateY(-20px);
-  background: rgba(255, 255, 255, 0.65); 
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
   box-shadow: 0 15px 35px rgba(15, 23, 42, 0.04);
 }
 
@@ -3564,10 +3782,17 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 /* INTERACTION CHOC : Bordure passée à 2px (Très fine et élégante) */
 .cyber-card:hover {
   transform: translateY(-12px) scale(1.02);
-  background: #ffffff;
   border: 1px solid #0066ff; /* CORRIGÉ : Très petit, fin et précis */
   box-shadow: 0 20px 40px rgba(0, 180, 216, 0.1);
   z-index: 10;
+
+  border-color: #0066ff;
+  
+  /* Le fond change pour prendre la couleur de la section */
+  background: var(--section-bg);
+  
+  /* Le halo bleu très léger autour pour le contraste */
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .card-master:hover {
@@ -3593,8 +3818,8 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   font-family: monospace;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #0F172A;
-  background: rgba(15, 23, 42, 0.06);
+  color: #ffcc02;
+  background: #0b3175;
   padding: 4px 10px;
   border-radius: 6px;
 }
@@ -3604,33 +3829,33 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: #0F172A;
+  color: #e2e8f0;
   margin: 0;
 }
 
 /* CORRIGÉ : Texte agrandi de manière significative pour le confort ordinateur */
 .cyber-text {
   font-size: 1.15rem; /* Augmenté pour un rendu parfait sur écran */
-  color: #334155;
+  color: #94a3b8;
   line-height: 1.8;
   text-align: justify;
   margin: 0;
 }
 
 .highlight-text { 
-  color: #0F172A; 
+  color: #b0c5f6; 
   font-weight: 700; 
 }
 
 .highlight-tech { 
-  color: #00b4d8; 
+  color: #b0c5f6; 
   font-weight: 700; 
 }
 
 .highlight-marker {
   background: linear-gradient(180deg, transparent 65%, rgba(0, 180, 216, 0.12) 65%);
   font-weight: 700;
-  color: #0F172A;
+   color: #b0c5f6;
 }
 
 .highlight-block::after {
@@ -3716,7 +3941,8 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 ========================================================================== */
 #portfolio {
   padding: 80px 0;
-  background-color: var(--white-color, #FFFFFF);
+  /* Fond global en dégradé sombre */
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
   position: relative;
   overflow: hidden;
 }
@@ -3729,7 +3955,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 #portfolio .section-header .section-title {
   font-size: 2.2rem;
   font-weight: 800;
-  color: #000000; 
+  color: #ffffff; 
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -3749,7 +3975,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   border-radius: 2px;
 }
 
-/* ==================== CONFIGURATION DES BOUTONS DE FILTRES ==================== */
+/* ==================== CONFIGURATION DES BOUTONS DE FILTRES CORRIGÉE ==================== */
 .portfolio-filters-wrapper {
   width: 100%;
 }
@@ -3773,9 +3999,16 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   font-size: 0.8rem;
   font-weight: 700;
   line-height: 1.5;
-  color: #000000; 
-  border: 1px solid rgba(0, 0, 0, 0.08); 
-  background: rgba(0, 0, 0, 0.02);
+  
+  /* MODIFICATION : Couleur argentée/blanc cassé pour le texte sur fond sombre */
+  color: #e2e8f0; 
+  
+  /* MODIFICATION : Bordure bleu-gris très fondue et discrète */
+  border: 1px solid rgba(148, 163, 184, 0.15); 
+  
+  /* MODIFICATION : Fond sombre translucide pour s'accorder au dégradé arrière */
+  background: rgba(148, 163, 184, 0.06);
+  
   border-radius: 30px;
   border-top-right-radius: 0;
   text-transform: uppercase;
@@ -3785,9 +4018,10 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 }
 
 #portfolio #portfolio-flters li:hover {
-  background-color: rgba(0, 102, 255, 0.05);
+  /* MODIFICATION : Lueur bleue translucide élégante au survol */
+  background-color: rgba(0, 102, 255, 0.12);
   color: #0066ff; 
-  border-color: rgba(0, 102, 255, 0.3);
+  border-color: rgba(0, 102, 255, 0.4);
 }
 
 #portfolio #portfolio-flters li.filter-active {
@@ -3796,11 +4030,10 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   border-color: #0066ff;
   box-shadow: 0 0 15px rgba(0, 102, 255, 0.4); 
 }
-
 /* ==================== GRILLE CSS NATIVE (Taille Compacte et Ordonnée) ==================== */
 .portfolio-grid-pure {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Fixé strictement en 3 colonnes compactes */
+  grid-template-columns: repeat(3, 1fr); /* Fixé strictement en 3 colonnes compactes sur PC */
   gap: 2rem;
   width: 100%;
 }
@@ -3937,7 +4170,6 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   transform: scale(1.1); 
   box-shadow: 0 0 12px rgba(0, 102, 255, 0.5);
 }
-
 /* ==========================================================================
 18.1. SCÈNE INTERACTIVE LIGHTBOX ET BOUTON RETOUR (PORTFOLIO MODAL)
 ========================================================================== */
@@ -4028,7 +4260,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   }
 
   .portfolio-grid-pure {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 1.5rem;
   }
 }
@@ -4044,8 +4276,8 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   /* Les 4 onglets passent en grille 2x2 bien alignée */
   #portfolio #portfolio-flters {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important; /* Force strictement 2 colonnes */
-    gap: 10px !important; /* Espacement régulier et propre entre les boutons */
+    grid-template-columns: repeat(2, 1fr) !important; 
+    gap: 10px !important; 
     padding: 0 15px;
     margin: 0;
     width: 100%;
@@ -4092,7 +4324,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
     margin-top: 60px; 
   }
 
-  /* SÉCURITÉ ABSOLUE : Désactive l'affichage de la barre rouge personnalisée sur mobile */
+  /* SÉCURITÉ ABSOLUE : Désactive l'affichage de la barre de défilement */
   .portfolio-filters-wrapper::-webkit-scrollbar,
   .portfolio-grid-pure::-webkit-scrollbar,
   .portfolio-item::-webkit-scrollbar,
@@ -4134,14 +4366,12 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
     opacity: 1;
     visibility: visible;
   }
-
   to {
     opacity: 0;
-    visibility: hidden; /* Rend l'écran totalement cliquable en dessous */
+    visibility: hidden;
   }
 }
 
-/* Conteneur global du logo (Animation de rapprochement et d'explosion conservée) */
 .splash-logo {
   display: flex;
   gap: 0.1rem;
@@ -4160,69 +4390,32 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   display: inline-block;
 }
 
-/* Lettre G */
 .splash-logo .letter:nth-child(1) {
   transform-origin: right center;
   animation: letterGIntro 1.5s cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
 
 @keyframes letterGIntro {
-  0% { 
-    transform: translateX(-80px) scaleY(0.1) scaleX(0.5); 
-    opacity: 0; filter: blur(15px); 
-  }
-  
-  40% { 
-    opacity: 1; filter: blur(0px);
-    transform: translateX(-40px) scaleY(1.4) scaleX(1); 
-  }
-  
-  70%, 100% { 
-    transform: translateX(0) scaleY(1) scaleX(1); 
-  }
+  0% { transform: translateX(-80px) scaleY(0.1) scaleX(0.5); opacity: 0; filter: blur(15px); }
+  40% { opacity: 1; filter: blur(0px); transform: translateX(-40px) scaleY(1.4) scaleX(1); }
+  70%, 100% { transform: translateX(0) scaleY(1) scaleX(1); }
 }
 
-/* Lettre C */
 .splash-logo .letter:nth-child(2) {
   transform-origin: left center;
   animation: letterCIntro 1.5s cubic-bezier(0.6, 0, 0.2, 1) forwards;
 }
 
 @keyframes letterCIntro {
-  0% { 
-    transform: translateX(80px) scaleY(0.1) scaleX(0.5); 
-    opacity: 0; 
-    filter: blur(15px); 
-  }
-
-  45% { opacity: 1; 
-    filter: blur(0px); 
-    transform: translateX(40px) scaleY(1.4) scaleX(1);
-  }
-  
-  75%, 100% { 
-    transform: translateX(0) scaleY(1) scaleX(1); 
-  }
+  0% { transform: translateX(80px) scaleY(0.1) scaleX(0.5); opacity: 0; filter: blur(15px); }
+  45% { opacity: 1; filter: blur(0px); transform: translateX(40px) scaleY(1.4) scaleX(1); }
+  75%, 100% { transform: translateX(0) scaleY(1) scaleX(1); }
 }
 
-/* Explosion 3D finale */
 @keyframes netflixZoom3D {
-  0%, 65% { 
-    transform: translateZ(0); 
-    filter: blur(0px); 
-    opacity: 1; 
-  }
-
-  85% { 
-    transform: translateZ(400px) scale(1.5); 
-    filter: blur(2px); 
-    opacity: 0.8; 
-  }
-
-  100% { transform: translateZ(1000px) scale(3); 
-    filter: blur(12px); 
-    opacity: 0; 
-  }
+  0%, 65% { transform: translateZ(0); filter: blur(0px); opacity: 1; }
+  85% { transform: translateZ(400px) scale(1.5); filter: blur(2px); opacity: 0.8; }
+  100% { transform: translateZ(1000px) scale(3); filter: blur(12px); opacity: 0; }
 }
 
 @media screen and (max-width: 768px) {
@@ -4231,10 +4424,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
     letter-spacing: -3px; 
   }
 }
-
-/* ==================== SPLASH SCREEN AUTOMATIQUE ==================== */
-
-/* ==========================================================================
+/*==========================================================================
 18. SECTION PORTFOLIO FIN
 ========================================================================== */
 
@@ -4242,16 +4432,24 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 
 
 /*=============================
-19. START FEAUTES
+19. START pf-details
 ===============================*/
-/* --- STRUCTURE DE LA GRILLE PERSONNALISÉE (Sans aucun lien avec Bootstrap) --- */
+/* --- STRUCTURE DE LA GRILLE ADAPTATIVE (SANS BOOTSTRAP) --- */
 .pf-details .container-custom {
   max-width: 1200px;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 25px; /* Éloignement de sécurité sur mobile */
+  padding-left: 25px;
   box-sizing: border-box;
+}
+
+@media (min-width: 992px) {
+  .pf-details .container-custom {
+    /* Éloignement plus grand par rapport aux bords sur écran d'ordinateur */
+    padding-right: 60px;
+    padding-left: 60px;
+  }
 }
 
 .pf-details .aptitudes-grid {
@@ -4259,6 +4457,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
+  row-gap: 20px; /* Évite que les lignes se collent verticalement */
 }
 
 .pf-details .aptitudes-title-block {
@@ -4271,6 +4470,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   max-width: 100%;
 }
 
+/* 1. COMPORTEMENT SUR MOBILE -> 1 seule colonne verticale */
 .pf-details .aptitudes-card {
   position: relative;
   width: 100%;
@@ -4278,10 +4478,10 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   padding-left: 15px;
   box-sizing: border-box;
   flex: 0 0 100%;
-  max-width: 100%; /* Mobile par défaut : 1 colonne par ligne */
+  max-width: 100%; 
 }
 
-/* Écrans Tablettes (>= 768px) -> 2 colonnes par ligne */
+/* 2. COMPORTEMENT SUR TABLETTE (>= 768px) -> Strictement 2 colonnes par ligne */
 @media (min-width: 768px) {
   .pf-details .aptitudes-card {
     flex: 0 0 50%;
@@ -4289,7 +4489,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   }
 }
 
-/* Écrans PC et Moniteurs (>= 992px) -> 3 colonnes par ligne */
+/* 3. COMPORTEMENT SUR ORDINATEUR (>= 992px) -> Strictement 3 colonnes par ligne */
 @media (min-width: 992px) {
   .pf-details .aptitudes-card {
     flex: 0 0 33.333333%;
@@ -4297,10 +4497,11 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   }
 }
 
-/* --- VOS STYLES EXISTANTS (CONSERVÉS À 100%) --- */
+/* --- LE FOND DE SECTION APPLIQUÉ ICI --- */
 .pf-details {
   padding: 60px 0 40px 0;
-  background-color: var(--section-pale-purple);
+  /* MODIFICATION : Le dégradé est appliqué uniquement sur le fond global de la section */
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
 }
 
 .pf-details .index2 {
@@ -4338,7 +4539,7 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
 .pf-details .section-header .section-title {
   font-size: 2.2rem;
   font-weight: 800;
-  color: var(--section-bg);
+  color: var(--white-color); /* Ajusté en blanc pour être visible sur le nouveau fond sombre */
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -4346,7 +4547,6 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   margin: 0;
 }
 
-/* Fine jauge décorative sous le titre principal */
 .pf-details .section-header .section-title::after {
   content: '';
   position: absolute;
@@ -4380,39 +4580,35 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   text-align: center;
   border: 1px solid #dddddd;
   border-radius: 100%;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }
 
-/* Survol des blocs annexes single-features */
 .pf-details .single-features:hover .signle-icon i {
   background: #ff0000;
   color: #fff;
   border-color: transparent;
-  -webkit-transform: rotate(15deg) scale(1.1);
   transform: rotate(15deg) scale(1.1);
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
 }
 
 .pf-details .single-features h3 {
   padding-top: 128px;
-  color: #2C2D3F;
+  color: #f1f5f9; /* Ajusté pour fond sombre */
   font-weight: 600;
   font-size: 1.4rem;
 }
 
 .pf-details .single-features p {
   margin-top: 20px;
-  color: #868686;
+  color: #94a3b8; /* Texte de description en bleu-gris doux */
   font-size: 1.3rem;
 }
 
 .pf-details .single-features h2 {
-  color: #2C2D3F;
+  color: #f1f5f9;
 }
 
-/* Style de base des cartes d'aptitudes personnelles */
+/* --- STRUCTURE D'ORIGINE DU COMPOSANT (SANS LE DÉGRADÉ DEDANS) --- */
 .pf-details .single-service {
   margin: 30px 0;
   position: relative;
@@ -4425,21 +4621,14 @@ box-shadow: 0 0 10px var(--accent-blue, #00a8ff), 0 0 5px var(--color);
   color: #1a76d1;
   position: absolute;
   left: 0;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }
 
-/* ==========================================================================
-SURVOL GLOBAL : L'icône se penche et devient rouge dès qu'on survole la carte
-========================================================================== */
 .pf-details .single-service:hover i {
   color: #ff0000;
-  -webkit-transform: rotate(15deg);
   transform: rotate(15deg);
 }
 
-/* Le titre (le lien) devient rouge en même temps */
 .pf-details .single-service:hover h4 a {
   color: #ff0000;
 }
@@ -4447,15 +4636,13 @@ SURVOL GLOBAL : L'icône se penche et devient rouge dès qu'on survole la carte
 .pf-details .single-service h4 {
   text-transform: capitalize;
   margin-bottom: 25px;
-  color: #2C2D3F;
+  color: #f1f5f9; /* Ajusté pour fond sombre */
 }
 
 .pf-details .single-service h4 a {
   color: #1a76d1;
   font-size: 1.4rem;
   font-weight: 600;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }
 
@@ -4463,13 +4650,16 @@ SURVOL GLOBAL : L'icône se penche et devient rouge dès qu'on survole la carte
   text-decoration: none;
 }
 
+/* --- LE TEXTE POUR DÉCRIRE DEMANDÉ --- */
 .pf-details .single-service p {
-  color: #868686;
+  /* MODIFICATION : Couleur de description appliquée strictement ici */
+  color: #94a3b8; 
   font-size: 1.3rem;
 }
 /*=============================
-19. START FEAUTES FIN
+19. START pf-details FIN
 ===============================*/
+
 
 
 
@@ -5190,234 +5380,4 @@ SURVOL GLOBAL : L'icône se penche et devient rouge dès qu'on survole la carte
 }
 /* ======================================================== 
 21. SECTION CONTACT FIN    
-======================================================== */
-
-
-/* ======================================================== 
-22. SECTION interets activites section
-======================================================== */
-/* --- Arriere-plan de la section lie a tes variables --- */
-.interets-activites-section {
-  overflow: hidden; 
-  padding: 50px 0;
-  background: var(--background-color, #000000);
-  width: 100%;
-  display: block;
-  clear: both;
-}
-
-/* --- Conteneur interne centre --- */
-.interets-activites-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* --- Ligne de division en flex (Indispensable pour l'IntersectionObserver de ton JS) --- */
-.interets-activites-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center; 
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* --- Bloc Gauche : Le Titre (Isole a 25% dans le flux pour l'animation fadeInDown) --- */
-.interets-activites-col-gauche {
-  width: 25%;
-  flex: 0 0 25%;
-  max-width: 25%;
-  box-sizing: border-box;
-  padding-right: 20px;
-}
-
-/* --- Bloc Droite : La Grille d'icones (Isolee a 75% dans le flux) --- */
-.interets-activites-col-droite {
-  width: 75%;
-  flex: 0 0 75%;
-  max-width: 75%;
-  box-sizing: border-box;
-  min-width: 0; 
-}
-
-/* --- Style de l'en-tete --- */
-.interets-activites-section .section-header {
-  text-align: left;
-  width: 100%;
-}
-
-.interets-activites-section .section-header .section-title {
-  font-size: var(--h2-font, 2.4rem); 
-  font-weight: var(--font-semi-bold, 600);
-  color: var(--white-color, #ffffff) !important;
-  text-transform: uppercase;
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  letter-spacing: 2px;
-}
-
-/* La petite barre bleue calquee sur ton modele */
-.interets-activites-section .section-header .section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px; 
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  background: var(--accent-blue, #00a8ff); 
-  border-radius: 2px;
-}
-
-/* --- Grille d'icones (6 colonnes fixes sur PC) --- */
-.interets-activites-section .interets-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 30px 15px;
-  width: 100%;
-}
-
-/* --- Alignement des elements --- */
-.interets-activites-section .interet-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  text-align: center;
-}
-
-/* --- Le Carreau (Flou a 24px - Aspect Verre Depoli Lourd) --- */
-.interets-activites-section .icon-square {
-  width: 46px;   
-  height: 46px;  
-  border-radius: 10px; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.15); 
-  background: rgba(255, 255, 255, 0.06); 
-  
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  
-  transition: var(--transition-smooth, all 0.4s ease);
-}
-
-/* --- L'icone (Fine et minimaliste au centre) --- */
-.interets-activites-section .icon-square i {
-  color: var(--white-color, #ffffff);
-  font-size: 1.2rem; 
-  line-height: 1;
-  transition: var(--transition-smooth, all 0.4s ease);
-  display: inline-block;
-}
-
-/* --- Le texte sous le carreau --- */
-.interets-activites-section .interet-name {
-  font-size: 1.1rem; 
-  font-weight: var(--font-medium, 500); 
-  color: var(--white-color, #ffffff);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  margin-top: 8px;
-  display: block;
-  width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: var(--transition-smooth, all 0.4s ease);
-}
-
-/* ------------------------------------------ */
-/*         SURVOL HARMONISE EN BLEU           */
-/* ------------------------------------------ */
-
-.interets-activites-section .interet-item:hover .icon-square {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: var(--accent-blue, #00a8ff); 
-  box-shadow: var(--box-shadow);
-}
-
-.interets-activites-section .interet-item:hover .icon-square i {
-  color: var(--accent-blue, #00a8ff); 
-}
-
-.interets-activites-section .interet-item:hover .interet-name {
-  color: var(--accent-blue, #00a8ff); 
-}
-
-/* Animations de mouvements fluides */
-.interets-activites-section .interet-item:hover .icon-square i {
-  transform: scale(1.1) rotate(3deg);
-}
-
-.interets-activites-section .interet-item.interert-activite-icone-monte:hover .icon-square i {
-  transform: translateY(-5px) scale(1.1);
-}
-
-.interets-activites-section .interet-item.interert-activite-icone-droite:hover .icon-square i {
-  transform: translateX(6px) scale(1.1);
-}
-
-.interets-activites-section .interet-item.interert-activite-icone-zoom:hover .icon-square i {
-  transform: scale(1.25);
-}
-
-/* ------------------------------------------ */
-/*         RESPONSIVE : TABLETTE & MOBILE     */
-/* ------------------------------------------ */
-
-/* Mode Tablette (La grille passe en 3 colonnes) */
-@media (max-width: 991px) {
-  .interets-activites-section .interets-grid {
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 25px 15px;
-  }
-}
-
-/* Mode Mobile (Division col-4 et col-8 propre) */
-@media (max-width: 767px) {
-  .interets-activites-col-gauche {
-    width: 33.333%;
-    flex: 0 0 33.333%;
-    max-width: 33.333%;
-    padding-right: 10px;
-  }
-
-  .interets-activites-col-droite {
-    width: 66.666%;
-    flex: 0 0 66.666%;
-    max-width: 66.666%;
-  }
-
-  .interets-activites-section .section-header .section-title {
-    font-size: var(--smaller-font, 1.2rem); 
-  }
-  
-  .interets-activites-section .interets-grid {
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px 8px;
-  }
-  
-  .interets-activites-section .icon-square {
-    width: 44px; 
-    height: 44px;
-  }
-  
-  .interets-activites-section .icon-square i {
-    font-size: var(--normal-font, 1.5rem);
-  }
-  
-  .interets-activites-section .interet-name {
-    font-size: var(--smaller-font, 1.2rem);
-    margin-top: 6px;
-  }
-}
-/* ======================================================== 
-22. SECTION interets activites section FIN    
 ======================================================== */
