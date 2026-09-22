@@ -283,6 +283,8 @@ img {
 
 
 
+
+
 /* ==========================================================================
 6. ÉCRAN DE DÉMARRAGE STYLE NETFLIX (CORRIGÉ & STABILISÉ ANTI-DEBORDEMENT)
 ========================================================================== */
@@ -378,6 +380,7 @@ img {
 /*=============================
 6. Écran de démarrage Netflix Style Fin
 ===============================*/
+
 
 
 
@@ -733,7 +736,6 @@ img {
 /* ==========================================================================
 8. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION)
 ========================================================================== */
-
 .home {
   min-height: 100vh;
   width: 100%;
@@ -946,7 +948,6 @@ img {
 8.1. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
 ========================================================================== */
 
-
 /* ==========================================================================
 8.2 ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU)
 ========================================================================== */
@@ -1059,15 +1060,14 @@ img {
     display: none; 
   }
 }
-
 /* ==========================================================================
 8.2. ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU) FIN
 ========================================================================== */
 
-
 /* ==========================================================================
 8. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
 ========================================================================== */
+
 
 
 
@@ -1846,7 +1846,6 @@ img {
 
 
 
-
 /* ==========================================================================
 12. SECTION COMPÉTENCES REVISÉE 
 ========================================================================== */
@@ -1981,10 +1980,8 @@ img {
   margin-right: 10px; /* Écart idéal avec le texte */
   border-radius: 8px;
   
-  /* MODIFICATION : Bordure initiale discrète adaptée au fond sombre */
   border: 1px solid rgba(148, 163, 184, 0.15);
   
-  /* MODIFICATION : Glassmorphism sombre avec notre bleu #0b3175 */
   background: rgba(11, 49, 117, 0.25);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -2014,14 +2011,12 @@ img {
 
 /* --- SURVOL GLOBAL DE LA COMPÉTENCE (Style sombre inversé) --- */
 .skill-section .skill-item:hover .skill-icon-box {
-  /* MODIFICATION : Le carré prend le fond de la section au survol */
   background: var(--section-bg);
   border-color: #0066ff; /* Contour devient bleu solide */
   box-shadow: 0 5px 10px rgba(0, 102, 255, 0.15);
 }
 
 .skill-section .skill-item:hover .skill-icon-box i {
-  /* MODIFICATION : Les icônes prennent toutes le bleu électrique au survol */
   color: #0066ff !important;
   transform: scale(1.1) rotate(3deg);
 }
@@ -2319,6 +2314,7 @@ img {
 
 
 
+
 /*==========================================================================
 14. START ERROR 404 CSS
 ==========================================================================*/
@@ -2501,10 +2497,10 @@ img {
     box-shadow: 0 12px 20px rgba(0, 102, 255, 0.3);
   }
 }
-
 /*==========================================================================
 14. START ERROR 404 CSS FIN
 ==========================================================================*/
+
 
 
 
@@ -2611,9 +2607,9 @@ img {
   overflow: hidden;
   border-radius: 1.2rem;   
   
-  /* CORRECTIF : La boîte épouse strictement la hauteur du texte, sans s'étirer inutilement */
+  /* La boîte épouse strictement la hauteur du texte, sans s'étirer inutilement */
   height: auto; 
-  /* CORRECTIF : Suppression du margin-bottom qui créait un double espace vide avec la grille */
+  /* Suppression du margin-bottom qui créait un double espace vide avec la grille */
   margin-bottom: 0; 
   
   box-sizing: border-box;
@@ -3517,6 +3513,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 
 
 
+
 /*==================================================
 17. SECTION CODEUR
 ====================================================*/
@@ -3787,6 +3784,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 /*==================================================
 17. SECTION CODEUR
 ====================================================*/
+
 
 
 

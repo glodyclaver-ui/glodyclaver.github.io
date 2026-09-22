@@ -1,5 +1,5 @@
 /*
-  JavaScript Global Modifié & Optimisé - PARTIE 1 (STABILISATION TOTALE MULTI-ÉCRANS)
+  JavaScript Global Modifié & Optimisé
   Author Name: OLEKO DIOMBA Glodi-placide glody-claver
 */
 
