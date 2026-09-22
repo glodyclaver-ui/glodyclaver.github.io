@@ -36,6 +36,9 @@ const ASSETS_TO_CACHE = [
   
   /* Icônes et images de profil */
   './images/CLAVER%20LOGO.png',
+  './images/CLAVER%20LOGO%201.png',
+  './images/CLAVER%20LOGO%202.png',
+  './images/CLAVER%20LOGO%203.png',
   './images/about-me-image.png',
   './images/about-me-1.png',
 
