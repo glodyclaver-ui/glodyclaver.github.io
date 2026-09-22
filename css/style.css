@@ -2,6 +2,8 @@
   CSS
   @glody claver
   3.0 license (glody_claver/license)
+  Template Name: 	glody-claver.
+  Author Name: OLEKO DIOMBA Glodi-placide glody-claver
 */
 
 /* ==========================================================================
@@ -9,7 +11,6 @@
 ========================================================================== */
 @import url('https://googleapis.com');
 
-/* Réinitialisation universelle (sans doublons) */
 * {
   margin: 0;
   padding: 0;
@@ -17,13 +18,22 @@
   font-family: "Poppins", sans-serif;
 }
 
+/* Verrouillage anti-bande blanche horizontal strict */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
 html {
   font-size: 62.5%; /* 1rem = 10px */
+  scroll-behavior: smooth;
 }
 
 body {
-  overflow-x: hidden;
   background-color: var(--white-color, #ffffff);
+  min-height: 100vh;
 }
 /* ==========================================================================
 1. POLICES & CONFIGURATION GLOBALE SÉCURISÉE FIN
@@ -32,78 +42,63 @@ body {
 
 
 
+
 /* ==========================================================================
 2. VARIABLES SYSTÈME (:ROOT)
 ========================================================================== */
 :root {
-  /* Font Sizes & Family */
   --body-font: 'Poppins', sans-serif;
-
-  /* Index Text Weights & Sizes */
   --big-font: 4rem;
   --h1-font: 3.6rem;
   --h2-font: 2.4rem;
   --h3-font: 2rem;
   --h4-font: 1.8rem;
+  --h5-font: 1.1rem;
   --normal-font: 1.6rem;
   --small-font: 1.4rem;
   --smaller-font: 1.3rem;
   --header-font: 1.2rem;
   --header-height: 4.5rem;
-
-  /* Z-index positions */
   --z-overlay: 10;
   --z-fixed: 100;
-
-  /* Transitions temporelles réutilisées par le bouton Scroll Up et le Menu */
   --tran-0-2: 0.2s;
   --tran-0-3: 0.3s;
   --tran-0-5: 0.5s;
-
-  /* Font Weights */
   --font-regular: 400;
   --font-medium: 500;
   --font-semi-bold: 600;
-
-  /* Color Palette Variables */
-  --color: #007bff;
+  --color: #0066ff;
   --primary-color: #ef0b0b;
   --primary-color-hover: #db1212;
-  --primary-color-AMEN: #044479;
-  --text-color-right: rgb(3, 3, 95);
-  --text-color-light: #ffcc02;
+  --primary-color-cl: #0f172a;
   --border-color: #484848;
   --border-color-off: #160457;
   --border-color-on: #7fffd4;
   --white-color: #ffffff;
-  --p-color: #717275;
-  --background-color: #000000;
   --accent-purple: #9945ff;
   --accent-blue: #00a8ff;
   --metal-dark: #3a3a3a;
   --box-shadow: 0 10px 29px 0 rgba(68, 88, 144, 0.1);
   --section-pale-purple: #f0ecff; 
-
   --text-color: #1a1a1a;
+  --text-color-1: #e2e8f0;
+  --text-color-2: #94a3b8;
+  --p-color: #717275;
+  --p-color-1: #1a6ee4;
+  --p-color-2: #b0c5f6;
+  --p-color-3: rgba(255, 255, 255, 0.85);
+  --p-color-4: #475569;
   --text-color-gight: #707070;
+  --text-color-right: rgb(3, 3, 95);
+  --text-color-light: #ffcc02;
   --primary-black: #0b0b0b;
   --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   --blur-effect: blur(12px);
-
-
-  /* Votre couleur de base (Bleu très sombre / presque noir) */
+  --background-color: #000000;
   --section-bg: #030020;
-
-  /* Option 1 : Différence très subtile (Idéal pour un design épuré) */
   --section-bg-light-1: #090533;
-
-  /* Option 2 : Différence modérée (Le choix le plus équilibré) */
   --section-bg-light-2: #0f0a47;
-
-  /* Option 3 : Différence plus marquée (Pour bien séparer les blocs) */
   --section-bg-light-4: #150f5c;
-
-  /* Option 4 : Version plus lumineuse / électrique */
   --section-bg-light-5: #1c1575;
 }
 
@@ -120,6 +115,7 @@ body {
     --smaller-font: 1.2rem;
   }
 }
+
 /* ==========================================================================
 2. VARIABLES SYSTÈME (:ROOT) FIN
 ========================================================================== */
@@ -140,32 +136,41 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--primary-black);
-  background-color: #f9f1ec;
+  background: #f9f1ec;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background-color: var(--primary-color);
+  background-color: var(--primary-color); /* Ton rouge */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  border-radius: 5px;
   background-color: var(--primary-color-hover);
 }
 
+/* FORCE LE MASQUAGE DE LA SCROLLBAR ROUGE PENDANT L'ANIMATION (PC & MOBILE) */
 body.hide-scrollbar::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
+  height: 0 !important;
+}
+
+body.hide-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent !important; /* Force le curseur rouge à devenir invisible */
+  background-color: transparent !important;
+}
+
+body.hide-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important; /* Force le fond blanc à devenir invisible */
 }
 
 body.hide-scrollbar {
   overflow: hidden !important;
-  -ms-overflow-style: none;  /* IE et Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none !important;  /* IE et Edge */
+  scrollbar-width: none !important;     /* Firefox */
 }
 /* ==========================================================================
-3. SCROLLBAR PERSONNALISÉE & CORRECTION SÉCURITÉ DE DÉFILEMENT FIN
+3. SCROLLBAR PERSONNALISÉE FIN
 ========================================================================== */
 
 
@@ -175,27 +180,16 @@ body.hide-scrollbar {
 /* ==========================================================================
 4. STYLES DE BASE DES ÉLÉMENTS ET BALISES GLOBALES
 ========================================================================== */
-body,
-button,
-input {
+body, button, input {
   font-family: var(--body-font);
   font-size: var(--normal-font);
   font-weight: var(--font-regular);
   color: var(--text-color);
 }
 
-input {
-  outline: none;
-}
-
-ul {
-  list-style: none;
-}
-
-a {
-  text-decoration: none;
-}
-
+input { outline: none; }
+ul { list-style: none; }
+a { text-decoration: none; }
 img {
   max-width: 100%;
   height: auto;
@@ -209,11 +203,14 @@ img {
 
 
 
+
 /* ==========================================================================
 5. CLASSES UTILITAIRES ET COMPOSANTS RÉUTILISABLES (PRE-CSS)
 ========================================================================== */
 .section {
   padding: 7rem 2rem;
+  max-width: 100%;
+  overflow: hidden; /* Protège le défilement global */
 }
 
 .container {
@@ -229,7 +226,6 @@ img {
   column-gap: 0.6rem;
 }
 
-/* Styles unifiés du bouton d'action principal */
 .button {
   border: none;
   outline: none;
@@ -240,8 +236,6 @@ img {
   background-color: var(--section-bg);
   cursor: pointer;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
-  
-  /* Nettoyage des doublons de transitions */
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform, box-shadow;
 }
@@ -249,14 +243,11 @@ img {
 .button:hover {
   background-color: var(--primary-color-hover);
   color: var(--white-color);
-  text-decoration: none;
   box-shadow: 0 20px 25px -5px var(--section-bg);
   transform: translateY(-3px);
 }
 
-/* Typographies et en-têtes réutilisables */
-.section-subtitle,
-.content-subtitle {
+.section-subtitle, .content-subtitle {
   color: var(--primary-color);
   font-size: var(--h2-font);
   letter-spacing: 5px;
@@ -264,16 +255,14 @@ img {
   text-align: center;
 }
 
-.section-title,
-.content-title {
+.section-title, .content-title {
   text-align: center;
   font-size: 1.9rem;
   font-weight: var(--font-medium);
   margin: 1rem 0;
 }
 
-.section-description,
-.content-description {
+.section-description, .content-description {
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -281,15 +270,353 @@ img {
 .section-description {
   padding: 0 16rem;
 }
+
+/* RESPONSIVE PADDING DESCRIPTION */
+@media screen and (max-width: 768px) {
+  .section-description {
+    padding: 0 2rem; 
+  }
+}
 /* ==========================================================================
 5. CLASSES UTILITAIRES ET COMPOSANTS RÉUTILISABLES (PRE-CSS) FIN
 ========================================================================== */
 
 
 
+/* ==========================================================================
+6. ÉCRAN DE DÉMARRAGE STYLE NETFLIX (CORRIGÉ & STABILISÉ ANTI-DEBORDEMENT)
+========================================================================== */
+.splash-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #060608;
+  z-index: 99999; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1200px; 
+  animation: vanishOut 0.5s ease forwards 2.2s;
+}
+
+@keyframes vanishOut {
+  from { opacity: 1; visibility: visible; }
+  to { opacity: 0; visibility: hidden; }
+}
+
+.splash-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  font-family: 'Montserrat', 'Impact', 'Arial Black', sans-serif;
+  font-weight: 900;
+  font-size: 9rem;
+  letter-spacing: -6px;
+  transform-style: preserve-3d;
+  animation: netflixZoom3D 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+  max-width: 100%;
+}
+
+.splash-logo .letter {
+  background: linear-gradient(180deg, #00f2fe 0%, #4facfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Animations adoucies pour éviter les calculs extérieurs de page */
+.splash-logo .letter:nth-child(1) {
+  transform-origin: center center;
+  animation: letterGIntro 1.5s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+@keyframes letterGIntro {
+  0% { transform: translateX(-20%) scale(0.5); opacity: 0; filter: blur(15px); }
+  40% { opacity: 1; filter: blur(0px); transform: translateX(-10px) scale(1.2); }
+  70%, 100% { transform: translateX(0) scale(1); }
+}
+
+.splash-logo .letter:nth-child(2) {
+  transform-origin: center center;
+  animation: letterCIntro 1.5s cubic-bezier(0.6, 0, 0.2, 1) forwards;
+}
+@keyframes letterCIntro {
+  0% { transform: translateX(20%) scale(0.5); opacity: 0; filter: blur(15px); }
+  45% { opacity: 1; filter: blur(0px); transform: translateX(10px) scale(1.2); }
+  75%, 100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes netflixZoom3D {
+  0%, 65% { transform: translateZ(0) scale(1); filter: blur(0px); opacity: 1; }
+  85% { transform: translateZ(100px) scale(1.2); filter: blur(2px); opacity: 0.8; }
+  100% { transform: translateZ(300px) scale(1.8); filter: blur(12px); opacity: 0; }
+}
+
+/* Ajustements Splash sur Mobile Écrans tactiles */
+@media screen and (max-width: 768px) {
+  .splash-logo { 
+    font-size: 5rem; 
+    letter-spacing: -3px; 
+  }
+  @keyframes letterGIntro {
+    0% { transform: translateX(-15px) scale(0.6); opacity: 0; filter: blur(10px); }
+    100% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0px); }
+  }
+  @keyframes letterCIntro {
+    0% { transform: translateX(15px) scale(0.6); opacity: 0; filter: blur(10px); }
+    100% { transform: translateX(0) scale(1); opacity: 1; filter: blur(0px); }
+  }
+  @keyframes netflixZoom3D {
+    0%, 65% { transform: scale(1); opacity: 1; filter: blur(0px); }
+    100% { transform: scale(1.3); opacity: 0; filter: blur(8px); }
+  }
+}
+/*=============================
+6. Écran de démarrage Netflix Style Fin
+===============================*/
+
+
+
 
 /* ==========================================================================
-6. INTERFACE ET BARRE DE NAVIGATION (HEADER & NAV)
+11. SECTION SCROLL UP & GLOBAL RESPONSIVE MEDIA (SÉCURISÉE)
+========================================================================== */
+.scrollUp-btn {
+  position: fixed;
+  bottom: -30%; /* Caché sous l'écran par défaut */
+  right: 3rem;
+  height: 3rem;
+  width: 3rem;
+  font-size: 2rem;
+  border-radius: 4px;
+  color: var(--color, #0066ff); 
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  background-color: var(--white-color, #FFFFFF);
+  z-index: var(--z-overlay, 9999);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: bottom 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, color 0.3s ease;
+  will-change: bottom;
+}
+
+/* Activé dynamiquement par la Section 5 du JavaScript au-delà de 250px de scroll */
+.scrollUpBtn-active {
+  bottom: 3rem !important;
+}
+
+.scrollUp-icon {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.scrollUp-btn:hover .scrollUp-icon {
+  opacity: 1;
+}
+
+/* RESPONSIVE MEDIA GLOBAL OPTIMISÉ POUR MOBILE (ANTI-DÉBORDEMENT) */
+@media screen and (max-width: 1150px) {
+  .swiper-button-prev { 
+    left: 10rem; 
+  }
+
+  .swiper-button-next { 
+    right: 10rem; 
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .swiper-button-prev { 
+    left: 3rem; 
+  }
+
+  .swiper-button-next { 
+    right: 3rem; 
+  }
+
+  .section-description { 
+    padding: 0 8rem; 
+    max-width: 100%;
+  }
+
+  .menu .menu-content {
+    grid-template-columns: 1.5fr 1fr;
+    column-gap: 3rem;
+    max-width: 100%;
+    overflow: hidden; /* Sécurité anti-ligne blanche pour le bloc menu */
+  }
+
+  .brand-images { 
+    grid-template-columns: repeat(3, 1fr); 
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section.review { 
+    padding: 7rem 1rem 3rem; 
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .review .swiper { 
+    padding-bottom: 6.5rem; 
+    max-width: 100%;
+  }
+
+  .swiper-navBtn { 
+    visibility: hidden; 
+  }
+
+  .swiper-pagination-bullet { 
+    visibility: visible; 
+  }
+
+  .section { 
+    padding: 7rem 1rem; 
+    max-width: 100%;
+    overflow: hidden; /* Coupe les animations ScrollReveal qui débordent à la longue */
+  }
+
+  .section-description, .review-quote { 
+    padding: 0 6rem; 
+    max-width: 100%;
+  }
+
+  .menu .menu-content {
+    grid-template-columns: 1fr;
+    row-gap: 3rem;
+  }
+  
+  .footer-container { 
+    row-gap: 1.5rem; 
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container { 
+    padding: 0 1.5rem; 
+    max-width: 100% !important;
+    overflow: hidden; /* Maintient fermement la structure dans le cadre du smartphone */
+  }
+
+  .section-description, .review-quote { 
+    padding: 0; 
+  }
+
+  .menuItem-price { 
+    border: none; 
+  }
+
+  .menu-img {
+    height: 70px;
+    width: 70px;
+    margin-right: 0;
+  }
+
+  .brand-images { 
+    grid-template-columns: repeat(2, 1fr); 
+    max-width: 100%;
+  }
+
+  .brand-img { 
+    width: 130px; 
+    max-width: 100%;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    row-gap: 6rem;
+  }
+
+  .footer-content { 
+    justify-items: center; 
+  }
+
+  .footer-linkContent { 
+    justify-items: center; 
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .homeTitle { 
+    font-size: 3rem; 
+    max-width: 100%;
+    word-wrap: break-word; /* Évite qu'un titre long pousse l'écran vers la droite */
+  }
+
+  .menu-item {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    row-gap: 2rem;
+    max-width: 100%;
+  }
+  
+  .menuItem-details {
+    margin-right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+  
+  .menuItem-price {
+    padding-left: 0;
+    flex-direction: row;
+  }
+  
+  .menuItem-des { 
+    text-align: center; 
+  }
+
+  .newsletter-input { 
+    padding: 0 11rem 0 2rem; 
+    max-width: 100%;
+  }
+
+  .newsletter-button { 
+    padding: 1.4rem 2rem; 
+  }
+}
+
+/* Classes utilitaires de visibilité croisée */
+.visible-phone { 
+  display: none; 
+}
+
+.visible-desktop { 
+  display: inherit; 
+}
+
+@media (max-width: 767px) {
+  .visible-phone { 
+    display: inherit; 
+  }
+
+  .visible-desktop { 
+    display: none; 
+  }
+}
+/* ==========================================================================
+11. SECTION SCROLL UP & GLOBAL RESPONSIVE MEDIA (SÉCURISÉE) FIN
+========================================================================== */
+
+
+
+
+
+
+/* ==========================================================================
+7. INTERFACE ET BARRE DE NAVIGATION (HEADER & NAV)
 ========================================================================== */
 .header {
   position: fixed;
@@ -342,7 +669,7 @@ img {
 .header-active .nav-link,
 .header-active .phone-icon,
 .header-active .phone-number {
-  color: var(--text-color);
+  color: var(--primary-color-cl);
 }
 
 .logo-icon,
@@ -396,14 +723,15 @@ img {
   padding: 0;
 }
 /* ==========================================================================
-6. INTERFACE ET BARRE DE NAVIGATION (HEADER & NAV) FIN
+7. INTERFACE ET BARRE DE NAVIGATION (HEADER & NAV) FIN
 ========================================================================== */
 
 
 
 
+
 /* ==========================================================================
-7. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION)
+8. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION)
 ========================================================================== */
 
 .home {
@@ -515,7 +843,7 @@ img {
 }
 
 .home .swiper-slide .intro-info p {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--p-color-3);
   margin-bottom: 2rem;
   font-size: var(--smaller-font);
   font-weight: 400;
@@ -615,12 +943,12 @@ img {
   100%{ transform: translateY(12px); opacity: 0; }
 }
 /* ==========================================================================
-7.1. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
+8.1. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
 ========================================================================== */
 
 
 /* ==========================================================================
-7.2 ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU)
+8.2 ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU)
 ========================================================================== */
 @media screen and (max-width: 768px) {
   .contact-content { display: none; }
@@ -733,19 +1061,19 @@ img {
 }
 
 /* ==========================================================================
-7.2. ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU) FIN
+8.2. ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU) FIN
 ========================================================================== */
 
 
 /* ==========================================================================
-7. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
+8. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
 ========================================================================== */
 
 
 
 
 /*==================================================
-8. STRUCTURE DE BASE ABOUT SECTION
+9. STRUCTURE DE BASE ABOUT SECTION
 ====================================================*/
 .about {
   background-color: var(--white-color) !important;
@@ -917,8 +1245,8 @@ img {
   margin-bottom: 0.5rem;
 }
 
-.content-title {
-  color: #0f172a;
+.about .content-title {
+  color: var(--primary-color-cl);
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 2.5rem;
@@ -984,7 +1312,7 @@ img {
 }
 
 .bento-header h3 {
-  color: #0f172a;
+  color: var(--primary-color-cl);
   font-size: 1.35rem;
   font-weight: 700;
 }
@@ -999,7 +1327,7 @@ img {
 
 .sub-item {
   font-size: 0.9rem;
-  color: #475569;
+  color: var(--p-color-4);
   background: #ffffff;
   padding: 5px 14px;
   border-radius: 8px;
@@ -1093,7 +1421,7 @@ img {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #0f172a;
+  color: var(--primary-color-cl);
   text-decoration: none;
   font-weight: 700;
   text-transform: uppercase;
@@ -1165,7 +1493,7 @@ img {
     align-items: center; 
   }
 
-  .content-title { 
+  .about .content-title { 
     text-align: center; 
   }
 
@@ -1239,273 +1567,15 @@ img {
   }
 }
 /*==================================================
-8. STRUCTURE DE BASE ABOUT SECTION FIN
+9. STRUCTURE DE BASE ABOUT SECTION FIN
 ====================================================*/
 
 
 
 
 
-
 /*==================================================
-9. SECTION MENU
-====================================================*/
-.menu {
-  background-color: var(--section-bg);
-}
-
-.section-title,
-.section-description {
-  color: var(--text-color);
-}
-
-.section-title h2 {
-  padding-top: 128px;
-  font-weight: 600;
-  font-size: 21px;
-}
-
-.review-text .section-description {
-  font-size: 1.4rem;
-}
-
-.menu .menu-content {
-  display: grid;
-}
-
-.menu-img {
-  height: 80px;
-  width: 80px;
-  margin-right: 1.5rem;
-}
-
-.menu-items {
-  display: grid;
-  row-gap: 1.5rem;
-}
-
-.menu-item {
-  position: relative;
-  background-color: var(--white-color);
-  padding: 1.4rem 4rem;
-  border-radius: 3rem;
-  border-top-right-radius: 0;
-}
-
-.menuItem-details {
-  margin-right: 1.5rem;
-}
-
-.menuItem-topic {
-  font-weight: var(--font-semi-bold);
-}
-
-.menuItem-des {
-  font-size: var(--small-font);
-  text-align: justify;
-}
-
-.menuItem-price {
-  display: flex;
-  flex-direction: column;
-  padding-left: 2rem;
-  border-left: 2px solid rgba(0, 0, 0, 0.3);
-}
-
-.discount-price {
-  font-size: 1.8rem;
-}
-
-.real-price {
-  text-decoration: line-through;
-}
-
-.time-topic {
-  width: 100%;
-  display: block;
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: var(--font-regular);
-  padding: 1.5rem 0;
-  color: var(--white-color);
-  background-color: var(--primary-color);
-}
-
-.time-list {
-  padding: 1.5rem;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
-  justify-content: space-between;
-  background-color: var(--white-color);
-}
-
-.time-list:nth-child(7) {
-  border-bottom: none;
-}
-
-/* Brand / Marques partenaires */
-.brand-images {
-  display: grid;
-  align-items: center;
-  column-gap: 2rem;
-  justify-content: space-between;
-  justify-items: center;
-  margin-top: 3rem;
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.brand-img {
-  width: 150px;
-  object-fit: contain;
-  opacity: 0.4;
-  transition: var(--tran-0-5);
-  will-change: transform, opacity; /* Améliore la fluidité CPU/GPU au survol */
-}
-
-.brand-img:hover {
-  opacity: 1;
-  transform: scale(1.2);
-}
-
-/* Review / Témoignages clients */
-.review {
-  background-color: #f2f2f2;
-}
-
-.review .section-title {
-  color: var(--text-color);
-}
-
-.review .section-description {
-  color: var(--text-color);
-}
-
-.testi-content {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  row-gap: 2rem;
-  flex-direction: column;
-  display: flex;
-}
-
-.review-img {
-  height: 150px;
-  width: 150px;
-  border-radius: 50%;
-  margin-bottom: 2rem;
-}
-
-.review-quote {
-  padding: 0 15rem;
-  text-align: center;
-  font-size: 1.4rem;
-}
-
-.quote-icon {
-  font-size: 3rem;
-  color: var(--primary-color);
-}
-
-.testi-personDetails {
-  flex-direction: column;
-  display: flex;
-}
-
-.testi-personDetails .name {
-  font-size: 1.8rem;
-  font-weight: var(--font-medium);
-}
-
-.testi-personDetails .job {
-  font-size: 1.4rem;
-  font-weight: var(--font-medium);
-}
-
-/* Éléments de navigation du Carrousel Swiper */
-.review .swiper-navBtn {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.review .swiper-button-next {
-  right: 2rem;
-  transform: translateY(2rem);
-}
-
-.review .swiper-button-prev {
-  left: 2rem;
-  transform: translateY(2rem);
-}
-
-.review .swiper-navBtn:hover {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Newsletter / Formulaire d'abonnement */
-.newsletter .logo-icon,
-.newsletter .logo-text,
-.newsletter .section-description {
-  color: var(--text-color);
-}
-
-.newletter-container {
-  display: grid;
-  justify-items: center;
-  row-gap: 4rem;
-}
-
-.newsletter .logo-icon {
-  font-size: 3rem;
-  color: var(--text-color-light);
-}
-
-.newsletter .logo-text {
-  color: var(--text-color-light);
-  font-size: 2rem;
-  font-weight: var(--font-medium);
-}
-
-.newsletter-inputBox {
-  position: relative;
-  height: 5rem;
-  max-width: 420px;
-  width: 100%;
-  overflow: hidden;
-}
-
-.newletter-input {
-  height: 100%;
-  width: 100%;
-  border-radius: 3rem;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  padding: 0 16rem 0 2rem;
-}
-
-.newsletter-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-radius: 0 3rem 3rem 0;
-}
-
-.newsletter .media-icons {
-  display: flex;
-}
-/*==================================================
-9. SECTION MENU FIN
-====================================================*/
-
-
-
-
-
-
-
-
-
-
-
-/*==================================================
-10. Section Footer 
+20. Section Footer 
 ====================================================*/
 .footer {
   padding: 6rem 2rem 3rem;
@@ -1776,212 +1846,6 @@ img {
 
 
 
-/*==================================================
-11. SECTION SCROLL UP 
-====================================================*/
-.scrollUp-btn {
-  position: fixed;
-  bottom: -30%; /* Caché sous l'écran par défaut */
-  right: 3rem;
-  height: 3rem;
-  width: 3rem;
-  font-size: 2rem;
-  border-radius: 4px;
-  color: var(--color, #0066ff); /* Sécurité : prend du bleu si --color n'existe pas */
-  cursor: pointer;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  background-color: var(--white-color, #FFFFFF);
-  z-index: var(--z-overlay, 9999);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  transition: bottom 0.3s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease, color 0.3s ease;
-  will-change: bottom;
-}
-
-/* Activé dynamiquement par la Section 5 du JavaScript au-delà de 250px de scroll */
-.scrollUpBtn-active {
-  bottom: 3rem !important;
-}
-
-.scrollUp-icon {
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
-}
-
-.scrollUp-btn:hover .scrollUp-icon {
-  opacity: 1;
-}
-
-/* RESPONSIVE MEDIA GLOBAL PRESERVÉ */
-@media screen and (max-width: 1150px) {
-  .swiper-button-prev { 
-    left: 10rem; 
-  }
-
-  .swiper-button-next { 
-    right: 10rem; 
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .swiper-button-prev { 
-    left: 3rem; 
-  }
-
-  .swiper-button-next { 
-    right: 3rem; 
-  }
-
-  .section-description { 
-    padding: 0 8rem; 
-  }
-
-  .menu .menu-content {
-    grid-template-columns: 1.5fr 1fr;
-    column-gap: 3rem;
-  }
-
-  .brand-images { 
-    grid-template-columns: repeat(3, 1fr); 
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .section.review { 
-    padding: 7rem 1rem 3rem; 
-  }
-
-  .review .swiper { 
-    padding-bottom: 6.5rem; 
-  }
-
-  .swiper-navBtn { 
-    visibility: hidden; 
-  }
-
-  .swiper-pagination-bullet { 
-    visibility: visible; 
-  }
-
-  .section { 
-    padding: 7rem 1rem; 
-  }
-
-  .section-description, .review-quote { 
-    padding: 0 6rem; 
-  }
-
-  .menu .menu-content {
-    grid-template-columns: 1fr;
-    row-gap: 3rem;
-  }
-  .footer-container { 
-    row-gap: 1.5rem; 
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .container { 
-    padding: 0.5rem; 
-  }
-
-  .section-description, .review-quote { 
-    padding: 0; 
-  }
-
-  .menuItem-price { 
-    border: none; 
-  }
-
-  .menu-img {
-    height: 70px;
-    width: 70px;
-    margin-right: 0;
-  }
-
-  .brand-images { 
-    grid-template-columns: repeat(2, 1fr); 
-  }
-
-  .brand-img { 
-    width: 130px; 
-  }
-
-  .footer-container {
-    grid-template-columns: 1fr;
-    row-gap: 6rem;
-  }
-
-  .footer-content { 
-    justify-items: center; 
-  }
-
-  .footer-linkContent { 
-    justify-items: center; 
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .homeTitle { 
-    font-size: 3rem; 
-  }
-
-  .menu-item {
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    row-gap: 2rem;
-  }
-  .menuItem-details {
-    margin-right: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .menuItem-price {
-    padding-left: 0;
-    flex-direction: row;
-  }
-  .menuItem-des { 
-    text-align: center; 
-  }
-
-  .newsletter-input { 
-    padding: 0 11rem 0 2rem; 
-  }
-
-  .newsletter-button { 
-    padding: 1.4rem 2rem; 
-  }
-}
-
-/* Classes utilitaires de visibilité croisée */
-.visible-phone { 
-  display: none; 
-}
-
-.visible-desktop { 
-  display: inherit; 
-}
-
-@media (max-width: 767px) {
-  .visible-phone { 
-    display: inherit; 
-  }
-
-  .visible-desktop { 
-    display: none; 
-  }
-}
-/*==================================================
-11. SECTION SCROLL UP (OPTIMISÉE POUR LE SCRIPT JAVASCRIPT)
-====================================================*/
-
-
-
-
 
 /* ==========================================================================
 12. SECTION COMPÉTENCES REVISÉE 
@@ -2049,7 +1913,7 @@ img {
   background: var(--section-bg);
   
   /* Bordure initiale discrète */
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(0, 210, 255, 0.1);
   border-radius: 1.2rem;
   padding: 30px 20px; /* Moins de padding pour compacter la hauteur */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
@@ -2060,11 +1924,6 @@ img {
 
 /* --- LE SURVOL : LA SOURIS EST SUR LUI --- */
 .skill-section .skill-thumbnail:hover {
-  /* AU SURVOL : Il prend le dégradé du formulaire + la boule lumineuse en bas à droite */
-  background: 
-    radial-gradient(circle at 90% 90%, rgba(11, 49, 117, 0.45) 0%, rgba(11, 49, 117, 0) 55%),
-    linear-gradient(135deg, #0d093a 0%, #050226 100%);
-  
   /* La bordure devient bleue */
   border-color: #0066ff;
   
@@ -2367,8 +2226,9 @@ img {
   height: 100px;
   width: 100px;
   line-height: 100px;
+  background: var(--big-font);
   text-align: center;
-  border: 1px solid #dddddd;
+  border: 1px solid rgba(0, 210, 255, 0.1);
   border-radius: 100%;
   -webkit-transition: all 0.4s ease;
   -moz-transition: all 0.4s ease;
@@ -2758,7 +2618,7 @@ img {
   
   box-sizing: border-box;
   background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
-  border: 1px solid rgba(0, 102, 255, 0.3);
+  border: 1px solid rgba(0, 210, 255, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -2871,6 +2731,91 @@ img {
     line-height: 26px;
   }
 }
+
+/* ==========================================================================
+SECTION SERVICES
+========================================================================== */
+
+#services .services-card {
+  position: relative;
+  width: 100%;
+  padding-right: 20px; /* Plus d'espace vide (gap) entre les blocs */
+  padding-left: 20px;
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  max-width: 100%; 
+}
+
+/* --- LES BOÎTES DE SERVICES (Version Sombre Dégradée) --- */
+#services .box {
+  padding: 40px 30px 35px; /* Un peu moins de padding vertical pour réduire la taille globale */
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.2rem;   /* Arrondi légèrement plus discret */
+  margin-bottom: 40px;     /* Suppression des marges horizontales inutiles */
+  
+  /* Fond dégradé au repos (couleur du formulaire) */
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  
+  /* Bordure initiale discrète (bleu-gris fondu) */
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+#services .box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+      var(--accent-purple),
+      var(--accent-blue),
+      var(--accent-green));
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+}
+
+#services .box:hover::before {
+  transform: scaleX(1);
+}
+
+/* --- LE SURVOL DES SERVICES --- */
+#services .box:hover {
+  transform: translateY(-5px);
+  
+  /* Le fond prend la couleur exacte de la section */
+  background: var(--section-bg);
+  
+  /* La bordure devient bleue */
+  border-color: #0066ff;
+  
+  /* Halo bleu très léger autour pour le contraste */
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Positionnement de l'icône ancrée à gauche */
+#services .icon {
+  position: absolute;
+  left: -10px;
+  top: calc(50% - 32px);
+}
+
+/* Style de base de l'icône */
+#services .icon i {
+  font-size: 64px;
+  line-height: 1;
+  transition: color 0.4s ease, transform 0.5s ease;
+}
+
+/* SURVOL DYNAMIQUE : L'icône prend la couleur de la bordure et l'écrase */
+#services .box:hover .icon i {
+  color: #0066ff !important; /* Devient bleu et écrase la couleur du HTML */
+}
+
 /*==========================================================================
 15. SERVICES SECTION FIN
 ==========================================================================*/
@@ -2916,6 +2861,7 @@ img {
   background-color: var(--section-bg);
   padding: 100px 80px;
   font-family: var(--body-font);
+  font-size: var(--h5-font);
   color: #ffcc02;
 }
 
@@ -3000,11 +2946,11 @@ img {
 /* --- BLOC BENTO BLANC COMPACT --- */
 .resume-section .resume-block.bento-card {
   position: relative;
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  background: rgba(255, 255, 255, 0.02);
   padding: 40px 30px 30px; /* Grand espace en haut pour éviter que ça colle */
   border-radius: 8px;
   box-shadow: var(--box-shadow);
-  border: 1.5px solid transparent;
+  border: 1px solid rgba(0, 210, 255, 0.1);
   z-index: 1;
   overflow: hidden;
   transition: var(--transition-smooth);
@@ -3066,14 +3012,14 @@ img {
 
 .resume-section .bento-header h3 {
   color: #e2e8f0;
-  font-size: var(--small-font);
+  font-size: var(--header-font);
   font-weight: var(--font-medium);
   margin: 0;
 }
 
 /* Écrits stylisés avec tes variables pour être compacts */
 .resume-section .block-post-title {
-  font-size: 1.5rem;
+  font-size: var(--small-font);
   font-weight: var(--font-semi-bold);
   color: #94a3b8;
   margin: 0 0 4px 0;
@@ -3097,7 +3043,7 @@ img {
 }
 
 .resume-section .block-description-company {
-  font-size: var(--smaller-font);
+  font-size: var(--h5-font);
   color: #94a3b8;
   margin-bottom: 15px;
   line-height: 1.4;
@@ -3131,9 +3077,9 @@ img {
 
 /* Badges individuels (Version Sombre) */
 .resume-section .sub-item {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   /* Texte en blanc doux / bleu glacier */
-  color: #e2e8f0;
+  color: var(--text-color-2);
   /* Fond bleu-nuit fort au lieu du blanc */
   background: #110d42;
   padding: 4px 10px;
@@ -3146,8 +3092,8 @@ img {
 
 /* --- EFFET AU SURVOL DE LA CARTE BENTO --- */
 .resume-section .resume-block.bento-card:hover .sub-item {
-  /* Le texte s'illumine au survol */
-  color: #ffffff;
+  /* Texte en blanc doux / bleu glacier */
+  color: var(--text-color-2);
   /* La bordure des badges devient bleue pour s'accorder au reste */
   border-color: #0066ff;
   /* Le fond reste sombre (pas de blanc) */
@@ -3288,94 +3234,10 @@ img {
   width: 100%;
 }
 
-/* ==========================================================================
-   SECTION SERVICES
-   ========================================================================== */
-
-#services .services-card {
-  position: relative;
-  width: 100%;
-  padding-right: 20px; /* Plus d'espace vide (gap) entre les blocs */
-  padding-left: 20px;
-  box-sizing: border-box;
-  flex: 0 0 100%;
-  max-width: 100%; 
-}
-
-/* --- LES BOÎTES DE SERVICES (Version Sombre Dégradée) --- */
-#services .box {
-  padding: 40px 30px 35px; /* Un peu moins de padding vertical pour réduire la taille globale */
-  position: relative;
-  overflow: hidden;
-  border-radius: 1.2rem;   /* Arrondi légèrement plus discret */
-  margin-bottom: 40px;     /* Suppression des marges horizontales inutiles */
-  
-  /* Fond dégradé au repos (couleur du formulaire) */
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
-  
-  /* Bordure initiale discrète (bleu-gris fondu) */
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-#services .box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg,
-      var(--accent-purple),
-      var(--accent-blue),
-      var(--accent-green));
-  transform: scaleX(0);
-  transition: transform 0.4s ease;
-}
-
-#services .box:hover::before {
-  transform: scaleX(1);
-}
-
-/* --- LE SURVOL DES SERVICES --- */
-#services .box:hover {
-  transform: translateY(-5px);
-  
-  /* Le fond prend la couleur exacte de la section */
-  background: var(--section-bg);
-  
-  /* La bordure devient bleue */
-  border-color: #0066ff;
-  
-  /* Halo bleu très léger autour pour le contraste */
-  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Positionnement de l'icône ancrée à gauche */
-#services .icon {
-  position: absolute;
-  left: -10px;
-  top: calc(50% - 32px);
-}
-
-/* Style de base de l'icône */
-#services .icon i {
-  font-size: 64px;
-  line-height: 1;
-  transition: color 0.4s ease, transform 0.5s ease;
-}
-
-/* SURVOL DYNAMIQUE : L'icône prend la couleur de la bordure et l'écrase */
-#services .box:hover .icon i {
-  color: #0066ff !important; /* Devient bleu et écrase la couleur du HTML */
-}
-
 
 /* ==========================================================================
-   SECTION CERTIFICATS / LIGNE TEMPORELLE
-   ========================================================================== */
+SECTION CERTIFICATS / LIGNE TEMPORELLE
+========================================================================== */
 
 .certlang-global-section .certlang-track-node {
   position: relative;
@@ -3402,16 +3264,10 @@ img {
 /* --- LE BLOC EN DÉGRADÉ SOMBRE SÉCURISÉ --- */
 .certlang-global-section .certlang-inner-block-white {
   position: relative;
-  
-  /* Fond dégradé au repos (couleur formulaire) */
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
-  
+  background: rgba(255, 255, 255, 0.02);
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  
-  /* Bordure initiale discrète (bleu-gris fondu) */
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  
+  border: 1px solid rgba(0, 210, 255, 0.1);
   z-index: 1;
   overflow: hidden; /* Empêche physiquement le débordement de tout élément */
   width: 100%;
@@ -3483,13 +3339,13 @@ img {
 
 .certlang-global-section .certlang-block-top h3 {
   color: #e2e8f0;
-  font-size: 1.7rem;
+  font-size: var(--small-font);
   font-weight: var(--font-medium);
   margin: 0;
 }
 
 .certlang-global-section .certlang-item-subtitle {
-  font-size: 1.5rem;
+  font-size: var(--smaller-font);
   font-weight: var(--font-semi-bold);
   color: #94a3b8;
   margin: 0 0 4px 0;
@@ -3655,7 +3511,7 @@ img {
   }
 }
 /*==========================================================================
-16. EXPERIENCE SECTION
+16. 17. SECTION CERTIFICATIONS & LANGUES (STYLE DASHBOARD ASYMÉTRIQUE) FIN
 ==========================================================================*/
 
 
@@ -3689,7 +3545,7 @@ img {
 .Codeur .section-header .section-title {
   font-size: 2.2rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--white-color);
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -3705,12 +3561,12 @@ img {
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background: #0066ff;
+  background: var(--color);
   border-radius: 2px;
 }
 
 .Codeur .section-header .section-subtitle {
-  color: #1a6ee4; 
+  color: var(--p-color-1); 
   text-align: center;
   margin: 20px auto 0; 
   font-size: 13px; 
@@ -3742,12 +3598,11 @@ img {
 .cyber-card {
   position: relative;
   padding: 40px 30px;
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%); 
+  background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 16px;
-  /* État initial sans bordure visible pour garder l'alignement fluide */
-  border: 2px solid transparent; 
+  border: 1px solid rgba(0, 210, 255, 0.1);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
   opacity: 0;
   transform: translateY(30px);
@@ -3829,33 +3684,33 @@ img {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: #e2e8f0;
+  color: var(--text-color-1);
   margin: 0;
 }
 
 /* CORRIGÉ : Texte agrandi de manière significative pour le confort ordinateur */
 .cyber-text {
   font-size: 1.15rem; /* Augmenté pour un rendu parfait sur écran */
-  color: #94a3b8;
+  color: var(--text-color-2);
   line-height: 1.8;
   text-align: justify;
   margin: 0;
 }
 
 .highlight-text { 
-  color: #b0c5f6; 
+  color: var(--p-color-2); 
   font-weight: 700; 
 }
 
 .highlight-tech { 
-  color: #b0c5f6; 
+  color: var(--p-color-2); 
   font-weight: 700; 
 }
 
 .highlight-marker {
   background: linear-gradient(180deg, transparent 65%, rgba(0, 180, 216, 0.12) 65%);
   font-weight: 700;
-   color: #b0c5f6;
+   color: var(--p-color-2);
 }
 
 .highlight-block::after {
@@ -4375,105 +4230,6 @@ img {
 /*==========================================================================
 18. SECTION PORTFOLIO FIN
 ========================================================================== */
-
-
-
-
-
-/*=============================
-19. Écran de démarrage Netflix Style
-===============================*/
-/* ==================== SPLASH SCREEN AUTOMATIQUE ==================== */
-.splash-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: #060608;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  /* 🛠️ Ajout d'une perspective sur le conteneur parent pour stabiliser le zoom 3D des enfants */
-  perspective: 1200px; 
-  animation: vanishOut 0.5s ease forwards 2.2s;
-}
-
-@keyframes vanishOut {
-  from {
-    opacity: 1;
-    visibility: visible;
-  }
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-.splash-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.1rem;
-  font-family: 'Montserrat', 'Impact', 'Arial Black', sans-serif;
-  font-weight: 900;
-  font-size: 9rem;
-  letter-spacing: -6px;
-  /* 🛠️ transform-style conserve la cohésion 3D spatiale des lettres enfants pendant le zoom */
-  transform-style: preserve-3d;
-  animation: netflixZoom3D 2.2s cubic-bezier(0.7, 0, 0.3, 1) forwards;
-}
-
-.splash-logo .letter {
-  background: linear-gradient(180deg, #00f2fe 0%, #4facfe 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-  will-change: transform, opacity; /* Optimisation GPU matérielle pour mobile */
-}
-
-/* 🛠️ Lettre G : Remplacement des pixels fixes par du pourcentage (-50%) pour respecter la Flexbox */
-.splash-logo .letter:nth-child(1) {
-  transform-origin: center center;
-  animation: letterGIntro 1.5s cubic-bezier(0.6, 0, 0.2, 1) forwards;
-}
-
-@keyframes letterGIntro {
-  0% { transform: translateX(-50%) scaleY(0.1) scaleX(0.5); opacity: 0; filter: blur(15px); }
-  40% { opacity: 1; filter: blur(0px); transform: translateX(-20px) scaleY(1.4) scaleX(1); }
-  70%, 100% { transform: translateX(0) scaleY(1) scaleX(1); }
-}
-
-/* 🛠️ Lettre C : Remplacement des pixels fixes par du pourcentage (50%) */
-.splash-logo .letter:nth-child(2) {
-  transform-origin: center center;
-  animation: letterCIntro 1.5s cubic-bezier(0.6, 0, 0.2, 1) forwards;
-}
-
-@keyframes letterCIntro {
-  0% { transform: translateX(50%) scaleY(0.1) scaleX(0.5); opacity: 0; filter: blur(15px); }
-  45% { opacity: 1; filter: blur(0px); transform: translateX(20px) scaleY(1.4) scaleX(1); }
-  75%, 100% { transform: translateX(0) scaleY(1) scaleX(1); }
-}
-
-@keyframes netflixZoom3D {
-  0%, 65% { transform: translateZ(0) scale(1); filter: blur(0px); opacity: 1; }
-  85% { transform: translateZ(300px) scale(1.4); filter: blur(2px); opacity: 0.8; }
-  100% { transform: translateZ(800px) scale(2.5); filter: blur(12px); opacity: 0; }
-}
-
-/* 🛠️ Responsive précis pour Mobile et Tablettes */
-@media screen and (max-width: 768px) {
-  .splash-logo { 
-    font-size: 5rem; /* Ajustement pour éviter que le texte ne déborde sur les petits téléphones */
-    letter-spacing: -3px; 
-  }
-}
-/*=============================
-19. Écran de démarrage Netflix Style Fin
-===============================*/
 
 
 
@@ -5184,248 +4940,205 @@ img {
 
 
 
+
 /* ======================================================== 
-21. SECTION CONTACT    
+22. SECTION section realisations
 ======================================================== */
-.premium-contact-section {
-  --contact-bg-dark: #060608;
-  --contact-card-bg: #0d0d12;
-  --contact-neon-blue: #00e5ff;
-  --contact-neon-white: #ffffff;
-  --contact-neon-glow: rgba(0, 229, 255, 0.3);
-  --contact-error-red: #ff3333;
-  
-  background-color: var(--contact-bg-dark);
-  padding: 80px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-.premium-contact-section * {
-  box-sizing: border-box;
-}
-
-.contact-container {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 50px;
-  width: 100%;
-  max-width: 1150px;
-  background: var(--contact-card-bg);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  border-radius: 24px;
-  padding: 40px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+/* Section Principale */
+.section-realisations {
   position: relative;
+  padding: 80px 0;
+  background: linear-gradient(to bottom, #02040a 0%, #060d1a 50%, #010206 100%);
   overflow: hidden;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #ffffff;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* TABLETTE (Écrans moyens) */
-@media (max-width: 992px) {
-  .contact-container {
-    grid-template-columns: 1fr;
-    max-width: 650px;
-    padding: 30px;
-  }
-  .contact-right {
-    order: -1;
-    min-height: 350px !important;
+/* Conteneur principal (Respect strict des bordures intérieures et extérieures) */
+.conteneur-flou {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  width: 90%; /* Laisse une marge de sécurité globale à l'extérieur sur tablette/mobile */
+  margin: 0 auto;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 60px 40px;
+  border-radius: 30px;
+  background: rgba(2, 4, 10, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-sizing: border-box; /* Empêche le padding de faire grossir le bloc au-delà des 100% */
+}
+
+/* En-tête appliqué à la section Réalisations */
+.section-realisations .section-header {
+  text-align: center;
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.section-realisations .section-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff; 
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  background: none;
+  -webkit-text-fill-color: currentcolor;
+}
+
+/* Petite barre sous le titre */
+.section-realisations .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #0066ff;
+  border-radius: 2px;
+}
+
+/* Grille flexible */
+.grille-statistiques {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Cartes effet "Glassmorphism" premium */
+.carte-stat {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 210, 255, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 45px 20px;
+  border-radius: 24px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Animation au survol pour ordinateur seulement */
+@media (hover: hover) {
+  .carte-stat:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 210, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 15px 25px 40px rgba(0, 0, 0, 0.7), 
+                8px 12px 30px rgba(0, 210, 255, 0.2);
   }
 }
 
-/* SMARTPHONE (Écrans portables) */
-@media (max-width: 576px) {
-  .contact-container {
-    padding: 20px;
+/* Bordure lumineuse au chargement via JavaScript */
+.carte-stat.active-glow {
+  border-color: rgba(0, 210, 255, 0.3);
+  box-shadow: 8px 12px 25px rgba(0, 102, 204, 0.15);
+}
+
+/* Chiffres (Format Ordinateur de base) */
+.nombre {
+  font-size: 3.8rem;
+  font-weight: 800;
+  color: #00d2ff;
+  text-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
+  margin-bottom: 12px;
+}
+
+/* Textes Labels (Format Ordinateur de base) */
+.label {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ======================================================== 
+   ADAPTATION ET DIMINUTION DU TEXTE SUR TABLETTE (Sous 992px)
+   ======================================================== */
+@media screen and (max-width: 992px) {
+  .section-realisations {
+    padding: 60px 0;
+  }
+  .conteneur-flou {
+    padding: 45px 30px; /* Réduction des espaces intérieurs */
+    border-radius: 20px;
+    width: 92%; /* Ajustement de la largeur extérieure */
+  }
+  .section-realisations .section-title {
+    font-size: 2rem; /* Le titre diminue pour la tablette */
+  }
+  .nombre {
+    font-size: 3rem; /* Les chiffres diminuent pour la tablette */
+  }
+  .label {
+    font-size: 0.85rem; /* Le texte descriptif diminue pour la tablette */
+  }
+  .grille-statistiques {
+    gap: 20px;
+  }
+}
+
+/* ======================================================== 
+   ADAPTATION ET DIMINUTION DU TEXTE SUR PORTABLE (Sous 600px)
+   ======================================================== */
+@media screen and (max-width: 600px) {
+  .section-realisations {
+    padding: 40px 0;
+  }
+  .conteneur-flou {
+    padding: 30px 15px; /* Réduction drastique des marges internes pour portable */
+    border-radius: 16px;
+    width: 95%; /* Le bloc prend 95% de l'écran pour rester à l'intérieur sans déborder */
+  }
+  .section-realisations .section-title {
+    font-size: 1.6rem; /* Le titre diminue encore pour le format portable */
+    letter-spacing: 1.5px;
+  }
+  /* Grille réorganisée en 2 colonnes ultra-propres */
+  .grille-statistiques {
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px;
+  }
+  .carte-stat {
+    padding: 20px 8px; /* Cartes plus petites pour le portable */
+    border-radius: 14px;
+  }
+  .nombre {
+    font-size: 2.2rem; /* Les grands nombres diminuent fortement pour rester sur une ligne */
+    margin-bottom: 6px;
+  }
+  .label {
+    font-size: 0.75rem; /* Le texte diminue pour éviter tout débordement de mot */
+    letter-spacing: 0.5px;
+  }
+}
+
+/* Ajustements additionnels pour écrans de portables miniatures (Sous 380px) */
+@media screen and (max-width: 380px) {
+  .grille-statistiques {
+    grid-template-columns: 1fr; /* Passage sur une colonne si le portable est minuscule */
     gap: 15px;
   }
-  #globe-container {
-    display: none !important; /* Performance et fluidité sur mobile */
+  .nombre {
+    font-size: 2.4rem;
   }
-  .contact-right {
-    min-height: auto !important;
-    margin-bottom: 15px;
-    justify-content: flex-start !important;
+  .label {
+    font-size: 0.8rem;
   }
-  .location-badge {
-    position: static !important;
-    display: inline-block;
-  }
-}
-
-/* FORMULAIRE (GAUCHE) */
-.contact-left {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.form-header h2 {
-  color: var(--contact-neon-white);
-  font-size: 2.2rem;
-  margin: 0 0 8px 0;
-  font-weight: 700;
-}
-
-.form-header p {
-  color: #6a6a70;
-  margin: 0 0 40px 0;
-  font-size: 0.95rem;
-}
-
-.input-box {
-  position: relative;
-  margin-bottom: 35px;
-}
-
-.input-box input, .input-box select, .input-box textarea {
-  width: 100%;
-  padding: 10px 0;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--contact-neon-white);
-  font-size: 16px;
-  transition: all 0.3s;
-}
-
-.input-box select option {
-  background: #121216;
-  color: var(--contact-neon-white);
-}
-
-.input-box label {
-  position: absolute;
-  left: 0;
-  top: 10px;
-  color: #4a4a50;
-  pointer-events: none;
-  transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.input-box label i {
-  margin-right: 8px;
-}
-
-/* Labels Flottants Dynamiques */
-.input-box input:focus ~ label,
-.input-box input:valid ~ label,
-.input-box textarea:focus ~ label,
-.input-box textarea:valid ~ label,
-.input-box select:focus ~ label,
-.input-box select:not(:placeholder-shown) ~ label {
-  top: -16px;
-  font-size: 12px;
-  color: var(--contact-neon-blue);
-}
-
-.input-box .line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  transition: all 0.3s;
-}
-
-.input-box input:focus ~ .line,
-.input-box textarea:focus ~ .line,
-.input-box select:focus ~ .line {
-  height: 2px;
-  background: var(--contact-neon-blue);
-  box-shadow: 0 0 10px var(--contact-neon-blue);
-}
-
-.premium-submit-btn {
-  background: transparent;
-  border: 2px solid var(--contact-neon-blue);
-  color: var(--contact-neon-blue);
-  padding: 15px 32px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 50px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  transition: all 0.4s ease;
-}
-
-.premium-submit-btn:hover {
-  background: var(--contact-neon-blue);
-  color: var(--contact-bg-dark);
-  box-shadow: 0 0 25px var(--contact-neon-glow);
-  transform: translateY(-2px);
-}
-
-/* GLOBE GRAPHICS (DROITE) */
-.contact-right {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 480px;
-}
-
-#globe-container {
-  width: 100%;
-  height: 100%;
-  min-height: 480px;
-}
-
-.location-badge {
-  position: absolute;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 10px 22px;
-  border-radius: 30px;
-  color: var(--contact-neon-white);
-  font-size: 14px;
-}
-
-.location-badge span {
-  color: var(--contact-neon-blue);
-  font-weight: 700;
-}
-
-/* Réactions Ajax Status Messages */
-#form-response { 
-  padding: 12px; 
-  margin-bottom: 25px; 
-  border-radius: 8px; 
-  display: none; 
-  font-weight: 500; 
-  font-size: 15px; 
-}
-
-#form-response.success {
-  display: block; 
-  background: rgba(0, 230, 118, 0.08); 
-  color: #00e676; 
-  border: 1px solid #00e676; 
-}
-
-#form-response.error { 
-  display: block; 
-  background: rgba(255, 51, 51, 0.08); 
-  color: var(--contact-error-red); 
-  border: 1px solid var(--contact-error-red); 
-}
-
-#form-response.info { 
-  display: block; 
-  background: rgba(0, 229, 255, 0.08); 
-  color: var(--contact-neon-blue); 
-  border: 1px solid var(--contact-neon-blue); 
 }
 /* ======================================================== 
-21. SECTION CONTACT FIN    
+22. SECTION section realisations FIN    
 ======================================================== */

@@ -77,7 +77,7 @@ const ASSETS_TO_CACHE = [
   './BDD/portfolio_messages.sql',
 
   /* Fichiers et documents téléchargeables (Espaces et accents totalement encodés) */
-  './documents/curriculum%20vitae%20d%C3%A9taill%C3%A9%20OLEKO%20DIOMBA%20Glodi-placide.pdf'
+  './documents/cv.pdf'
 ];
 
 /* 1. Événement d'installation : Mise en cache immédiate */

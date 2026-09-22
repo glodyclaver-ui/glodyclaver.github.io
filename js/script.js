@@ -1,19 +1,23 @@
 /*
-  TEMPLATED
-  @glody claver
-  3.0 license (glody_claver/license)
+  JavaScript Global Modifié & Optimisé - PARTIE 1 (STABILISATION TOTALE MULTI-ÉCRANS)
+  Author Name: OLEKO DIOMBA Glodi-placide glody-claver
 */
 
-// ==================== VARIABLES GLOBALES PARTAGÉES (SÉCURITÉ & PERFORMANCE) ====================
+// ==================== VARIABLES GLOBALES PARTAGÉES ====================
 const globalBody = document.querySelector('body');
 const globalHeader = document.querySelector("header");
 const globalScrollUpBtn = document.querySelector('.scrollUp-btn');
 const globalNavMenu = globalBody ? globalBody.querySelector('.menu-content') : null;
-const globalSplashScreen = document.getElementById('splash-screen'); // Optimisation : mis en cache ici
+const globalSplashScreen = document.getElementById('splash-screen'); 
 
-// Cache et liaison des sections (évite les querySelector répétés dans le scroll)
 const portfolioSections = document.querySelectorAll('section[id]');
 const cachedNavLinks = [];
+
+// CORRECTIF CRITIQUE : Force immédiatement le haut de page dès l'initialisation du script
+if (history.scrollRestoration) {
+  history.scrollRestoration = 'manual'; // Empêche le navigateur de restaurer l'ancienne position au refresh
+}
+window.scrollTo(0, 0);
 
 if (portfolioSections.length > 0) {
   portfolioSections.forEach(section => {
@@ -21,27 +25,52 @@ if (portfolioSections.length > 0) {
     if (navLink) {
       cachedNavLinks.push({ section, navLink });
       
-      // Liaison permanente unique du clic (optimisé hors scroll)
       navLink.addEventListener("click", () => {
         if (globalNavMenu) globalNavMenu.classList.remove("open");
-        if (globalBody) globalBody.style.overflowY = ""; 
+        if (globalBody) globalBody.classList.remove('hide-scrollbar'); 
       });
     }
   });
 }
 
-// ==================== 1. ANIMATION D'OUVERTURE SPLASH SCREEN (STYLE NETFLIX) ====================
+// ==================== 1. ANIMATION D'OUVERTURE SPLASH SCREEN (STABLE PC & MOBILE) ====================
 function handleSplashScreen() {
   if (globalSplashScreen && globalBody) {
+    // Verrouillage de la scrollbar et du défilement au démarrage
     globalBody.classList.add('hide-scrollbar');
+    document.documentElement.style.overflow = 'hidden';
     
+    // Double sécurité de positionnement pendant que l'animation tourne
+    window.scrollTo(0, 0);
+
+    // Écoute de la fin de l'animation de disparition CSS
+    globalSplashScreen.addEventListener('animationend', (e) => {
+      if (e.animationName === 'vanishOut') {
+        globalSplashScreen.style.display = 'none';
+        
+        // Libération propre de la scrollbar et du défilement
+        globalBody.classList.remove('hide-scrollbar');
+        document.documentElement.style.overflow = '';
+        
+        // Verrouillage anti-débordement horizontal strict pour éliminer la ligne blanche
+        document.documentElement.style.overflowX = 'hidden';
+        globalBody.style.overflowX = 'hidden';
+        
+        // Remise à zéro finale du scroll pour un départ propre
+        window.scrollTo(0, 0);
+      }
+    });
+
+    // Time-out de secours (sécurité navigateurs)
     setTimeout(() => {
-      globalSplashScreen.classList.add('fade-out');
-      globalBody.classList.remove('hide-scrollbar');
-      
-      // Supprime l'affichage après transition CSS (500ms) pour libérer les clics arrière-plan
-      setTimeout(() => { globalSplashScreen.style.display = 'none'; }, 500);
-    }, 2100); 
+      if (globalSplashScreen.style.display !== 'none') {
+        globalSplashScreen.style.display = 'none';
+        globalBody.classList.remove('hide-scrollbar');
+        document.documentElement.style.overflow = '';
+        document.documentElement.style.overflowX = 'hidden';
+        globalBody.style.overflowX = 'hidden';
+      }
+    }, 2800); 
   }
 }
 
@@ -84,10 +113,9 @@ function typeEffect() {
   setTimeout(typeEffect, typeSpeed);
 }
 
-// ==================== 3. ANIMATION AU DEFILEMENT DES PROJETS (INTERSECTION OBSERVER) ====================
+// ==================== 3. ANIMATION AU DEFILEMENT DES PROJETS ====================
 function initPortfolioScrollAnimation() {
   const portfolioItems = document.querySelectorAll('#portfolio .portfolio-item');
-  
   if (portfolioItems.length === 0) return;
 
   portfolioItems.forEach(item => {
@@ -108,7 +136,6 @@ function initPortfolioScrollAnimation() {
 
     visibleEntries.forEach(entry => {
       const item = entry.target;
-      
       setTimeout(() => {
         item.style.opacity = '1';
         item.style.transform = 'translateY(0)';
@@ -129,16 +156,17 @@ const navCloseBtn = globalNavMenu ? globalNavMenu.querySelector('.navClose-btn')
 if (globalNavMenu && navOpenBtn) {
   navOpenBtn.addEventListener("click", () => {
     globalNavMenu.classList.add("open");
-    if (globalBody) globalBody.style.overflowY = "hidden";
+    if (globalBody) globalBody.classList.add('hide-scrollbar');
   });
 }
 
 if (globalNavMenu && navCloseBtn) {
   navCloseBtn.addEventListener("click", () => {
     globalNavMenu.classList.remove("open");
-    if (globalBody) globalBody.style.overflowY = ""; 
+    if (globalBody) globalBody.classList.remove('hide-scrollbar');
   });
 }
+
 // ==================== 5. ÉVÉNEMENT AU DÉFILEMENT PERFORMANCE-BOOSTED ====================
 window.addEventListener("scroll", () => {
   const scrollY = window.pageYOffset || window.scrollY;
@@ -162,15 +190,13 @@ window.addEventListener("scroll", () => {
     }
   });
 });
-
-
-// ==================== 6. GESTION DU PORTFOLIO, FILTRES ET LIGHTBOX ====================
+// ==================== 6. GESTION DES FILTRES ET VISIONNEUSE (LIGHTBOX) ====================
 document.addEventListener('DOMContentLoaded', () => {
     handleSplashScreen();
     typeEffect(); 
     initPortfolioScrollAnimation(); 
 
-    // ---- 1. GESTION DES CHANGEMENTS DE FILTRES DYNAMIQUES ----
+    // ---- FILTRES PORTFOLIO ----
     const filterTabs = document.querySelectorAll('#portfolio-flters li');
     const portfolioCards = document.querySelectorAll('.portfolio-item'); 
 
@@ -184,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 portfolioCards.forEach(card => {
                     card.style.animation = 'none';
-                    card.offsetHeight; // Force le reflow
+                    card.offsetHeight; 
 
                     const cleanClass = classTarget.startsWith('.') ? classTarget.substring(1) : classTarget;
 
@@ -199,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ---- 2. GESTION DE LA VISIONNEUSE DU PORTFOLIO ----
+    // ---- VISIONNEUSE / LIGHTBOX PORTFOLIO ----
     const lightboxModal = document.getElementById('portfolio-lightbox');
     const lightboxImageNode = document.getElementById('lightbox-target-img');
     const lightboxTitleNode = document.getElementById('lightbox-target-title');
@@ -210,14 +236,12 @@ document.addEventListener('DOMContentLoaded', () => {
         previewTriggers.forEach(trigger => {
             trigger.addEventListener('click', (event) => {
                 event.preventDefault(); 
-                
                 const imageSource = trigger.getAttribute('href');
                 const wrapperCard = trigger.closest('.portfolio-wrap');
                 
                 if (wrapperCard) {
                     const mainTitleEl = wrapperCard.querySelector('.portfolio-info h4 a');
                     const subTitleEl = wrapperCard.querySelector('.portfolio-info p');
-                    
                     const mainTitleText = mainTitleEl ? mainTitleEl.textContent : '';
                     const subTitleText = subTitleEl ? subTitleEl.textContent : '';
 
@@ -228,21 +252,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 lightboxImageNode.src = imageSource;
                 lightboxModal.classList.add('lightbox-active');
-                if (globalBody) globalBody.style.overflow = 'hidden'; 
+                if (globalBody) {
+                    globalBody.classList.add('hide-scrollbar');
+                    document.documentElement.style.overflowX = 'hidden';
+                }
             });
         });
 
         if (lightboxCloseButton) {
             lightboxCloseButton.addEventListener('click', () => closeLightboxView(lightboxModal));
         }
-        
         lightboxModal.addEventListener('click', (e) => {
             if (e.target === lightboxModal) closeLightboxView(lightboxModal);
         });
     }
 });
 
-// ==================== GESTION DE LA GALERIE DE TRAVAIL UNIQUE ====================
+// ==================== GALERIE DE TRAVAIL UNIQUE ====================
 const uniqueLightboxModal = document.getElementById('galerie-travail-modal-unique');
 const uniqueLightboxImg = document.getElementById('galerie-travail-img-unique');
 
@@ -250,59 +276,61 @@ function ouvrirAperçuGalerie(cheminImage) {
   if (uniqueLightboxModal && uniqueLightboxImg) {
     uniqueLightboxImg.src = cheminImage;
     uniqueLightboxModal.classList.add('galerie-travail-active');
-    if (globalBody) globalBody.style.overflow = 'hidden';
+    if (globalBody) {
+      globalBody.classList.add('hide-scrollbar');
+      document.documentElement.style.overflowX = 'hidden';
+    }
   }
 }
 
 function fermerGalerieEtRetourFormulaire(redirigerFormulaire = true) {
   if (uniqueLightboxModal) {
     uniqueLightboxModal.classList.remove('galerie-travail-active');
-    if (globalBody) globalBody.style.overflow = '';
+    if (globalBody) {
+      globalBody.classList.remove('hide-scrollbar');
+      globalBody.style.overflowX = 'hidden';
+    }
   }
-  
   if (redirigerFormulaire) {
     const formulaire = document.getElementById('mon-formulaire'); 
-    if (formulaire) {
-      formulaire.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (formulaire) formulaire.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
 if (uniqueLightboxModal) {
   uniqueLightboxModal.addEventListener('click', function(event) {
-    if (event.target === uniqueLightboxModal) {
-      fermerGalerieEtRetourFormulaire(false);
-    }
+    if (event.target === uniqueLightboxModal) fermerGalerieEtRetourFormulaire(false);
   });
 }
-
-// Accessibilité Globale : Touche Échap pour fermer les modales ouvertes
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const portfolioModal = document.getElementById('portfolio-lightbox');
-        if (portfolioModal && portfolioModal.classList.contains('lightbox-active')) {
-            closeLightboxView(portfolioModal);
-        }
-        if (uniqueLightboxModal && uniqueLightboxModal.classList.contains('galerie-travail-active')) {
-            fermerGalerieEtRetourFormulaire(false);
-        }
-    }
-});
 
 function closeLightboxView(modalElement) {
     if (modalElement) {
         modalElement.classList.remove('lightbox-active');
-        if (globalBody) globalBody.style.overflow = ''; 
+        if (globalBody) {
+            globalBody.classList.remove('hide-scrollbar');
+            globalBody.style.overflowX = 'hidden';
+            document.documentElement.style.overflowX = 'hidden';
+        }
     }
 }
 
+// Accessibilité Touche Échap
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const portfolioModal = document.getElementById('portfolio-lightbox');
+        if (portfolioModal && portfolioModal.classList.contains('lightbox-active')) closeLightboxView(portfolioModal);
+        if (uniqueLightboxModal && uniqueLightboxModal.classList.contains('galerie-travail-active')) fermerGalerieEtRetourFormulaire(false);
+    }
+});
+
 /* ======================================================== */
-/* PERSPECTIVE CINÉTIQUE DES LOGOS (PC SEULEMENT)           */
+/* PERSPECTIVE CINÉTIQUE DES LOGOS (PC SEULEMENT SÉCURISÉ)  */
 /* ======================================================== */
 const pisteLogosCinétique = document.getElementById('pisteLogosTravailUnique');
 const zoneDecorsCinétique = document.querySelector('.partenaires-decor-3d');
+const isMobileDevice = window.matchMedia("(max-width: 768px)").matches || ('ontouchstart' in window);
 
-if (zoneDecorsCinétique && pisteLogosCinétique && window.innerWidth > 576) {
+if (zoneDecorsCinétique && pisteLogosCinétique && !isMobileDevice) {
   pisteLogosCinétique.style.transition = 'transform 0.15s ease-out';
 
   zoneDecorsCinétique.addEventListener('mousemove', (e) => {
@@ -318,18 +346,73 @@ if (zoneDecorsCinétique && pisteLogosCinétique && window.innerWidth > 576) {
   });
 }
 
-// ==================== 7. ANIMATIONS SCROLLREVEAL SÉCURISÉES ====================
+// ==================== 7. ANIMATIONS SCROLLREVEAL ====================
 if (typeof ScrollReveal !== 'undefined') {
+  const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
+
   const sr = ScrollReveal({
-    origin: 'top', distance: '60px', duration: 2500, delay: 400, 
-    easing: 'ease-out', reset: true, interval: 150, viewFactor: 0.2, mobile: true 
+    origin: 'top', 
+    distance: isSmallScreen ? '20px' : '60px', 
+    duration: 2500, 
+    delay: 300, 
+    easing: 'ease-out', 
+    reset: !isSmallScreen, 
+    interval: 150, 
+    viewFactor: 0.1, 
+    mobile: true 
   });
 
   sr.reveal(`.section-subtitle, .brand-image, .tesitmonial, .newsletter, .Codeur .section-title, .resume-section .section-title,
-  .newsletter-inputBox, .box, .newsletter-mediaIcon, .menu-items, .menu-contentt, .certlang-section-header, .pf-details .section-title,
+  .newsletter-inputBox, .box, .newsletter-mediaIcon, .menu-items, .menu-contentt, .certlang-section-header, .pf-details .section-title, .section-realisations .section-header,
   .responsive-column, .about-content, .skill-section-header, .skills-column, .services-section-header, .portfolio-filters-wrapper, .Feautes .section-title, .clearfix .section-header`, { interval: 100 });
 
   sr.reveal(`.about-imageContent, .card-blog, .pf-details .fadeInLeft, .Feautes .fadeInLeft, .interets-activites-section .section-header`, { origin: 'left' });
   sr.reveal(`.about-details, .time-table, .single-widget, .pf-details .fadeInRight, .Feautes .fadeInRight, .certlang-track-node, .certlang-inner-block-white , .timeline-item, .interets-activites-section .interets-grid`, { origin: 'right' });
-  sr.reveal(`.CodeurV, .clients-wrap, .error-inner, .pf-details .zoomIn, .Feautes .zoomIn, .certlang-column-headline, .column-title`, { scale: 0.85, opacity: 0 });
+  sr.reveal(`.CodeurV, .clients-wrap, .error-inner, .pf-details .zoomIn, .Feautes .zoomIn, .certlang-column-headline, .column-title, .section-realisations .grille-statistiques`, { scale: 0.85, opacity: 0 });
 }
+
+// ==================== 8. COMPTEURS DE STATISTIQUES ANIMÉS ====================
+document.addEventListener("DOMContentLoaded", () => {
+  const compteurs = document.querySelectorAll('.compteur');
+  const DURATION = 2000; 
+
+  const animerCompteur = (entrees, observateur) => {
+    entrees.forEach(entree => {
+      if (entree.isIntersecting) {
+        const cible = entree.target;
+        const carte = cible.closest('.carte-stat');
+        const valeurFinale = parseInt(cible.getAttribute('data-target'), 10);
+        
+        if(carte) carte.classList.add('active-glow');
+
+        let tempsDebut = null;
+
+        const etape = (tempsActuel) => {
+          if (!tempsDebut) tempsDebut = tempsActuel;
+          const progression = tempsActuel - tempsDebut;
+          
+          const valeurActuelle = Math.min(
+            Math.ceil((progression / DURATION) * valeurFinale), 
+            valeurFinale
+          );
+          
+          cible.innerText = valeurActuelle;
+
+          if (progression < DURATION) {
+            requestAnimationFrame(etape); 
+          } else {
+            cible.innerText = valeurFinale; 
+          }
+        };
+
+        requestAnimationFrame(etape);
+        observateur.unobserve(cible); 
+      }
+    });
+  };
+
+  const options = { threshold: 0.3 };
+  const observateur = new IntersectionObserver(animerCompteur, options);
+  
+  compteurs.forEach(compteur => observateur.observe(compteur));
+});
