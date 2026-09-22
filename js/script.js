@@ -1,6 +1,7 @@
 /*
   JavaScript Global Modifié & Optimisé
   Author Name: OLEKO DIOMBA Glodi-placide glody-claver
+  3.0 license (glody_claver/license)
 */
 
 // ==================== VARIABLES GLOBALES PARTAGÉES ====================
@@ -33,35 +34,24 @@ if (portfolioSections.length > 0) {
   });
 }
 
-// ==================== 1. ANIMATION D'OUVERTURE SPLASH SCREEN (STABLE PC & MOBILE) ====================
+// ==================== 1. ANIMATION D'OUVERTURE SPLASH SCREEN ====================
 function handleSplashScreen() {
   if (globalSplashScreen && globalBody) {
-    // Verrouillage de la scrollbar et du défilement au démarrage
     globalBody.classList.add('hide-scrollbar');
     document.documentElement.style.overflow = 'hidden';
-    
-    // Double sécurité de positionnement pendant que l'animation tourne
     window.scrollTo(0, 0);
 
-    // Écoute de la fin de l'animation de disparition CSS
     globalSplashScreen.addEventListener('animationend', (e) => {
       if (e.animationName === 'vanishOut') {
         globalSplashScreen.style.display = 'none';
-        
-        // Libération propre de la scrollbar et du défilement
         globalBody.classList.remove('hide-scrollbar');
         document.documentElement.style.overflow = '';
-        
-        // Verrouillage anti-débordement horizontal strict pour éliminer la ligne blanche
         document.documentElement.style.overflowX = 'hidden';
         globalBody.style.overflowX = 'hidden';
-        
-        // Remise à zéro finale du scroll pour un départ propre
         window.scrollTo(0, 0);
       }
     });
 
-    // Time-out de secours (sécurité navigateurs)
     setTimeout(() => {
       if (globalSplashScreen.style.display !== 'none') {
         globalSplashScreen.style.display = 'none';
@@ -69,6 +59,7 @@ function handleSplashScreen() {
         document.documentElement.style.overflow = '';
         document.documentElement.style.overflowX = 'hidden';
         globalBody.style.overflowX = 'hidden';
+        window.scrollTo(0, 0);
       }
     }, 2800); 
   }
@@ -92,27 +83,27 @@ function typeEffect() {
   const currentWord = words[wordIndex];
   
   if (isDeleting) {
-    typedTextElement.textContent = currentWord.substring(0, charIndex - 1);
+    typedTextElement.textContent = currentWord.substring(0, charIndex);
     charIndex--;
   } else {
-    typedTextElement.textContent = currentWord.substring(0, charIndex + 1);
+    typedTextElement.textContent = currentWord.substring(0, charIndex);
     charIndex++;
   }
 
-  let typeSpeed = isDeleting ? 30 : 60;
+  let typeSpeed = isDeleting ? 35 : 70;
 
-  if (!isDeleting && charIndex === currentWord.length) {
+  if (!isDeleting && charIndex > currentWord.length) {
     typeSpeed = 2000; 
     isDeleting = true;
-  } else if (isDeleting && charIndex === 0) {
+  } else if (isDeleting && charIndex < 0) {
     isDeleting = false;
+    charIndex = 0;
     wordIndex = (wordIndex + 1) % words.length;
     typeSpeed = 500; 
   }
 
   setTimeout(typeEffect, typeSpeed);
 }
-
 // ==================== 3. ANIMATION AU DEFILEMENT DES PROJETS ====================
 function initPortfolioScrollAnimation() {
   const portfolioItems = document.querySelectorAll('#portfolio .portfolio-item');
@@ -167,7 +158,7 @@ if (globalNavMenu && navCloseBtn) {
   });
 }
 
-// ==================== 5. ÉVÉNEMENT AU DÉFILEMENT PERFORMANCE-BOOSTED ====================
+// ==================== 5. ÉVÉNEMENT AU DÉFILEMENT COMPORTEMENT GENERAL ====================
 window.addEventListener("scroll", () => {
   const scrollY = window.pageYOffset || window.scrollY;
 
@@ -190,11 +181,138 @@ window.addEventListener("scroll", () => {
     }
   });
 });
-// ==================== 6. GESTION DES FILTRES ET VISIONNEUSE (LIGHTBOX) ====================
+
+// ==================== 6. MODAL GESTIONNAIRES DE VISIONNEUSE (LIGHTBOX) ====================
+function closeLightboxView(modalNode) {
+  if (!modalNode) return;
+  modalNode.classList.remove('lightbox-active');
+  if (globalBody) {
+    globalBody.classList.remove('hide-scrollbar');
+    globalBody.style.overflowX = 'hidden';
+    document.documentElement.style.overflowX = 'hidden';
+  }
+}
+
+// ==================== GALERIE DE TRAVAIL UNIQUE ====================
+const uniqueLightboxModal = document.getElementById('galerie-travail-modal-unique');
+const uniqueLightboxImg = document.getElementById('galerie-travail-img-unique');
+
+function ouvrirAperçuGalerie(cheminImage) {
+  if (uniqueLightboxModal && uniqueLightboxImg) {
+    uniqueLightboxImg.src = cheminImage;
+    uniqueLightboxModal.classList.add('galerie-travail-active');
+    if (globalBody) {
+      globalBody.classList.add('hide-scrollbar');
+      document.documentElement.style.overflowX = 'hidden';
+    }
+  }
+}
+
+function fermerGalerieEtRetourFormulaire(redirigerFormulaire = true) {
+  if (uniqueLightboxModal) {
+    uniqueLightboxModal.classList.remove('galerie-travail-active');
+    if (globalBody) {
+      globalBody.classList.remove('hide-scrollbar');
+      globalBody.style.overflowX = 'hidden';
+    }
+  }
+  if (redirigerFormulaire) {
+    const formulaire = document.getElementById('mon-formulaire'); 
+    if (formulaire) formulaire.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+if (uniqueLightboxModal) {
+  uniqueLightboxModal.addEventListener('click', function(event) {
+    if (event.target === uniqueLightboxModal) fermerGalerieEtRetourFormulaire(false);
+  });
+}
+
+// Accessibilité Touche Échap Globale
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const portfolioModal = document.getElementById('portfolio-lightbox');
+        if (portfolioModal && portfolioModal.classList.contains('lightbox-active')) closeLightboxView(portfolioModal);
+        if (uniqueLightboxModal && uniqueLightboxModal.classList.contains('galerie-travail-active')) fermerGalerieEtRetourFormulaire(false);
+    }
+});
+
+/* ======================================================== */
+/* PERSPECTIVE CINÉTIQUE DES LOGOS (PC SEULEMENT SÉCURISÉ)  */
+/* ======================================================== */
+const pisteLogosCinétique = document.getElementById('pisteLogosTravailUnique');
+const zoneDecorsCinétique = document.querySelector('.partenaires-decor-3d');
+const isMobileDevice = window.matchMedia("(max-width: 768px)").matches || ('ontouchstart' in window);
+
+if (zoneDecorsCinétique && pisteLogosCinétique && !isMobileDevice) {
+  pisteLogosCinétique.style.transition = 'transform 0.15s ease-out';
+
+  zoneDecorsCinétique.addEventListener('mousemove', (e) => {
+    const width = zoneDecorsCinétique.clientWidth;
+    const mouseX = e.clientX - zoneDecorsCinétique.getBoundingClientRect().left;
+    const positionPourcent = (mouseX / width) - 0.5;
+    const angleRotationY = positionPourcent * 15; 
+    pisteLogosCinétique.style.transform = `rotateX(10deg) rotateY(${angleRotationY}deg)`;
+  });
+
+  zoneDecorsCinétique.addEventListener('mouseleave', () => {
+    pisteLogosCinétique.style.transform = `rotateX(10deg) rotateY(0deg)`;
+  });
+}
+// ==================== 7. COMPTEURS DE STATISTIQUES ANIMÉS ====================
+function initCounterStatistics() {
+  const compteurs = document.querySelectorAll('.compteur');
+  if (compteurs.length === 0) return;
+  const DURATION = 2000; 
+
+  const animerCompteur = (entrees, observateur) => {
+    entrees.forEach(entree => {
+      if (entree.isIntersecting) {
+        const cible = entree.target;
+        const carte = cible.closest('.carte-stat');
+        const valeurFinale = parseInt(cible.getAttribute('data-target'), 10);
+        
+        if(carte) carte.classList.add('active-glow');
+
+        let tempsDebut = null;
+
+        const etape = (tempsActuel) => {
+          if (!tempsDebut) tempsDebut = tempsActuel;
+          const progression = tempsActuel - tempsDebut;
+          
+          const valeurActuelle = Math.min(
+            Math.ceil((progression / DURATION) * valeurFinale), 
+            valeurFinale
+          );
+          
+          cible.innerText = valeurActuelle;
+
+          if (progression < DURATION) {
+            requestAnimationFrame(etape); 
+          } else {
+            cible.innerText = valeurFinale; 
+          }
+        };
+
+        requestAnimationFrame(etape);
+        observateur.unobserve(cible); 
+      }
+    });
+  };
+
+  const options = { threshold: 0.3 };
+  const observateur = new IntersectionObserver(animerCompteur, options);
+  
+  compteurs.forEach(compteur => observateur.observe(compteur));
+}
+
+// ==================== 8. POINT D'ENTRÉE DOMContentLoaded EXCLUSIF UNIQUE ====================
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialisation immédiate des structures graphiques
     handleSplashScreen();
     typeEffect(); 
     initPortfolioScrollAnimation(); 
+    initCounterStatistics();
 
     // ---- FILTRES PORTFOLIO ----
     const filterTabs = document.querySelectorAll('#portfolio-flters li');
@@ -266,87 +384,48 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target === lightboxModal) closeLightboxView(lightboxModal);
         });
     }
+
+    // ---- CONFIGURATION DES ÉVÉNEMENTS GOOGLE ANALYTICS (GA4) ----
+    const boutonCV = document.querySelector('a[href*="cv.pdf"]');
+    if (boutonCV) {
+        boutonCV.addEventListener('click', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'download_cv', {
+                    'event_category': 'Engagement',
+                    'event_label': 'Téléchargement CV Glody-Claver'
+                });
+            }
+        });
+    }
+
+    // CORRECTIF CAPITAL : Espace supprimé pour éviter l'erreur fatale de syntaxe
+    const boutonContactAbout = document.querySelector('.about-actions .link-contact');
+    if (boutonContactAbout) {
+        boutonContactAbout.addEventListener('click', function() {
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_contact_me', {
+                    'event_category': 'Engagement',
+                    'event_label': 'Bouton Contactez-moi Section About'
+                });
+            }
+        });
+    }
+
+    const liensSociaux = document.querySelectorAll('.single-footer .social a');
+    liensSociaux.forEach(function(lien) {
+        lien.addEventListener('click', function() {
+            const nomReseau = lien.getAttribute('aria-label') || 'Réseau Inconnu';
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_social_network', {
+                    'event_category': 'Social',
+                    'event_label': 'Clic Reseau : ' + nomReseau
+                });
+            }
+        });
+    });
 });
 
-// ==================== GALERIE DE TRAVAIL UNIQUE ====================
-const uniqueLightboxModal = document.getElementById('galerie-travail-modal-unique');
-const uniqueLightboxImg = document.getElementById('galerie-travail-img-unique');
-
-function ouvrirAperçuGalerie(cheminImage) {
-  if (uniqueLightboxModal && uniqueLightboxImg) {
-    uniqueLightboxImg.src = cheminImage;
-    uniqueLightboxModal.classList.add('galerie-travail-active');
-    if (globalBody) {
-      globalBody.classList.add('hide-scrollbar');
-      document.documentElement.style.overflowX = 'hidden';
-    }
-  }
-}
-
-function fermerGalerieEtRetourFormulaire(redirigerFormulaire = true) {
-  if (uniqueLightboxModal) {
-    uniqueLightboxModal.classList.remove('galerie-travail-active');
-    if (globalBody) {
-      globalBody.classList.remove('hide-scrollbar');
-      globalBody.style.overflowX = 'hidden';
-    }
-  }
-  if (redirigerFormulaire) {
-    const formulaire = document.getElementById('mon-formulaire'); 
-    if (formulaire) formulaire.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-if (uniqueLightboxModal) {
-  uniqueLightboxModal.addEventListener('click', function(event) {
-    if (event.target === uniqueLightboxModal) fermerGalerieEtRetourFormulaire(false);
-  });
-}
-
-function closeLightboxView(modalElement) {
-    if (modalElement) {
-        modalElement.classList.remove('lightbox-active');
-        if (globalBody) {
-            globalBody.classList.remove('hide-scrollbar');
-            globalBody.style.overflowX = 'hidden';
-            document.documentElement.style.overflowX = 'hidden';
-        }
-    }
-}
-
-// Accessibilité Touche Échap
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const portfolioModal = document.getElementById('portfolio-lightbox');
-        if (portfolioModal && portfolioModal.classList.contains('lightbox-active')) closeLightboxView(portfolioModal);
-        if (uniqueLightboxModal && uniqueLightboxModal.classList.contains('galerie-travail-active')) fermerGalerieEtRetourFormulaire(false);
-    }
-});
-
-/* ======================================================== */
-/* PERSPECTIVE CINÉTIQUE DES LOGOS (PC SEULEMENT SÉCURISÉ)  */
-/* ======================================================== */
-const pisteLogosCinétique = document.getElementById('pisteLogosTravailUnique');
-const zoneDecorsCinétique = document.querySelector('.partenaires-decor-3d');
-const isMobileDevice = window.matchMedia("(max-width: 768px)").matches || ('ontouchstart' in window);
-
-if (zoneDecorsCinétique && pisteLogosCinétique && !isMobileDevice) {
-  pisteLogosCinétique.style.transition = 'transform 0.15s ease-out';
-
-  zoneDecorsCinétique.addEventListener('mousemove', (e) => {
-    const width = zoneDecorsCinétique.clientWidth;
-    const mouseX = e.clientX - zoneDecorsCinétique.getBoundingClientRect().left;
-    const positionPourcent = (mouseX / width) - 0.5;
-    const angleRotationY = positionPourcent * 15; 
-    pisteLogosCinétique.style.transform = `rotateX(10deg) rotateY(${angleRotationY}deg)`;
-  });
-
-  zoneDecorsCinétique.addEventListener('mouseleave', () => {
-    pisteLogosCinétique.style.transform = `rotateX(10deg) rotateY(0deg)`;
-  });
-}
-
-// ==================== 7. ANIMATIONS SCROLLREVEAL ====================
+// ==================== 9. INITIALISATION DES ANIMATIONS SCROLLREVEAL ====================
 if (typeof ScrollReveal !== 'undefined') {
   const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
 
@@ -370,97 +449,3 @@ if (typeof ScrollReveal !== 'undefined') {
   sr.reveal(`.about-details, .time-table, .single-widget, .pf-details .fadeInRight, .Feautes .fadeInRight, .certlang-track-node, .certlang-inner-block-white , .timeline-item, .interets-activites-section .interets-grid`, { origin: 'right' });
   sr.reveal(`.CodeurV, .clients-wrap, .error-inner, .pf-details .zoomIn, .Feautes .zoomIn, .certlang-column-headline, .column-title, .section-realisations .grille-statistiques`, { scale: 0.85, opacity: 0 });
 }
-
-// ==================== 8. COMPTEURS DE STATISTIQUES ANIMÉS ====================
-document.addEventListener("DOMContentLoaded", () => {
-  const compteurs = document.querySelectorAll('.compteur');
-  const DURATION = 2000; 
-
-  const animerCompteur = (entrees, observateur) => {
-    entrees.forEach(entree => {
-      if (entree.isIntersecting) {
-        const cible = entree.target;
-        const carte = cible.closest('.carte-stat');
-        const valeurFinale = parseInt(cible.getAttribute('data-target'), 10);
-        
-        if(carte) carte.classList.add('active-glow');
-
-        let tempsDebut = null;
-
-        const etape = (tempsActuel) => {
-          if (!tempsDebut) tempsDebut = tempsActuel;
-          const progression = tempsActuel - tempsDebut;
-          
-          const valeurActuelle = Math.min(
-            Math.ceil((progression / DURATION) * valeurFinale), 
-            valeurFinale
-          );
-          
-          cible.innerText = valeurActuelle;
-
-          if (progression < DURATION) {
-            requestAnimationFrame(etape); 
-          } else {
-            cible.innerText = valeurFinale; 
-          }
-        };
-
-        requestAnimationFrame(etape);
-        observateur.unobserve(cible); 
-      }
-    });
-  };
-
-  const options = { threshold: 0.3 };
-  const observateur = new IntersectionObserver(animerCompteur, options);
-  
-  compteurs.forEach(compteur => observateur.observe(compteur));
-});
-
-
-
-
-/* ==========================================================================
-   SUIVI DES ÉVÉNEMENTS STRATÉGIQUES (GOOGLE ANALYTICS GA4)
-   ========================================================================= */
-
-document.addEventListener('DOMContentLoaded', function() {
-  
-  const boutonCV = document.querySelector('a[href*="cv.pdf"]');
-  if (boutonCV) {
-    boutonCV.addEventListener('click', function() {
-      if (typeof gtag === 'function') {
-        gtag('event', 'download_cv', {
-          'event_category': 'Engagement',
-          'event_label': 'Téléchargement CV Glody-Claver'
-        });
-      }
-    });
-  }
-
-  const boutonContactApropos = document.querySelector('.about-actions .link-contact');
-  if (boutonContactApropos) {
-    boutonContactApropos.addEventListener('click', function() {
-      if (typeof gtag === 'function') {
-        gtag('event', 'click_contact_me', {
-          'event_category': 'Engagement',
-          'event_label': 'Bouton Contactez-moi Section About'
-        });
-      }
-    });
-  }
-
-  const liensSociaux = document.querySelectorAll('.single-footer .social a');
-  liensSociaux.forEach(function(lien) {
-    lien.addEventListener('click', function() {
-      const nomReseau = lien.getAttribute('aria-label') || 'Réseau Inconnu';
-      if (typeof gtag === 'function') {
-        gtag('event', 'click_social_network', {
-          'event_category': 'Social',
-          'event_label': 'Clic Reseau : ' + nomReseau
-        });
-      }
-    });
-  });
-
-});

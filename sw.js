@@ -4,21 +4,24 @@
   3.0 license (glody_claver/license)
 */
 
+/* 1. Chargement officiel et valide de Workbox depuis le CDN sécurisé */
 importScripts('https://googleapis.com');
 
 if (typeof workbox !== 'undefined') {
+  /* Active la synchronisation en arrière-plan automatique pour Google Analytics */
   workbox.googleAnalytics.initialize();
 }
 
-const CACHE_NAME = 'glody-portfolio-v1';
+/* AMÉLIORATION CRITIQUE : Version v2 pour forcer la mise à jour immédiate sur les appareils */
+const CACHE_NAME = 'glody-portfolio-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './404.html',
-  './sw.json',
+  './sw.json', 
   './json/manifest.json',
   
-  /* CSS */
+  /* Feuilles de style (CSS) */
   './css/icofont.css',
   './css/ionicons/css/ionicons.css',
   './css/ionicons/css/ionicons.min.css',
@@ -26,12 +29,12 @@ const ASSETS_TO_CACHE = [
   './css/swiper-bundle.min.css',
   './css/style.css',
   
-  /* JS */
+  /* Fichiers JavaScript */
   './js/gtag.js',
   './js/scrollreveal.js',
   './js/script.js',
   
-  /* Images de base */
+  /* Icônes et images de profil */
   './images/CLAVER%20LOGO.png',
   './images/CLAVER%20LOGO%201.png',
   './images/CLAVER%20LOGO%202.png',
@@ -39,7 +42,7 @@ const ASSETS_TO_CACHE = [
   './images/about-me-image.png',
   './images/about-me-1.png',
 
-  /* Galerie & Portfolio */
+  /* Galerie de travail */
   './images/travail/ton-travail1.jpg',
   './images/travail/ton-travail2.jpg',
   './images/travail/ton-travail3.jpg',
@@ -48,6 +51,8 @@ const ASSETS_TO_CACHE = [
   './images/travail/ton-travail6.jpg',
   './images/travail/ton-travail7.jpg',
   './images/clients/logo1.png',
+
+  /* Portfolio : Réalisations graphiques et techniques */
   './images/portfolio/Affiche/affiche1.png',
   './images/portfolio/Affiche/affiche2.jpg',
   './images/portfolio/Affiche/affiche3.jpg',
@@ -61,6 +66,8 @@ const ASSETS_TO_CACHE = [
   './images/portfolio/Logiciel/logi7.png',
   './images/portfolio/Logo/Aleron/logo.png',
   './images/portfolio/Logo/Aleron/logo1.png',
+
+  /* Encodage sécurisé des accents et espaces */
   './images/portfolio/Logo/D%C3%A9couverte%20Inspiration/D%C3%A9couverte%20Inspiration.png',
   './images/portfolio/Logo/geriatrie/logo1.png',
   './images/portfolio/Logo/Honnette%20etablissement/LOGO%20HONNETTE%20ETABLISSEMENT%201.png',
@@ -69,11 +76,14 @@ const ASSETS_TO_CACHE = [
   './images/portfolio/Logo/Tajir%20monde/Tajir%20monde%201.png',
   './images/portfolio/Site%20web/web1.png',
 
-  /* Docs */
+  /* Fichier Base de données structurelle */
   './BDD/portfolio_messages.sql',
+
+  /* Fichiers et documents téléchargeables */
   './documents/cv.pdf'
 ];
 
+/* 2. Événement d'installation : Mise en cache immédiate */
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
@@ -83,6 +93,7 @@ self.addEventListener('install', function(event) {
   self.skipWaiting();
 });
 
+/* 3. Événement d'activation : Nettoyage automatique des versions obsolètes (v1) */
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
@@ -98,14 +109,17 @@ self.addEventListener('activate', function(event) {
   self.clients.claim();
 });
 
+/* 4. Stratégie réseau : Stale-While-Revalidate sécurisée */
 self.addEventListener('fetch', function(event) {
-  if (event.request.url.includes('google-analytics') || event.request.url.includes('analytics') || event.request.url.includes('gtag')) {
+  /* CORRECTION CAPITAL : Filtre ciblant le domaine distant pour laisser votre js/gtag.js local aller dans le cache */
+  if (event.request.url.includes('google-analytics') || event.request.url.includes('analytics') || event.request.url.includes('googletagmanager.com')) {
     return;
   }
 
   event.respondWith(
     caches.match(event.request).then(function(cachedResponse) {
       if (cachedResponse) {
+        /* Mise à jour en tâche de fond de la ressource */
         fetch(event.request).then(function(networkResponse) {
           if (networkResponse.status === 200) {
             const responseToCache = networkResponse.clone();
@@ -114,7 +128,7 @@ self.addEventListener('fetch', function(event) {
             });
           }
         }).catch(function() {
-          // Mode offline silencieux
+          /* Reste silencieux si l'utilisateur est déconnecté */
         });
         
         return cachedResponse;
