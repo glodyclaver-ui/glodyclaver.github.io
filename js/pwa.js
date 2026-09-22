@@ -6,7 +6,6 @@
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    /* Enregistrement relatif direct compatible avec le déploiement par sous-dossier de GitHub */
     navigator.serviceWorker.register('sw.js')
       .then(function(registration) {
         console.log('Service Worker enregistré avec succès ! Portée (Scope) : ', registration.scope);

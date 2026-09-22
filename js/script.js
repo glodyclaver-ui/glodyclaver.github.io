@@ -416,3 +416,51 @@ document.addEventListener("DOMContentLoaded", () => {
   
   compteurs.forEach(compteur => observateur.observe(compteur));
 });
+
+
+
+
+/* ==========================================================================
+   SUIVI DES ÉVÉNEMENTS STRATÉGIQUES (GOOGLE ANALYTICS GA4)
+   ========================================================================= */
+
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const boutonCV = document.querySelector('a[href*="cv.pdf"]');
+  if (boutonCV) {
+    boutonCV.addEventListener('click', function() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'download_cv', {
+          'event_category': 'Engagement',
+          'event_label': 'Téléchargement CV Glody-Claver'
+        });
+      }
+    });
+  }
+
+  const boutonContactApropos = document.querySelector('.about-actions .link-contact');
+  if (boutonContactApropos) {
+    boutonContactApropos.addEventListener('click', function() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'click_contact_me', {
+          'event_category': 'Engagement',
+          'event_label': 'Bouton Contactez-moi Section About'
+        });
+      }
+    });
+  }
+
+  const liensSociaux = document.querySelectorAll('.single-footer .social a');
+  liensSociaux.forEach(function(lien) {
+    lien.addEventListener('click', function() {
+      const nomReseau = lien.getAttribute('aria-label') || 'Réseau Inconnu';
+      if (typeof gtag === 'function') {
+        gtag('event', 'click_social_network', {
+          'event_category': 'Social',
+          'event_label': 'Clic Reseau : ' + nomReseau
+        });
+      }
+    });
+  });
+
+});

@@ -4,11 +4,9 @@
   3.0 license (glody_claver/license)
 */
 
-/* Chargement officiel et complet de Workbox depuis le CDN sécurisé de Google */
 importScripts('https://googleapis.com');
 
 if (typeof workbox !== 'undefined') {
-  /* Active la synchronisation en arrière-plan automatique pour Google Analytics */
   workbox.googleAnalytics.initialize();
 }
 
@@ -20,7 +18,7 @@ const ASSETS_TO_CACHE = [
   './sw.json',
   './json/manifest.json',
   
-  /* Feuilles de style (CSS) */
+  /* CSS */
   './css/icofont.css',
   './css/ionicons/css/ionicons.css',
   './css/ionicons/css/ionicons.min.css',
@@ -28,13 +26,12 @@ const ASSETS_TO_CACHE = [
   './css/swiper-bundle.min.css',
   './css/style.css',
   
-  /* Fichiers JavaScript */
+  /* JS */
   './js/gtag.js',
   './js/scrollreveal.js',
   './js/script.js',
-  './js/pwa.js',
   
-  /* Icônes et images de profil */
+  /* Images de base */
   './images/CLAVER%20LOGO.png',
   './images/CLAVER%20LOGO%201.png',
   './images/CLAVER%20LOGO%202.png',
@@ -42,7 +39,7 @@ const ASSETS_TO_CACHE = [
   './images/about-me-image.png',
   './images/about-me-1.png',
 
-  /* Galerie de travail */
+  /* Galerie & Portfolio */
   './images/travail/ton-travail1.jpg',
   './images/travail/ton-travail2.jpg',
   './images/travail/ton-travail3.jpg',
@@ -51,8 +48,6 @@ const ASSETS_TO_CACHE = [
   './images/travail/ton-travail6.jpg',
   './images/travail/ton-travail7.jpg',
   './images/clients/logo1.png',
-
-  /* Portfolio : Réalisations graphiques et techniques */
   './images/portfolio/Affiche/affiche1.png',
   './images/portfolio/Affiche/affiche2.jpg',
   './images/portfolio/Affiche/affiche3.jpg',
@@ -66,8 +61,6 @@ const ASSETS_TO_CACHE = [
   './images/portfolio/Logiciel/logi7.png',
   './images/portfolio/Logo/Aleron/logo.png',
   './images/portfolio/Logo/Aleron/logo1.png',
-
-  /* Encodage sécurisé des accents et espaces pour éviter les erreurs 404 de serveurs */
   './images/portfolio/Logo/D%C3%A9couverte%20Inspiration/D%C3%A9couverte%20Inspiration.png',
   './images/portfolio/Logo/geriatrie/logo1.png',
   './images/portfolio/Logo/Honnette%20etablissement/LOGO%20HONNETTE%20ETABLISSEMENT%201.png',
@@ -76,14 +69,11 @@ const ASSETS_TO_CACHE = [
   './images/portfolio/Logo/Tajir%20monde/Tajir%20monde%201.png',
   './images/portfolio/Site%20web/web1.png',
 
-  /* Fichier Base de données structurelle */
+  /* Docs */
   './BDD/portfolio_messages.sql',
-
-  /* Fichiers et documents téléchargeables (Espaces et accents totalement encodés) */
   './documents/cv.pdf'
 ];
 
-/* 1. Événement d'installation : Mise en cache immédiate */
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
@@ -93,7 +83,6 @@ self.addEventListener('install', function(event) {
   self.skipWaiting();
 });
 
-/* 2. Événement d'activation : Nettoyage des versions obsolètes */
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
@@ -109,9 +98,8 @@ self.addEventListener('activate', function(event) {
   self.clients.claim();
 });
 
-/* 3. Stratégie réseau : Stale-While-Revalidate (Vitesse instantanée + mise à jour discrète) */
 self.addEventListener('fetch', function(event) {
-  if (event.request.url.includes('google-analytics') || event.request.url.includes('analytics.js') || event.request.url.includes('gtag')) {
+  if (event.request.url.includes('google-analytics') || event.request.url.includes('analytics') || event.request.url.includes('gtag')) {
     return;
   }
 
@@ -120,12 +108,13 @@ self.addEventListener('fetch', function(event) {
       if (cachedResponse) {
         fetch(event.request).then(function(networkResponse) {
           if (networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
             caches.open(CACHE_NAME).then(function(cache) {
-              cache.put(event.request, networkResponse);
+              cache.put(event.request, responseToCache);
             });
           }
         }).catch(function() {
-          /* Reste silencieux si l'utilisateur est totalement hors-ligne */
+          // Mode offline silencieux
         });
         
         return cachedResponse;

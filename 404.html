@@ -258,16 +258,19 @@
 
 
                 
-                <!-- CHARGEMENT DE VOTRE SCRIPT DE GLOBE -->
+                <!-- CHARGEMENT DES SCRIPTS DE FIN DE PAGE -->
 
-                <!-- 1. Google Analytics (S'exécute de façon isolée au démarrage) -->
-                <script type="text/javascript" src="js/gtag.js"></script>
+                <!-- 1. Google Analytics (Initialise le dataLayer en premier) -->
+                <script type="text/javascript" src="js/gtag.js" defer></script>
 
-                <!-- 2. La bibliothèque ScrollReveal (Doit TOUJOURS être chargée en premier) -->
-                <script type="text/javascript" src="js/scrollreveal.js"></script>
+                <!-- 2. Enregistrement PWA (Déclenche le Service Worker hors-ligne) -->
+                <script type="text/javascript" src="js/pwa.js" defer></script>
 
-                <!-- 3. Ton script principal (Peut maintenant utiliser librement ScrollReveal sans bug) -->
-                <script type="text/javascript" src="js/script.js"></script>
+                <!-- 3. La bibliothèque ScrollReveal (Chargée et prête pour les animations) -->
+                <script type="text/javascript" src="js/scrollreveal.js" defer></script>
+
+                <!-- 4. Votre script principal (Code métier et initialisation des animations) -->
+                <script type="text/javascript" src="js/script.js" defer></script>
 
         </body>
 </html>
