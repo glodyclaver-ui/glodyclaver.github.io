@@ -5460,3 +5460,332 @@ MEDIA QUERIES RESPONSIVE (MOBILES, TABLETTES ET ORDINATEURS)
 /* ==========================================================================
 23. POLITIQUE DE CONFIDENTIALITÉ - STYLE GLOBAL & TOUS ÉCRANS (MOBILE FIRST) FIN
 ========================================================================== */
+
+
+
+/* ==========================================================================
+24. SECTION FAQ & MAP ARCHITECTURE - THEME SOMBRE INFRASTRUCTURE (DARK TECH)
+========================================================================== */
+/* ==========================================================================
+24. SECTION FAQ & MAP ARCHITECTURE - THEME SOMBRE INFRASTRUCTURE (DARK TECH)
+========================================================================== */
+.faq-map-section {
+    background-color: #0b0f19;
+    padding: 40px 16px;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    box-sizing: border-box;
+}
+
+.faq-map-section *, 
+.faq-map-section *::before, 
+.faq-map-section *::after {
+    box-sizing: border-box;
+}
+
+.faq-map-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Alignement flex natif stable */
+.faq-map-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;     /* Étire la carte à la même hauteur que la FAQ */
+    gap: 32px;
+    width: 100%;
+}
+
+.faq-column {
+    width: 100%;
+}
+
+.map-column {
+    width: 100%;
+    display: flex;            /* Indispensable pour la hauteur de la carte */
+}
+
+/* En-tête */
+.faq-header {
+    margin-bottom: 24px;
+}
+
+.faq-badge {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.faq-main-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+}
+
+.faq-subtitle {
+    font-size: 1.35rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Groupe Accordéon */
+.faq-accordion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.faq-item {
+    background-color: #161c2a;
+    border: 1px solid #2e374a;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.25s ease-in-out;
+}
+
+.faq-item:hover,
+.faq-item[open] {
+    border-color: #3b82f6;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.03);
+}
+
+.faq-summary {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.45rem;
+    color: #ffffff;
+    user-select: none;
+    list-style: none;
+}
+
+.faq-summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Gestion des icônes d'ouverture/fermeture */
+.faq-summary .icon-close {
+    display: none;
+}
+
+.faq-item[open] .faq-summary .icon-open {
+    display: none;
+}
+
+.faq-item[open] .faq-summary .icon-close {
+    display: block;
+    color: #3b82f6;
+}
+
+.faq-item[open] .faq-summary {
+    color: #3b82f6;
+}
+
+/* Zone de contenu */
+.faq-content {
+    padding: 0 20px 20px 20px;
+    border-top: 1px solid transparent;
+}
+
+.faq-item[open] .faq-content {
+    border-top-color: #2e374a;
+}
+
+.faq-content p {
+    font-size: 1.35rem;
+    color: #94a3b8;
+    line-height: 1.7;
+    margin: 12px 0 0 0;
+}
+
+.faq-content strong {
+    color: #ffffff;
+}
+
+/* --- STRUCTURE DE LA CARTE (COLONNE DROITE) --- */
+.side-bar-map {
+    width: 100%;
+    display: flex;            /* CORRECTION : Ajout de la flexibilité intermédiaire */
+    flex-direction: column;   /* CORRECTION : Permet le comportement stretch vertical */
+    align-items: stretch;
+    flex-grow: 1;             /* CORRECTION : Permet à la colonne de s'étirer complètement */
+}
+
+.map-location-card {
+    background-color: #161c2a;
+    border: 1px solid #2e374a;
+    padding: 22px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.map-location-card:hover {
+    border: 1.5px solid #3b82f6;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.12);
+}
+
+.map-location-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #3b82f6, #60a5fa);
+    opacity: 0.7;
+}
+
+.location-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.location-main-icon {
+    font-size: 2.4rem;
+    color: #3b82f6;
+    transition: transform 0.3s ease;
+}
+
+.map-location-card:hover .location-main-icon {
+    transform: translateY(-2px) scale(1.1);
+}
+
+.location-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.location-description {
+    margin: 0 0 0 36px;
+    font-size: 1.35rem;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.location-sub-icon {
+    color: #3b82f6;
+    margin-right: 6px;
+    font-size: 1.4rem;
+}
+
+.location-highlight {
+    color: #ffffff;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.location-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(59, 130, 246, 0.4);
+}
+
+/* Conteneur Iframe Maps */
+#map {
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-radius: 23px;
+    overflow: hidden;
+    border: 1px solid #2e374a;
+    flex-grow: 1;              /* S'étire sur toute la hauteur disponible */
+    min-height: 380px;         /* Hauteur de sécurité minimale sur smartphone */
+}
+
+#map iframe {
+    border: 0;
+    display: block;
+    width: 100%;
+    height: 100%;              /* S'ajuste dynamiquement à 100% de la FAQ */
+    filter: grayscale(1) invert(0.9) contrast(1.2);
+    opacity: 0.85;
+    transition: all 0.3s ease;
+}
+
+#map:hover iframe {
+    filter: none;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES COMPLÈTES (TABLETTES & ORDINATEURS)
+   ========================================================================== */
+
+/* Écrans intermédiaires (Tablettes >= 768px) */
+@media screen and (min-width: 768px) {
+    .faq-map-section {
+        padding: 60px 24px;
+    }
+
+    .faq-map-row {
+        flex-direction: row;      /* Double colonne */
+        align-items: stretch;     /* Alignement parfait de la hauteur */
+        gap: 32px;
+    }
+
+    .faq-column {
+        flex: 1;
+    }
+
+    .map-column {
+        width: 340px;             /* Largeur équilibrée pour tablettes */
+        flex-shrink: 0;
+    }
+
+    .faq-main-title {
+        font-size: 2.8rem;
+    }
+}
+
+/* Grands écrans (Ordinateurs >= 1024px) */
+@media screen and (min-width: 1024px) {
+    .faq-map-section {
+        padding: 80px 32px;
+    }
+
+    .faq-map-row {
+        gap: 48px;
+    }
+
+    .map-column {
+        width: 460px;             /* Largeur fixe idéale sur PC */
+        position: sticky;
+        top: 40px;                /* Reste fixe au défilement */
+    }
+    
+    .faq-main-title {
+        font-size: 3.2rem;
+    }
+}
+/* ==========================================================================
+24. SECTION FAQ & MAP ARCHITECTURE - THEME SOMBRE INFRASTRUCTURE (DARK TECH)
+========================================================================== */
