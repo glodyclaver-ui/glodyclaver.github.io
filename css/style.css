@@ -5179,15 +5179,12 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 .privacy-badge {
-    background-color: var(--p-accent-bg);
-    color: var(--p-primary);
-    padding: 6px 14px;
-    border-radius: 50px;
+    color: #0077ff; /* Couleur bleue (remplacez par var(--p-accent-bg) si votre bleu y est stocké) */
+    text-transform: uppercase; /* Met le texte en majuscules */
     font-size: 1.2rem;
     font-weight: 600;
     display: inline-block;
     margin-bottom: 16px;
-    border: 1px solid rgba(37, 99, 235, 0.15);
 }
 
 .privacy-title {
