@@ -445,7 +445,7 @@ if (typeof ScrollReveal !== 'undefined') {
   .newsletter-inputBox, .box, .newsletter-mediaIcon, .menu-items, .menu-contentt, .certlang-section-header, .pf-details .section-title, .section-realisations .section-header,
   .responsive-column, .about-content, .skill-section-header, .skills-column, .services-section-header, .portfolio-filters-wrapper, .Feautes .section-title, .clearfix .section-header`, { interval: 100 });
 
-  sr.reveal(`.about-imageContent, .card-blog, .pf-details .fadeInLeft, .Feautes .fadeInLeft, .interets-activites-section .section-header`, { origin: 'left' });
-  sr.reveal(`.about-details, .time-table, .single-widget, .pf-details .fadeInRight, .Feautes .fadeInRight, .certlang-track-node, .certlang-inner-block-white , .timeline-item, .interets-activites-section .interets-grid`, { origin: 'right' });
+  sr.reveal(`.about-imageContent, .card-blog, .pf-details .fadeInLeft, .Feautes .fadeInLeft, .interets-activites-section .section-header, .faq-map-section .faq-column`, { origin: 'left' });
+  sr.reveal(`.about-details, .time-table, .single-widget, .pf-details .fadeInRight, .Feautes .fadeInRight, .certlang-track-node, .certlang-inner-block-white , .timeline-item, .interets-activites-section .interets-grid, .faq-map-section .map-column`, { origin: 'right' });
   sr.reveal(`.CodeurV, .clients-wrap, .error-inner, .pf-details .zoomIn, .Feautes .zoomIn, .certlang-column-headline, .column-title, .section-realisations .grille-statistiques`, { scale: 0.85, opacity: 0 });
 }
