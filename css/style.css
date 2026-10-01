@@ -5510,15 +5510,13 @@ MEDIA QUERIES RESPONSIVE (MOBILES, TABLETTES ET ORDINATEURS)
 }
 
 .faq-badge {
-    background-color: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 1.2rem;
+    color: #3b82f6;          /* Reste uniquement l'écriture bleue */
+    font-size: 1.2rem;       /* Petit texte */
     font-weight: 600;
     display: inline-block;
     margin-bottom: 12px;
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    text-transform: uppercase; /* Optionnel : met en majuscules pour un style plus "badge" */
+    letter-spacing: 0.5px;    /* Optionnel : espace un peu les lettres pour l'esthétique */
 }
 
 .faq-main-title {
