@@ -14,7 +14,6 @@ const globalSplashScreen = document.getElementById('splash-screen');
 const portfolioSections = document.querySelectorAll('section[id]');
 const cachedNavLinks = [];
 
-// CORRECTIF CRITIQUE : Force immédiatement le haut de page dès l'initialisation du script
 if (history.scrollRestoration) {
   history.scrollRestoration = 'manual'; // Empêche le navigateur de restaurer l'ancienne position au refresh
 }
@@ -104,6 +103,7 @@ function typeEffect() {
 
   setTimeout(typeEffect, typeSpeed);
 }
+
 // ==================== 3. ANIMATION AU DEFILEMENT DES PROJETS ====================
 function initPortfolioScrollAnimation() {
   const portfolioItems = document.querySelectorAll('#portfolio .portfolio-item');
@@ -259,6 +259,7 @@ if (zoneDecorsCinétique && pisteLogosCinétique && !isMobileDevice) {
     pisteLogosCinétique.style.transform = `rotateX(10deg) rotateY(0deg)`;
   });
 }
+
 // ==================== 7. COMPTEURS DE STATISTIQUES ANIMÉS ====================
 function initCounterStatistics() {
   const compteurs = document.querySelectorAll('.compteur');
@@ -386,44 +387,109 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ---- CONFIGURATION DES ÉVÉNEMENTS GOOGLE ANALYTICS (GA4) ----
+    
+    // 1. Téléchargement du CV
     const boutonCV = document.querySelector('a[href*="cv.pdf"]');
     if (boutonCV) {
         boutonCV.addEventListener('click', function() {
             if (typeof gtag === 'function') {
                 gtag('event', 'download_cv', {
-                    'event_category': 'Engagement',
-                    'event_label': 'Téléchargement CV Glody-Claver'
+                    'cv_owner': 'Glody-Claver',
+                    'page_location': window.location.href
                 });
             }
         });
     }
 
-    // CORRECTIF CAPITAL : Espace supprimé pour éviter l'erreur fatale de syntaxe
+    // 2. Clic Contact (Correctif de syntaxe inclus)
     const boutonContactAbout = document.querySelector('.about-actions .link-contact');
     if (boutonContactAbout) {
         boutonContactAbout.addEventListener('click', function() {
             if (typeof gtag === 'function') {
                 gtag('event', 'click_contact_me', {
-                    'event_category': 'Engagement',
-                    'event_label': 'Bouton Contactez-moi Section About'
+                    'click_origin': 'section_about',
+                    'page_location': window.location.href
                 });
             }
         });
     }
 
+    // 3. Clic sur les Réseaux Sociaux
     const liensSociaux = document.querySelectorAll('.single-footer .social a');
     liensSociaux.forEach(function(lien) {
         lien.addEventListener('click', function() {
             const nomReseau = lien.getAttribute('aria-label') || 'Réseau Inconnu';
             if (typeof gtag === 'function') {
                 gtag('event', 'click_social_network', {
-                    'event_category': 'Social',
-                    'event_label': 'Clic Reseau : ' + nomReseau
+                    'social_platform': nomReseau.trim(),
+                    'page_location': window.location.href
                 });
             }
         });
     });
-});
+
+    // 4. Détection des Saisies et Chemins Suspects (Ex: /.github, .env, ../)
+    // Fonction de sécurité locale pour éviter d'envoyer des e-mails par accident à Google
+    function isSafeToLog(inputValue) {
+        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+        return !emailRegex.test(inputValue);
+    }
+
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function() {
+            const inputElement = form.querySelector('input[type="text"], input[type="search"]');
+            if (!inputElement) return;
+            
+            const inputValue = inputElement.value.trim();
+            
+            if (isSafeToLog(inputValue)) {
+                if (inputValue.includes('/.github') || inputValue.includes('.env') || inputValue.includes('../') || inputValue.includes('wp-admin')) {
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'suspect_input_detected', {
+                            'input_value': inputValue,
+                            'page_location': window.location.href
+                        });
+                    }
+                }
+            }
+        });
+    });
+
+    // 5. Détection des Erreurs de Scripts (Bugs ou plantages JavaScript)
+    window.addEventListener('error', function(event) {
+        if (typeof gtag === 'function') {
+            gtag('event', 'javascript_error', {
+                'error_message': event.message,
+                'error_url': event.filename,
+                'error_line': event.lineno
+            });
+        }
+    });
+
+    // 6. Détection des Erreurs de Connexion Internet (PWA Hors-ligne)
+    window.addEventListener('offline', function() {
+        if (typeof gtag === 'function') {
+            gtag('event', 'pwa_network_status', { 'status': 'offline', 'page_url': window.location.href });
+        }
+    });
+    window.addEventListener('online', function() {
+        if (typeof gtag === 'function') {
+            gtag('event', 'pwa_network_status', { 'status': 'online', 'page_url': window.location.href });
+        }
+    });
+
+    // 7. Détection du Copier Sauvage (Vol de contenu important)
+    document.addEventListener('copy', function() {
+        const selectedText = window.getSelection().toString();
+        if (selectedText.length > 120 && isSafeToLog(selectedText)) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'content_copied', { 'text_length': selectedText.length, 'page_location': window.location.href });
+            }
+        }
+    });
+
+}); // <--- Cette accolade ferme TRÈS PROPREMENT le bloc 'DOMContentLoaded' principal
+
 
 // ==================== 9. INITIALISATION DES ANIMATIONS SCROLLREVEAL ====================
 if (typeof ScrollReveal !== 'undefined') {
