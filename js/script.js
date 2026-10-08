@@ -394,8 +394,8 @@ document.addEventListener('DOMContentLoaded', () => {
         boutonCV.addEventListener('click', function() {
             if (typeof gtag === 'function') {
                 gtag('event', 'download_cv', {
-                    'cv_owner': 'Glody-Claver',
-                    'page_location': window.location.href
+                    'event_category': 'Engagement',
+                    'event_label': 'Téléchargement CV Glody-Claver'
                 });
             }
         });
@@ -407,8 +407,8 @@ document.addEventListener('DOMContentLoaded', () => {
         boutonContactAbout.addEventListener('click', function() {
             if (typeof gtag === 'function') {
                 gtag('event', 'click_contact_me', {
-                    'click_origin': 'section_about',
-                    'page_location': window.location.href
+                    'event_category': 'Engagement',
+                    'event_label': 'Bouton Contactez-moi Section About'
                 });
             }
         });
@@ -421,8 +421,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const nomReseau = lien.getAttribute('aria-label') || 'Réseau Inconnu';
             if (typeof gtag === 'function') {
                 gtag('event', 'click_social_network', {
-                    'social_platform': nomReseau.trim(),
-                    'page_location': window.location.href
+                    'event_category': 'Social',
+                    'event_label': 'Clic Reseau : ' + nomReseau
                 });
             }
         });
