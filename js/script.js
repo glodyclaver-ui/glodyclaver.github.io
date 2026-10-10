@@ -507,11 +507,53 @@ if (typeof ScrollReveal !== 'undefined') {
     mobile: true 
   });
 
-  sr.reveal(`.section-subtitle, .brand-image, .tesitmonial, .newsletter, .Codeur .section-title, .resume-section .section-title,
-  .newsletter-inputBox, .box, .newsletter-mediaIcon, .menu-items, .menu-contentt, .certlang-section-header, .pf-details .section-title, .section-realisations .section-header,
-  .responsive-column, .about-content, .skill-section-header, .skills-column, .services-section-header, .portfolio-filters-wrapper, .Feautes .section-title, .clearfix .section-header`, { interval: 100 });
 
-  sr.reveal(`.card-blog, .pf-details .fadeInLeft, .Feautes .fadeInLeft, .interets-activites-section .section-header, .faq-map-section .faq-column`, { origin: 'left' });
-  sr.reveal(`.time-table, .single-widget, .pf-details .fadeInRight, .Feautes .fadeInRight, .certlang-track-node, .certlang-inner-block-white , .timeline-item, .interets-activites-section .interets-grid, .faq-map-section .map-column`, { origin: 'right' });
-  sr.reveal(`.CodeurV, .clients-wrap, .error-inner, .pf-details .zoomIn, .Feautes .zoomIn, .certlang-column-headline, .column-title, .section-realisations .grille-statistiques`, { scale: 0.85, opacity: 0 });
+
+    /*==================================================
+  ANIMATIONS SCROLLREARVAL - CONFIGURATIONS
+  ====================================================*/
+
+  // 1. Animation en cascade (Intervalle séquentiel standard)
+  sr.reveal(`.skill-section .skill-section-title, .pf-details .section-title, .services-section-bg .services-section-title, .Feautes .section-title, .section-realisations .section-title, .clearfix .section-title`, { interval: 100 });
+
+  // 2. Glissement de la gauche vers la droite (Slide-In-Left)
+  sr.reveal(`.about .about-imageColumn.Slide-In-Left, .skill-section .skills-column.Slide-In-Left, .pf-details .aptitudes-card.fadeInLeft, .feautes-grid-pure .feautes-item.fadeInLeft, .faq-map-section .faq-column`, { origin: 'left' });
+
+  // 3. Glissement de la droite vers la gauche (Slide-In-Right)
+  sr.reveal(`.about .about-detailsColumn.Slide-In-Right, .skill-section .skills-column.Slide-In-Right, .certlang-global-section .certlang-vertical-track .certlang-track-node, .certlang-global-section .certlang-sidebar-stack .certlang-inner-block-white,
+  .resume-section .resume-column.experience-col .timeline-item, .resume-section .resume-column.formation-col .timeline-item, .pf-details .aptitudes-card.fadeInRight, .feautes-grid-pure .feautes-item.fadeInRight, .faq-map-section .map-column`, { origin: 'right' });
+
+  // 4. Zoom progressif avec fondu (Fade-In-Scale)
+  sr.reveal(`.Codeur .Codeur-layout-fluid, .skill-section .skills-column.Fade-In-Scale, .pf-details .aptitudes-card.zoomIn, .feautes-grid-pure .feautes-item.zoomIn, .clearfix .portfolio-filters-wrapper`, { scale: 0.85, opacity: 0 });
+
+  // 5. Plongée descendante rythmée (Top-Down Card Stagger)
+  sr.reveal('.Codeur .section-title, .Codeur .section-subtitle', { 
+    origin: 'top', 
+    interval: 300 
+  });
+
+  // 6. Plongée descendante rythmée (Top-Down Card Stagger)
+  sr.reveal('.resume-section .section-title, .resume-section .resume-columns-wrapper .column-title', { 
+    origin: 'top', 
+    interval: 200 
+  });
+
+  // 7. Plongée descendante rythmée (Top-Down Card Stagger)
+  sr.reveal('.certlang-global-section .certlang-section-title, .certlang-global-section .certlang-column-headline', { 
+    origin: 'top', 
+    interval: 200 
+  });
+
+  // 8. Plongée descendante rythmée (Top-Down Card Stagger)
+  sr.reveal('.services-section-bg .services-card', { 
+    origin: 'top', 
+    interval: 200 
+  });
+
+  // 10. Grilles montantes rythmées (Grid Elevate Card Stagger)
+  sr.reveal('.section-realisations .carte-stat', { 
+    origin: 'bottom', 
+    interval: 200 
+  });
+
 }
