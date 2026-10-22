@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <!-- 1. Votre page d'accueil principale -->
+  <url>
+    <loc>https://glodyclaver-ui.github.io/glodyclaver.github.io/</loc>
+    <lastmod>2026-10-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 2. Votre page Politique de Confidentialité -->
+  <url>
+    <loc>https://glodyclaver-ui.github.io/glodyclaver.github.io/privacy.html</loc>
+    <lastmod>2026-10-22</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>
