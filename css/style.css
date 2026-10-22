@@ -4938,7 +4938,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   box-sizing: border-box; /* Empêche le padding de faire grossir le bloc au-delà des 100% */
 }
 
-/* En-tête appliqué à la section Réalisations */
+/* En-tête applied to the section Réalisations */
 .section-realisations .section-header {
   text-align: center;
   margin-bottom: 50px;
@@ -4971,7 +4971,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   border-radius: 2px;
 }
 
-/* Grille flexible */
+/* Grille flexible originale */
 .grille-statistiques {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -5052,7 +5052,10 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   .label {
     font-size: 0.85rem; /* Le texte descriptif diminue pour la tablette */
   }
+  
+  /* AJOUT : Système de grille deux par deux sur tablette */
   .grille-statistiques {
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 }
@@ -5073,7 +5076,8 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
     font-size: 1.6rem; /* Le titre diminue encore pour le format portable */
     letter-spacing: 1.5px;
   }
-  /* Grille réorganisée en 2 colonnes ultra-propres */
+  
+  /* MODIFICATION : Aligné sur le système deux par deux propre */
   .grille-statistiques {
     grid-template-columns: repeat(2, 1fr); 
     gap: 12px;
@@ -5094,8 +5098,9 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 
 /* Ajustements additionnels pour écrans de portables miniatures (Sous 380px) */
 @media screen and (max-width: 380px) {
+  /* MODIFICATION : Passage sur une colonne ligne par ligne sur petit écran */
   .grille-statistiques {
-    grid-template-columns: 1fr; /* Passage sur une colonne si le portable est minuscule */
+    grid-template-columns: 1fr; 
     gap: 15px;
   }
   .nombre {
@@ -5108,6 +5113,9 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 /* ======================================================== 
 22. SECTION section realisations FIN    
 ======================================================== */
+
+
+
 
 
 
