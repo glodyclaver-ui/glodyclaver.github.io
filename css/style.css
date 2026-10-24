@@ -4438,23 +4438,78 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 20. SECTION GALERIE PHOTOS (NOIR & ANGLES DROITS)     
 ======================================================== */
 .galerie-photos-travail { 
+  position: relative;
+  isolation: isolate;
   overflow: hidden; 
-  padding: 50px 0;
-  background: #050505; 
+  padding: 60px 0;
+  background:
+    radial-gradient(ellipse at 12% 15%, rgba(45,110,255,.18), transparent 38%),
+    radial-gradient(ellipse at 88% 80%, rgba(135,75,255,.15), transparent 35%),
+    linear-gradient(135deg,#070b17 0%,#0b1224 48%,#080d1c 100%) !important;
+  border-top: 1px solid rgba(120,180,255,.13);
+  border-bottom: 1px solid rgba(120,180,255,.13);
 }
 
+/* Halos lumineux d'arrière-plan décoratifs (Néon Bleu & Violet) */
+.galerie-photos-travail::before,
+.galerie-photos-travail::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.23;
+  pointer-events: none;
+}
+
+.galerie-photos-travail::before {
+  top: 0;
+  left: -180px;
+  background: #347dff;
+}
+
+.galerie-photos-travail::after {
+  right: -180px;
+  bottom: 0;
+  background: #8c55ff;
+}
+
+/* ============================================================
+   AXE DE DÉFILEMENT (FONDU PROGRESSIF SUR LES BORDURES)
+   ============================================================ */
 .galerie-axe-defilement { 
   display: flex; 
   overflow: hidden; 
   width: 100%; 
-  padding: 25px 0;
   perspective: 1000px; /* Espace 3D préservé */
+  position: relative;
+  z-index: 1;
+  padding: 24px 0 35px;
+
+  /* Effet de fondu progressif/flou sur les bords gauche et droit de l'écran */
+  -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 7%,
+      #000 93%,
+      transparent
+  );
+  mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 7%,
+      #000 93%,
+      transparent
+  );
 }
 
 .galerie-ruban-images { 
   display: flex; 
   width: max-content; 
   animation: roulementPhotos 24s linear infinite; 
+  will-change: transform;
 }
 
 /* Arrêt au survol pour PC, tablette et mobile au toucher */
@@ -4465,13 +4520,17 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 
 .galerie-pack { 
   display: flex; 
-  gap: 20px;
+  gap: 25px;
 }
 
+/* ============================================================
+   CARTES DE LA GALERIE (NOUVELLES PROPORTIONS PORTRAIT ACCRUES)
+   ============================================================ */
 .galerie-carte { 
   position: relative; 
-  width: 240px;
-  height: 170px;
+  isolation: isolate;
+  width: 240px;      /* Largeur préservée */
+  height: 320px;     /* Rallongé par le haut et le bas (Format Portrait Premium) */
   border-radius: 1.25rem !important; 
   overflow: hidden; 
   cursor: pointer;
@@ -4487,34 +4546,64 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
               filter 0.5s ease, 
               box-shadow 0.5s ease;
   will-change: transform, filter, box-shadow;
+
+  background: linear-gradient(145deg, #172641, #0a1120);
+  border: 1px solid rgba(135, 190, 255, 0.19);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.28);
 }
 
-.galerie-carte img { 
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
-  border-radius: 1.25rem !important; 
-  transition: transform 0.5s ease;
+/* Contour Lumineux Ultra-Précis 1px en dégradé au survol */
+.galerie-carte::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(
+      135deg,
+      rgba(85, 230, 245, 0.8),
+      transparent 35%,
+      transparent 65%,
+      rgba(160, 105, 255, 0.7)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
-/* COMPORTEMENT AU SURVOL : La photo se redresse, avance et projette sa lueur */
+/* COMPORTEMENT AU SURVOL : La photo se redresse, s'illumine et affiche sa bordure dégradée */
 .galerie-carte:hover,
 .galerie-carte:active {
-  transform: rotateY(0deg) scale(1.08) translateY(-6px);
+  transform: rotateY(0deg) scale(1.05) translateY(-8px);
   filter: brightness(1.1) grayscale(0%);
-  
-  /* Halo néon bleu électrique */
-  box-shadow: 0 15px 30px rgba(0, 102, 204, 0.3), 
-              0 0 20px rgba(0, 102, 204, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 102, 204, 0.35), 0 0 25px rgba(65, 145, 255, 0.2);
   z-index: 10; 
 }
 
+.galerie-carte:hover::before {
+  opacity: 1; /* Allume le contour de 1px */
+}
+
+/* Images internes */
+.galerie-carte img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.75, 0.25, 1), filter 0.5s ease;
+}
+
 .galerie-carte:hover img {
-  transform: scale(1.04); 
+  transform: scale(1.07);
+  filter: saturate(1.08) contrast(1.04);
 }
 
 /* --------------------------------------------------------------------------
-20.1. VOILE COULEUR INTERACTIF AVEC SHIMMER (EFFET BALAYAGE BRILLANT)
+20.1. VOILE COULEUR INTERACTIF AVEC RETOUR DE L'ICÔNE IONICONS
 -------------------------------------------------------------------------- */
 .galerie-voile-couleur { 
   position: absolute; 
@@ -4522,6 +4611,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   left: 0; 
   width: 100%; 
   height: 100%; 
+  z-index: 1;
   background: linear-gradient(135deg, rgba(0, 102, 204, 0.4) 0%, rgba(0, 242, 254, 0.1) 100%); 
   display: flex; 
   justify-content: center; 
@@ -4531,31 +4621,14 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   border-radius: 1.25rem !important; 
 }
 
-/* Ruban de lumière brillant */
-.galerie-voile-couleur::before {
-  content: '';
-  position: absolute;
-  top: 0; 
-  left: -100%; 
-  width: 50%; 
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transform: skewX(-25deg);
-}
-
 .galerie-carte:hover .galerie-voile-couleur { 
   opacity: 1; 
 }
 
-.galerie-carte:hover .galerie-voile-couleur::before {
-  left: 200%;
-  transition: left 0.7s ease-in-out;
-}
-
-/* Icône de déclenchement floutée */
+/* Cercle Icône flouté au centre */
 .cercle-icone {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border: 2px solid #ffffff;
   border-radius: 50%;
   display: flex;
@@ -4575,7 +4648,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 
 .cercle-icone i { 
   color: #ffffff; 
-  font-size: 1.1rem; 
+  font-size: 1.2rem; 
   transition: color 0.3s ease; 
 }
 
@@ -4589,14 +4662,14 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 /* ==========================================================================
-20.1. BOITE MODALE (LIGHTBOX DE LA GALERIE DE TRAVAIL)
+20.2. BOITE MODALE (LIGHTBOX DE LA GALERIE DE TRAVAIL)
 ========================================================================== */
 .galerie-travail-lightbox {
   position: fixed; 
   inset: 0; 
-  background: rgba(8, 11, 26, 0.95); 
-  backdrop-filter: blur(15px); 
-  -webkit-backdrop-filter: blur(15px);
+  background: radial-gradient(ellipse at center, rgba(25, 45, 80, 0.62), rgba(3, 6, 14, 0.97) 75%);
+  backdrop-filter: blur(18px); 
+  -webkit-backdrop-filter: blur(18px);
   z-index: 999999; 
   display: none; 
   justify-content: center; 
@@ -4615,21 +4688,33 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   max-width: 900px; 
   width: 100%; 
   display: flex; 
-  justify-content: center; 
+  flex-direction: column;
+  align-items: center; 
+  gap: 20px; 
 }
 
 .galerie-travail-wrapper img {
-  max-height: 75vh; 
+  max-height: 70vh; 
   max-width: 100%; 
   object-fit: contain; 
+  border: 1px solid rgba(126, 198, 255, 0.28);
   border-radius: 1.25rem !important; 
-  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.6); 
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65), 0 0 40px rgba(71, 139, 255, 0.12);
   transform: scale(0.93); 
-  transition: transform 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .galerie-travail-lightbox.galerie-travail-active .galerie-travail-wrapper img { 
   transform: scale(1) !important; 
+}
+
+#galerie-travail-target-title {
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0;
+  text-transform: uppercase;
 }
 
 .galerie-travail-close-btn {
@@ -4639,12 +4724,27 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   background: rgba(255, 255, 255, 0.08); 
   border: 1px solid rgba(255, 255, 255, 0.15); 
   color: #FFFFFF; 
-  padding: 11px 24px; 
+  padding: 12px 26px; 
   font-size: 0.9rem; 
   font-weight: 700;
   border-radius: 50px; 
   cursor: pointer; 
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; 
+}
+
+.galerie-travail-close-btn i {
+  font-size: 1.1rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.galerie-travail-close-btn:hover i {
+  transform: translateX(-5px);
 }
 
 .galerie-travail-close-btn:hover { 
@@ -4653,26 +4753,26 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 /* ==========================================================================
-20.1. ADAPTATION RESPONSIVE DE LA GALERIE (SÉCURITÉ PORTABLE)
+20.3. ADAPTATION RESPONSIVE DE LA GALERIE (SÉCURITÉ PORTABLE)
 ========================================================================== */
 @media (max-width: 992px) {
   .galerie-carte { 
-    width: 200px; 
-    height: 145px; 
+    width: 190px; 
+    height: 300px; /* VRAIMENT ALLONGÉE : Hauteur augmentée pour accentuer l'effet portrait sur tablette */
   }
 }
 
 @media (max-width: 576px) {
   .galerie-axe-defilement {
-    perspective: none; /* Désactive la 3D sur smartphone pour éviter tout décalage */
+    perspective: none; 
     padding: 15px 0;
   }
   
   .galerie-carte {
-    transform: none !important; /* Maintient les photos à plat au toucher */
+    transform: none !important; 
     filter: brightness(1) grayscale(0%);
-    width: 160px; /* Proportion mobile compacte préservée */
-    height: 120px;
+    width: 140px; 
+    height: 250px; /* VRAIMENT ALLONGÉE : Hauteur très étirée par le haut/bas pour marquer le style sur mobile */
     margin-right: 12px;
   }
   
@@ -4683,7 +4783,6 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   
   .galerie-voile-couleur { 
     opacity: 0; 
-    background: rgba(0, 102, 204, 0.45); 
   }
   
   .cercle-icone { 
@@ -4695,15 +4794,16 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
     font-size: 1rem; 
   }
   
-  .galerie-pack[aria-hidden="true"] { 
-    display: flex; 
-  }
-  
   .galerie-travail-close-btn { 
     top: 20px; 
     left: 20px; 
-    padding: 10px 22px; 
-    font-size: 0.85rem; 
+    padding: 10px 20px; 
+    width: calc(100% - 40px); 
+    justify-content: center; 
+  }
+
+  .galerie-travail-wrapper { 
+    margin-top: 60px; 
   }
 
   .galerie-carte:active {
@@ -4717,13 +4817,36 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   }
 }
 
+/* ======================================================== 
+20. SECTION GALERIE PHOTOS (NOIR & ANGLES DROITS)    FIN 
+======================================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ==========================================================================
-20.2. LOGOS PARTENAIRES AGRANDIS & SCÈNE CINÉTIQUE 3D (PC)
+21. LOGOS PARTENAIRES AGRANDIS & SCÈNE CINÉTIQUE 3D
 ========================================================================== */
 .partenaires-logos-section { 
-  background: #050505; 
-  padding: 60px 0; 
+  position: relative;
+  isolation: isolate;
   overflow: hidden; 
+  padding: 60px 0;
+  background:
+    radial-gradient(ellipse at 12% 15%, rgba(45,110,255,.18), transparent 38%),
+    radial-gradient(ellipse at 88% 80%, rgba(135,75,255,.15), transparent 35%),
+    linear-gradient(135deg,#070b17 0%,#0b1224 48%,#080d1c 100%) !important;
+  border-top: 1px solid rgba(120,180,255,.13);
+  border-bottom: 1px solid rgba(120,180,255,.13);
 }
 
 .partenaires-decor-3d { 
@@ -4899,9 +5022,9 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   }
 }
 
-/* ======================================================== 
-20. SECTION GALERIE PHOTOS (NOIR & ANGLES DROITS)    FIN 
-======================================================== */
+/* ==========================================================================
+21. LOGOS PARTENAIRES AGRANDIS & SCÈNE CINÉTIQUE 3D
+========================================================================== */
 
 
 
