@@ -1818,7 +1818,7 @@ img {
 12. SECTION COMPÉTENCES REVISÉE 
 ========================================================================== */
 .skill-section {
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%); 
+  background: var(--section-bg); 
   padding: 50px 0;
   position: relative;
 }
@@ -1877,7 +1877,7 @@ img {
 /* --- LES GRANDS CADRES THUMBNAILS --- */
 .skill-section .skill-thumbnail {
   /* PAR DÉFAUT : Le carré a la même couleur que le fond de la section */
-  background: var(--section-bg);
+  background: #020111;
   
   /* Bordure initiale discrète */
   border: 1px solid rgba(0, 210, 255, 0.1);
@@ -2086,8 +2086,7 @@ img {
 ==========================================================================*/
 .Feautes {
   padding: 60px 0 40px 0;
-  /* Le dégradé sombre est appliqué uniquement sur le fond global de la section */
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  background: #020111;
 }
 .Feautes.index2 {
   padding-top: 100px;
@@ -2477,7 +2476,7 @@ img {
 15. SERVICES SECTION
 ==========================================================================*/
 #services {
-  background-color: var(--section-bg);
+  background-color: #020111;
   padding: 50px 0 30px 0;
   box-shadow: var(--border-color);
   overflow: hidden;
@@ -2822,7 +2821,7 @@ SECTION SERVICES
 
 /* --- STRUCTURE GLOBALE ET BORDS TRÈS ESPACÉS --- */
 .resume-section {
-  background-color: var(--section-bg);
+  background-color: #020111;
   padding: 100px 80px;
   font-family: var(--body-font);
   font-size: var(--h5-font);
@@ -3108,7 +3107,7 @@ SECTION SERVICES
 
 /* --- LE FOND ULTRA-PÂLE DE LA SECTION --- */
 .certlang-global-section {
-  background-color: var(--section-bg);
+  background-color: #020111;
   padding: 100px 80px;
   font-family: var(--body-font);
   width: 100%;
@@ -3486,7 +3485,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 17. SECTION CODEUR
 ====================================================*/
 .Codeur {
-  background-color: var(--section-bg) !important; 
+  background-color: #020111 !important; 
   padding: 60px 0; 
   width: 100%;
   display: flex;
@@ -3763,7 +3762,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 #portfolio {
   padding: 80px 0;
   /* Fond global en dégradé sombre */
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  background: #020111;
   position: relative;
   overflow: hidden;
 }
@@ -4271,7 +4270,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 .pf-details {
   padding: 60px 0 40px 0;
   /* MODIFICATION : Le dégradé est appliqué uniquement sur le fond global de la section */
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  background: var(--section-bg);
 }
 
 .pf-details .index2 {
@@ -5031,34 +5030,37 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 
 
 /* ======================================================== 
-22. SECTION section realisations
+22. SECTION REALISATIONS (FOND PREMIUM & GLASSMORPHISM ALLÉGÉ)
 ======================================================== */
 /* Section Principale */
 .section-realisations {
   position: relative;
-  padding: 80px 0;
-  background: linear-gradient(to bottom, #02040a 0%, #060d1a 50%, #010206 100%);
+  isolation: isolate;
   overflow: hidden;
+  padding: 80px 0;
+  background:
+    radial-gradient(ellipse at 12% 15%, rgba(45, 110, 255, 0.18), transparent 38%),
+    radial-gradient(ellipse at 88% 80%, rgba(135, 75, 255, 0.15), transparent 35%),
+    linear-gradient(135deg, #070b17 0%, #0b1224 48%, #080d1c 100%) !important;
+  border-top: 1px solid rgba(120, 180, 255, 0.13);
+  border-bottom: 1px solid rgba(120, 180, 255, 0.13);
   font-family: 'Segoe UI', Roboto, sans-serif;
   color: #ffffff;
   width: 100%;
   max-width: 100%;
 }
 
-/* Conteneur principal (Respect strict des bordures intérieures et extérieures) */
+/* Conteneur principal (Épuré : Fond et bordure supprimés pour libérer le dégradé) */
 .conteneur-flou {
   position: relative;
   z-index: 2;
   max-width: 1100px;
-  width: 90%; /* Laisse une marge de sécurité globale à l'extérieur sur tablette/mobile */
+  width: 90%; 
   margin: 0 auto;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   padding: 60px 40px;
   border-radius: 30px;
-  background: rgba(2, 4, 10, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-sizing: border-box; /* Empêche le padding de faire grossir le bloc au-delà des 100% */
+  box-sizing: border-box; 
+  /* Le fond et la bordure ici ont été effacés comme demandé */
 }
 
 /* En-tête applied to the section Réalisations */
@@ -5077,8 +5079,6 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   position: relative;
   display: inline-block;
   margin: 0;
-  background: none;
-  -webkit-text-fill-color: currentcolor;
 }
 
 /* Petite barre sous le titre */
@@ -5103,13 +5103,15 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   box-sizing: border-box;
 }
 
-/* Cartes effet "Glassmorphism" premium */
+/* Cartes effet "Glassmorphism" allégé pour se marier idéalement avec le fond */
 .carte-stat {
   position: relative;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(0, 210, 255, 0.1);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  /* Fond ultra-léger pour laisser passer la couleur du fond cinématique */
+  background: rgba(255, 255, 255, 0.015);
+  /* Bordure adoucie et atténuée pour éviter les coupures brutes */
+  border: 1px solid rgba(135, 190, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 45px 20px;
   border-radius: 24px;
   text-align: center;
@@ -5122,29 +5124,29 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 @media (hover: hover) {
   .carte-stat:hover {
     transform: translateY(-8px);
-    border-color: rgba(0, 210, 255, 0.4);
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 15px 25px 40px rgba(0, 0, 0, 0.7), 
-                8px 12px 30px rgba(0, 210, 255, 0.2);
+    border-color: rgba(0, 210, 255, 0.35);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                0 0 25px rgba(0, 210, 255, 0.1);
   }
 }
 
 /* Bordure lumineuse au chargement via JavaScript */
 .carte-stat.active-glow {
-  border-color: rgba(0, 210, 255, 0.3);
-  box-shadow: 8px 12px 25px rgba(0, 102, 204, 0.15);
+  border-color: rgba(0, 210, 255, 0.25);
+  box-shadow: 0 10px 25px rgba(0, 102, 204, 0.12);
 }
 
-/* Chiffres (Format Ordinateur de base) */
+/* Chiffres */
 .nombre {
   font-size: 3.8rem;
   font-weight: 800;
   color: #00d2ff;
-  text-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
+  text-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
   margin-bottom: 12px;
 }
 
-/* Textes Labels (Format Ordinateur de base) */
+/* Textes Labels */
 .label {
   font-size: 0.95rem;
   color: #94a3b8;
@@ -5155,28 +5157,25 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 /* ======================================================== 
-   ADAPTATION ET DIMINUTION DU TEXTE SUR TABLETTE (Sous 992px)
+   ADAPTATION RESPONSIVE SUR TABLETTE (Sous 992px)
    ======================================================== */
 @media screen and (max-width: 992px) {
   .section-realisations {
     padding: 60px 0;
   }
   .conteneur-flou {
-    padding: 45px 30px; /* Réduction des espaces intérieurs */
-    border-radius: 20px;
-    width: 92%; /* Ajustement de la largeur extérieure */
+    padding: 45px 10px; 
+    width: 92%; 
   }
   .section-realisations .section-title {
-    font-size: 2rem; /* Le titre diminue pour la tablette */
+    font-size: 2rem; 
   }
   .nombre {
-    font-size: 3rem; /* Les chiffres diminuent pour la tablette */
+    font-size: 3rem; 
   }
   .label {
-    font-size: 0.85rem; /* Le texte descriptif diminue pour la tablette */
+    font-size: 0.85rem; 
   }
-  
-  /* AJOUT : Système de grille deux par deux sur tablette */
   .grille-statistiques {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -5184,44 +5183,40 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 /* ======================================================== 
-   ADAPTATION ET DIMINUTION DU TEXTE SUR PORTABLE (Sous 600px)
+   ADAPTATION RESPONSIVE SUR PORTABLE (Sous 600px)
    ======================================================== */
 @media screen and (max-width: 600px) {
   .section-realisations {
     padding: 40px 0;
   }
   .conteneur-flou {
-    padding: 30px 15px; /* Réduction drastique des marges internes pour portable */
-    border-radius: 16px;
-    width: 95%; /* Le bloc prend 95% de l'écran pour rester à l'intérieur sans déborder */
+    padding: 30px 5px; 
+    width: 95%; 
   }
   .section-realisations .section-title {
-    font-size: 1.6rem; /* Le titre diminue encore pour le format portable */
+    font-size: 1.6rem; 
     letter-spacing: 1.5px;
   }
-  
-  /* MODIFICATION : Aligné sur le système deux par deux propre */
   .grille-statistiques {
     grid-template-columns: repeat(2, 1fr); 
     gap: 12px;
   }
   .carte-stat {
-    padding: 20px 8px; /* Cartes plus petites pour le portable */
+    padding: 20px 8px; 
     border-radius: 14px;
   }
   .nombre {
-    font-size: 2.2rem; /* Les grands nombres diminuent fortement pour rester sur une ligne */
+    font-size: 2.2rem; 
     margin-bottom: 6px;
   }
   .label {
-    font-size: 0.75rem; /* Le texte diminue pour éviter tout débordement de mot */
+    font-size: 0.75rem; 
     letter-spacing: 0.5px;
   }
 }
 
-/* Ajustements additionnels pour écrans de portables miniatures (Sous 380px) */
+/* Ajustements additionnels pour portables miniatures (Sous 380px) */
 @media screen and (max-width: 380px) {
-  /* MODIFICATION : Passage sur une colonne ligne par ligne sur petit écran */
   .grille-statistiques {
     grid-template-columns: 1fr; 
     gap: 15px;
@@ -5234,7 +5229,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   }
 }
 /* ======================================================== 
-22. SECTION section realisations FIN    
+22. SECTION REALISATIONS (FOND PREMIUM & GLASSMORPHISM ALLÉGÉ) FIN
 ======================================================== */
 
 
@@ -5563,11 +5558,11 @@ MEDIA QUERIES RESPONSIVE (MOBILES, TABLETTES ET ORDINATEURS)
 24. SECTION FAQ & MAP ARCHITECTURE - THEME SOMBRE INFRASTRUCTURE (DARK TECH)
 ========================================================================== */
 .faq-map-section {
-    background-color: #0b0f19;
-    padding: 40px 16px;
-    width: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    box-sizing: border-box;
+  background: var(--section-bg);
+  padding: 40px 16px;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
 }
 
 .faq-map-section *, 

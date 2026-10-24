@@ -517,14 +517,14 @@ if (typeof ScrollReveal !== 'undefined') {
   sr.reveal(`.skill-section .skill-section-title, .pf-details .section-title, .services-section-bg .services-section-title, .Feautes .section-title, .section-realisations .section-title, .clearfix .section-title`, { interval: 100 });
 
   // 2. Glissement de la gauche vers la droite (Slide-In-Left)
-  sr.reveal(`.about .about-imageColumn.Slide-In-Left, .skill-section .skills-column.Slide-In-Left, .pf-details .aptitudes-card.fadeInLeft, .feautes-grid-pure .feautes-item.fadeInLeft, .faq-map-section .faq-column`, { origin: 'left' });
+  sr.reveal(`.about .about-imageColumn.Slide-In-Left, .skill-section .skills-column.Slide-In-Left, .pf-details .aptitudes-card.fadeInLeft, .faq-map-section .faq-column`, { origin: 'left' });
 
   // 3. Glissement de la droite vers la gauche (Slide-In-Right)
   sr.reveal(`.about .about-detailsColumn.Slide-In-Right, .skill-section .skills-column.Slide-In-Right, .certlang-global-section .certlang-vertical-track .certlang-track-node, .certlang-global-section .certlang-sidebar-stack .certlang-inner-block-white,
-  .resume-section .resume-column.experience-col .timeline-item, .resume-section .resume-column.formation-col .timeline-item, .pf-details .aptitudes-card.fadeInRight, .feautes-grid-pure .feautes-item.fadeInRight, .faq-map-section .map-column`, { origin: 'right' });
+  .resume-section .resume-column.experience-col .timeline-item, .resume-section .resume-column.formation-col .timeline-item, .pf-details .aptitudes-card.fadeInRight, .faq-map-section .map-column`, { origin: 'right' });
 
   // 4. Zoom progressif avec fondu (Fade-In-Scale)
-  sr.reveal(`.Codeur .Codeur-layout-fluid, .skill-section .skills-column.Fade-In-Scale, .pf-details .aptitudes-card.zoomIn, .feautes-grid-pure .feautes-item.zoomIn, .clearfix .portfolio-filters-wrapper`, { scale: 0.85, opacity: 0 });
+  sr.reveal(`.Codeur .Codeur-layout-fluid, .skill-section .skills-column.Fade-In-Scale, .pf-details .aptitudes-card.zoomIn, .clearfix .portfolio-filters-wrapper`, { scale: 0.85, opacity: 0 });
 
   // 5. Plongée descendante rythmée (Top-Down Card Stagger)
   sr.reveal('.Codeur .section-title, .Codeur .section-subtitle', { 
@@ -555,5 +555,47 @@ if (typeof ScrollReveal !== 'undefined') {
     origin: 'bottom', 
     interval: 200 
   });
+
+/* >>> DEBUT : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
+
+// 1. Glissement de la gauche vers la droite pour les cartes à gauche
+sr.reveal('.feautes-grid-pure .feautes-item.fadeInLeft', {
+  origin: 'left',
+  distance: '60px',
+  duration: 1000,
+  opacity: 0,
+  scale: 1
+});
+
+// 2. Glissement de la droite vers la gauche pour les cartes à droite
+sr.reveal('.feautes-grid-pure .feautes-item.fadeInRight', {
+  origin: 'right',
+  distance: '60px',
+  duration: 1000,
+  opacity: 0,
+  scale: 1
+});
+
+// 3. Zoom progressif avec fondu pour les cartes centrales
+sr.reveal('.feautes-grid-pure .feautes-item.zoomIn', {
+  duration: 1100,
+  scale: 0.7,
+  opacity: 0,
+  distance: '0px'
+});
+
+// 4. DOUBLE ANIMATION EN JS (Zoom "Woume" + Rotation à 360° complète)
+// Cible le <i> qui forme le cercle
+sr.reveal('.feautes-grid-pure .feautes-item .signle-icon i', {
+  scale: 0.2,                     // Démarre minuscule au centre (effet Zoom puissant)
+  rotate: { x: 0, y: 0, z: 360 }, // Fait un tour complet complet sur lui-même (effet Rotation)
+  duration: 1800,                 // Déroulement très fluide sur 1.8 seconde
+  delay: 600,                     // Se déclenche juste avant la stabilisation complète de la carte
+  distance: '0px'                 // Reste parfaitement centré (ne casse pas tes propriétés CSS d'alignement)
+});
+
+/* >>> FIN : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
+
+
 
 }
