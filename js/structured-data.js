@@ -12,30 +12,61 @@
 
   'use strict';
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Person",
+const structuredData = {
 
-    "@id": "https://glodyclaver-ui.github.io/glodyclaver.github.io/#person",
+  "@context": "https://schema.org",
+  "@type": "Person",
 
-    "name": "Glody Claver",
+  "@id": "https://glodyclaver-ui.github.io/glodyclaver.github.io/#person",
 
-    "url": "https://glodyclaver-ui.github.io/glodyclaver.github.io/",
+  "name": "OLEKO DIOMBA Glodi-placide",
 
-    "image": "https://glodyclaver-ui.github.io/glodyclaver.github.io/images/CLAVER%20LOGO.png",
+  "alternateName": [
+    "Glody Claver",
+    "Glody-Claver"
+  ],
 
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://glodyclaver-ui.github.io/glodyclaver.github.io/images/CLAVER%20LOGO.png"
-    },
+  "url": "https://glodyclaver-ui.github.io/glodyclaver.github.io/",
 
-    "jobTitle": "Consultant Tech, Développeur et Analyste",
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://glodyclaver-ui.github.io/glodyclaver.github.io/images/CLAVER%20LOGO.png"
+  },
 
-    "description": "Portfolio professionnel de Glody Claver, consultant en technologies, développeur et analyste.",
+  "jobTitle": [
+    "Data Analyst",
+    "Développeur logiciel",
+    "Analyste programmeur",
+    "Administrateur de bases de données",
+    "Administrateur réseaux",
+    "IT Support",
+    "UX/UI Designer",
+    "Web Designer"
+  ],
 
-    "sameAs": []
+  "description": "Portfolio professionnel de OLEKO DIOMBA Glodi-placide, connu sous le nom de Glody Claver. Spécialiste en analyse de données, développement logiciel, administration de bases de données et réseaux, support informatique, conception UX/UI et développement web.",
 
-  };
+  "knowsAbout": [
+    "Data Analysis",
+    "Data Analytics",
+    "Développement logiciel",
+    "Développement web",
+    "PHP",
+    "JavaScript",
+    "C++",
+    "MySQL",
+    "Administration de bases de données",
+    "Administration réseaux",
+    "Cybersécurité",
+    "UX Design",
+    "UI Design",
+    "Web Design",
+    "Support informatique"
+  ],
+
+  "sameAs": []
+
+};
 
   // Création du script JSON-LD.
   const script = document.createElement('script');
