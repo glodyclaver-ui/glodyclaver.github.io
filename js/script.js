@@ -237,9 +237,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-/* ======================================================== */
-/* PERSPECTIVE CINÉTIQUE DES LOGOS (PC SEULEMENT SÉCURISÉ)  */
-/* ======================================================== */
+// ==================== PERSPECTIVE CINÉTIQUE DES LOGOS (PC SEULEMENT SÉCURISÉ) ==========================
 const pisteLogosCinétique = document.getElementById('pisteLogosTravailUnique');
 const zoneDecorsCinétique = document.querySelector('.partenaires-decor-3d');
 const isMobileDevice = window.matchMedia("(max-width: 768px)").matches || ('ontouchstart' in window);
@@ -507,9 +505,7 @@ if (typeof ScrollReveal !== 'undefined') {
     mobile: true 
   });
 
-
-
-    /*==================================================
+  /*==================================================
   ANIMATIONS SCROLLREARVAL - CONFIGURATIONS
   ====================================================*/
 
@@ -556,46 +552,44 @@ if (typeof ScrollReveal !== 'undefined') {
     interval: 200 
   });
 
-/* >>> DEBUT : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
+  /* >>> DEBUT : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
 
-// 1. Glissement de la gauche vers la droite pour les cartes à gauche
-sr.reveal('.feautes-grid-pure .feautes-item.fadeInLeft', {
-  origin: 'left',
-  distance: '60px',
-  duration: 1000,
-  opacity: 0,
-  scale: 1
-});
+  // 1. Glissement de la gauche vers la droite pour les cartes à gauche
+  sr.reveal('.feautes-grid-pure .feautes-item.fadeInLeft', {
+    origin: 'left',
+    distance: '60px',
+    duration: 1000,
+    opacity: 0,
+    scale: 1
+  });
 
-// 2. Glissement de la droite vers la gauche pour les cartes à droite
-sr.reveal('.feautes-grid-pure .feautes-item.fadeInRight', {
-  origin: 'right',
-  distance: '60px',
-  duration: 1000,
-  opacity: 0,
-  scale: 1
-});
+  // 2. Glissement de la droite vers la gauche pour les cartes à droite
+  sr.reveal('.feautes-grid-pure .feautes-item.fadeInRight', {
+    origin: 'right',
+    distance: '60px',
+    duration: 1000,
+    opacity: 0,
+    scale: 1
+  });
 
-// 3. Zoom progressif avec fondu pour les cartes centrales
-sr.reveal('.feautes-grid-pure .feautes-item.zoomIn', {
-  duration: 1100,
-  scale: 0.7,
-  opacity: 0,
-  distance: '0px'
-});
+  // 3. Zoom progressif avec fondu pour les cartes centrales
+  sr.reveal('.feautes-grid-pure .feautes-item.zoomIn', {
+    duration: 1100,
+    scale: 0.7,
+    opacity: 0,
+    distance: '0px'
+  });
 
-// 4. DOUBLE ANIMATION EN JS (Zoom "Woume" + Rotation à 360° complète)
-// Cible le <i> qui forme le cercle
-sr.reveal('.feautes-grid-pure .feautes-item .signle-icon i', {
-  scale: 0.2,                     // Démarre minuscule au centre (effet Zoom puissant)
-  rotate: { x: 0, y: 0, z: 360 }, // Fait un tour complet complet sur lui-même (effet Rotation)
-  duration: 1800,                 // Déroulement très fluide sur 1.8 seconde
-  delay: 600,                     // Se déclenche juste avant la stabilisation complète de la carte
-  distance: '0px'                 // Reste parfaitement centré (ne casse pas tes propriétés CSS d'alignement)
-});
+  // 4. DOUBLE ANIMATION EN JS (Zoom "Woume" + Rotation à 360° complète)
+  // Cible le <i> qui forme le cercle
+  sr.reveal('.feautes-grid-pure .feautes-item .signle-icon i', {
+    scale: 0.2,                     // Démarre minuscule au centre (effet Zoom puissant)
+    rotate: { x: 0, y: 0, z: 360 }, // Fait un tour complet complet sur lui-même (effet Rotation)
+    duration: 1800,                 // Déroulement très fluide sur 1.8 seconde
+    delay: 600,                     // Se déclenche juste avant la stabilisation complète de la carte
+    distance: '0px'                 // Reste parfaitement centré (ne casse pas tes propriétés CSS d'alignement)
+  });
 
-/* >>> FIN : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
-
-
+  /* >>> FIN : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
 
 }

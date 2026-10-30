@@ -111,7 +111,7 @@ self.addEventListener('activate', function(event) {
 
 /* 4. Stratégie réseau : Stale-While-Revalidate sécurisée */
 self.addEventListener('fetch', function(event) {
-  /* CORRECTION CAPITAL : Filtre ciblant le domaine distant pour laisser votre js/gtag.js local aller dans le cache */
+  /* Filtre ciblant le domaine distant pour laisser votre js/gtag.js local aller dans le cache */
   if (event.request.url.includes('google-analytics') || event.request.url.includes('analytics') || event.request.url.includes('googletagmanager.com')) {
     return;
   }
