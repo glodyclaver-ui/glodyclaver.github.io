@@ -4,60 +4,123 @@
   3.0 license (glody_claver/license)
 */
 
+// ============================================================
+// ENREGISTREMENT ET GESTION DU SERVICE WORKER PWA
+// ============================================================
+
 if ('serviceWorker' in navigator) {
 
-  window.addEventListener('load', function () {
+  window.addEventListener('load', async function () {
 
-    // L'enregistrement intègre la portée racine.
-    navigator.serviceWorker.register('./sw.js', {
-      scope: './'
-    })
+    try {
 
-    .then(function (registration) {
+      // Vérifier si un Service Worker contrôle déjà la page.
+      const hadController = !!navigator.serviceWorker.controller;
 
-      console.log(
-        'Service Worker enregistré avec succès ! Portée (Scope) :',
+      // Enregistrement du Service Worker.
+      const registration = await navigator.serviceWorker.register(
+        './sw.js',
+        {
+          scope: './',
+          updateViaCache: 'none'
+        }
+      );
+
+      console.info(
+        '[PWA] Service Worker enregistré avec succès.',
         registration.scope
       );
 
-      // Vérification de la disponibilité d'une mise à jour.
+      // ======================================================
+      // DÉTECTION DES NOUVELLES VERSIONS
+      // ======================================================
+
       registration.addEventListener('updatefound', function () {
 
         const newWorker = registration.installing;
 
-        if (newWorker) {
+        if (!newWorker) return;
 
-          newWorker.addEventListener('statechange', function () {
+        console.info('[PWA] Nouvelle version détectée.');
 
-            if (
-              newWorker.state === 'installed' &&
-              navigator.serviceWorker.controller
-            ) {
+        newWorker.addEventListener('statechange', function () {
 
-              console.log(
-                'Nouveau contenu disponible, veuillez rafraîchir la page.'
+          if (newWorker.state === 'installed') {
+
+            if (navigator.serviceWorker.controller) {
+
+              console.info(
+                '[PWA] Nouvelle version installée et prête.'
+              );
+
+            } else {
+
+              console.info(
+                '[PWA] Application installée pour la première fois.'
               );
 
             }
 
-          });
+          }
 
-        }
+        });
 
       });
 
-    })
+      // ======================================================
+      // ACTUALISATION AUTOMATIQUE DU SERVICE WORKER
+      // ======================================================
 
-    .catch(function (error) {
+      await registration.update();
 
-      console.warn(
-        'Échec de l\'enregistrement du Service Worker :',
+      // Vérification périodique des mises à jour.
+      const UPDATE_INTERVAL = 60 * 60 * 1000;
+
+      setInterval(function () {
+
+        registration.update().catch(function (error) {
+
+          console.warn(
+            '[PWA] Vérification de mise à jour impossible :',
+            error
+          );
+
+        });
+
+      }, UPDATE_INTERVAL);
+
+      // ======================================================
+      // GESTION DU CHANGEMENT DE CONTRÔLEUR
+      // ======================================================
+
+      let refreshing = false;
+
+      navigator.serviceWorker.addEventListener(
+        'controllerchange',
+        function () {
+
+          if (!hadController || refreshing) return;
+
+          refreshing = true;
+
+          console.info(
+            '[PWA] Nouvelle version activée. Actualisation de la page.'
+          );
+
+          window.location.reload();
+
+        }
+      );
+
+    } catch (error) {
+
+      console.error(
+        "[PWA] Échec de l'enregistrement :",
         error
       );
 
-    });
+    }
 
   });
 
 }
-

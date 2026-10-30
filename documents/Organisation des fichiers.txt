@@ -1,0 +1,17 @@
+📂 Portfolio/
+│
+├── 📄 index.html
+├── 📄 sw.js
+│
+├── 📂 json/
+│   └── 📄 manifest.json
+│
+├── 📂 js/
+│   ├── 📄 gtag.js
+│   ├── 📄 scrollreveal.js
+│   └── 📄 script.js
+│
+└── 📂 images/
+    ├── 🖼️ pwa-192.png
+    ├── 🖼️ pwa-512.png
+    └── 🖼️ pwa-maskable-512.png
