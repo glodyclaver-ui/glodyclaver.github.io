@@ -1918,15 +1918,6 @@ img {
         transform .25s ease,
         box-shadow .25s ease;
 
-    animation: skillCardEnter .65s ease both;
-}
-
-.skill-category:nth-child(2) {
-    animation-delay: .08s;
-}
-
-.skill-category:nth-child(3) {
-    animation-delay: .16s;
 }
 
 .skill-category:hover {
@@ -2152,20 +2143,6 @@ img {
 .skill-level.lvl-maitrise {
     background: rgba(88, 86, 214, .08);
     color: #3b3994;
-}
-
-/* ==================== ANIMATION ==================== */
-
-@keyframes skillCardEnter {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* ==================== TABLETTES ==================== */

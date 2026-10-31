@@ -1,156 +1,113 @@
 /*
- * ================================================================
- * SCROLLREVEAL.JS — VERSION AMÉLIORÉE ET COMPATIBLE
- * Basée sur ScrollReveal 4.0.9
- * ================================================================
- *
+ * ============================================================================
+ * SCROLLREVEAL.JS — VERSION AMÉLIORÉE, DOCUMENTÉE ET COMPATIBLE
+ * Moteur basé sur ScrollReveal 4.0.9
+ * ============================================================================
  * Auteur : Glody Claver
  *
- * OBJECTIFS :
- *   - Améliorer la fluidité des animations au défilement.
- *   - Optimiser les performances sur ordinateur, tablette et mobile.
- *   - Garantir la stabilité et la compatibilité du fonctionnement.
- *   - Respecter les préférences d'accessibilité.
- *   - Éviter les animations inutiles et les traitements excessifs.
+ * OBJECTIFS
+ *   - Conserver l'API ScrollReveal 4.0.9 et les déclarations existantes.
+ *   - Fournir des animations fluides et personnalisables au défilement.
+ *   - Renforcer la stabilité, la gestion des erreurs et la sécurité des options.
+ *   - Limiter les traitements inutiles pendant le défilement.
+ *   - Respecter la préférence système prefers-reduced-motion.
  *
- * COMPATIBILITÉ :
+ * UTILISATION — DANS LE JAVASCRIPT PRINCIPAL
  *
  *   const sr = ScrollReveal({
- *       duration: 1500,
- *       distance: '50px',
+ *       duration: 1400,
+ *       distance: '45px',
+ *       easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
  *       reset: false
  *   });
  *
- *   sr.reveal('.selector', {
- *       origin: 'left'
- *   });
+ *   sr.reveal('.selector', { origin: 'bottom' });
  *
  *   sr.sync();
  *   sr.clean();
  *   sr.destroy();
  *
- * ================================================================
- * TYPES D'ANIMATIONS DISPONIBLES
- * ================================================================
+ * TYPES D'EFFETS (à composer avec sr.reveal)
  *
- * 1. APPARITION SIMPLE — FADE
- *    L'élément apparaît progressivement avec un effet de transparence.
+ *  1. FONDU — FADE
+ *     L'élément passe progressivement de transparent à visible.
+ *     { opacity: 0, distance: '0px' }
  *
- *    { opacity: 0 }
+ *  2. GLISSEMENT VERS LE HAUT — SLIDE UP
+ *     L'élément arrive depuis le bas.
+ *     { origin: 'bottom', distance: '45px' }
  *
- * 2. GLISSEMENT VERS LE HAUT — SLIDE UP
- *    L'élément apparaît depuis le bas de l'écran.
+ *  3. GLISSEMENT VERS LE BAS — SLIDE DOWN
+ *     L'élément arrive depuis le haut.
+ *     { origin: 'top', distance: '45px' }
  *
- *    { origin: 'bottom', distance: '50px' }
+ *  4. GLISSEMENT VERS LA DROITE — SLIDE RIGHT
+ *     L'élément arrive depuis la gauche.
+ *     { origin: 'left', distance: '45px' }
  *
- * 3. GLISSEMENT VERS LE BAS — SLIDE DOWN
- *    L'élément apparaît depuis le haut.
+ *  5. GLISSEMENT VERS LA GAUCHE — SLIDE LEFT
+ *     L'élément arrive depuis la droite.
+ *     { origin: 'right', distance: '45px' }
  *
- *    { origin: 'top', distance: '50px' }
+ *  6. ZOOM AVANT — ZOOM IN
+ *     L'élément apparaît en s'agrandissant légèrement.
+ *     { scale: 0.88, opacity: 0 }
  *
- * 4. GLISSEMENT VERS LA GAUCHE — SLIDE LEFT
- *    L'élément apparaît depuis la droite.
+ *  7. ZOOM ARRIÈRE — ZOOM OUT
+ *     L'élément apparaît en diminuant légèrement.
+ *     { scale: 1.12, opacity: 0 }
  *
- *    { origin: 'right', distance: '50px' }
+ *  8. ROTATION
+ *     L'élément apparaît avec une rotation légère sur un ou plusieurs axes.
+ *     { rotate: { x: 0, y: 0, z: 8 } }
  *
- * 5. GLISSEMENT VERS LA DROITE — SLIDE RIGHT
- *    L'élément apparaît depuis la gauche.
+ *  9. APPARITION EN CASCADE — STAGGER
+ *     Les éléments d'un même groupe apparaissent les uns après les autres.
+ *     { interval: 180 }
  *
- *    { origin: 'left', distance: '50px' }
- *
- * 6. AGRANDISSEMENT PROGRESSIF — ZOOM IN
- *    L'élément apparaît avec un léger effet de grossissement.
- *
- *    { scale: 0.85, opacity: 0 }
- *
- * 7. RÉDUCTION PROGRESSIVE — ZOOM OUT
- *    L'élément apparaît en diminuant légèrement de taille.
- *
- *    { scale: 1.15, opacity: 0 }
- *
- * 8. APPARITION DIAGONALE
- *    L'élément combine un déplacement horizontal et vertical.
- *
- *    { origin: 'bottom', distance: '60px' }
- *
- * 9. APPARITION EN CASCADE — STAGGER
- *    Plusieurs éléments apparaissent successivement.
- *
- *    { interval: 180 }
- *
- * 10. APPARITION AVEC ROTATION — ROTATE
- *     L'élément apparaît avec une légère rotation.
- *
- *     { rotate: { x: 0, y: 0, z: 10 } }
- *
- * 11. APPARITION COMBINÉE
- *     Combine transparence, déplacement et agrandissement.
- *
+ * 10. APPARITION COMBINÉE
+ *     Combine déplacement, fondu, zoom et éventuellement rotation.
  *     {
- *         origin: 'bottom',
- *         distance: '40px',
- *         opacity: 0,
- *         scale: 0.92
+ *       origin: 'bottom', distance: '35px', opacity: 0,
+ *       scale: 0.94, rotate: { x: 0, y: 0, z: 2 }
  *     }
  *
- * ================================================================
- * OPTIONS DE PERSONNALISATION
- * ================================================================
+ * OPTIONS PRINCIPALES
+ *   origin      : 'top', 'bottom', 'left' ou 'right'.
+ *   distance    : distance de déplacement (px, %, em).
+ *   duration    : durée de transition en millisecondes.
+ *   delay       : attente avant le démarrage, en millisecondes.
+ *   interval    : délai entre les éléments d'une cascade.
+ *   easing      : courbe d'accélération CSS.
+ *   opacity     : opacité de départ (0 à 1).
+ *   scale       : échelle de départ (ex. 0.9 ou 1.1).
+ *   rotate      : rotation initiale { x, y, z } en degrés.
+ *   reset       : rejoue l'effet lorsque l'élément ressort de la vue.
+ *   viewFactor  : fraction de visibilité nécessaire (0 à 1).
+ *   viewOffset  : marges de déclenchement { top, right, bottom, left }.
+ *   cleanup     : restaure les styles après révélation lorsque possible.
+ *   beforeReveal / afterReveal : callbacks avant/après apparition.
+ *   beforeReset / afterReset   : callbacks avant/après réinitialisation.
  *
- * origin       : Direction de provenance de l'élément.
- * distance     : Distance parcourue pendant l'animation.
- * duration     : Durée de l'animation en millisecondes.
- * delay        : Temps d'attente avant le démarrage.
- * interval     : Espacement entre les animations successives.
- * easing       : Courbe de transition.
- * opacity      : Opacité initiale de l'élément.
- * scale        : Échelle initiale de l'élément.
- * rotate       : Rotation initiale de l'élément.
- * reset        : Autorise la répétition lors du défilement.
- * viewFactor   : Pourcentage de visibilité nécessaire.
- * viewOffset   : Ajustement de la zone de déclenchement.
- * cleanup      : Nettoyage des styles après révélation.
+ * ACCESSIBILITÉ ET CONTRÔLE
+ *   - Si prefers-reduced-motion est activé, le moteur ne masque pas le contenu.
+ *   - Aucune initialisation automatique par attribut HTML n'est ajoutée.
+ *   - Aucun sélecteur n'est animé automatiquement par ce fichier.
+ *   - Les animations restent entièrement pilotées par vos déclarations
+ *     explicites sr.reveal() dans votre JavaScript principal.
  *
- * ================================================================
- * ACCESSIBILITÉ ET SÉCURITÉ
- * ================================================================
+ * PERFORMANCE ET ROBUSTESSE
+ *   - Traitement du défilement regroupé avec requestAnimationFrame.
+ *   - Nettoyage des éléments et conteneurs devenus obsolètes.
+ *   - Protection de la fusion des options contre les clés prototype dangereuses.
+ *   - Gestion défensive des cibles et des erreurs de configuration.
  *
- *   - Respect de prefers-reduced-motion.
- *   - Aucun masquage permanent si les animations sont désactivées.
- *   - Aucun traitement automatique basé sur des attributs HTML.
- *   - Aucune initialisation automatique par data-sr.
- *   - Aucune animation imposée aux éléments de la page.
- *   - Les animations restent entièrement pilotées par les
- *     déclarations explicites sr.reveal() du JavaScript principal.
- *
- * ================================================================
- * PERFORMANCE
- * ================================================================
- *
- *   - Utilisation optimisée de requestAnimationFrame.
- *   - Limitation des traitements inutiles.
- *   - Gestion des éléments visibles dans la fenêtre.
- *   - Prise en charge des appareils mobiles.
- *   - Réduction des animations lorsque nécessaire.
- *
- * ================================================================
  * IMPORTANT
- * ================================================================
- *
- * Ce fichier fournit le moteur d'animation.
- * Les animations ne sont pas automatiquement appliquées.
- *
- * C'est le JavaScript principal qui décide :
- *   - Quels éléments doivent être animés.
- *   - Quel effet doit être utilisé.
- *   - Dans quelle direction ils apparaissent.
- *   - À quelle vitesse ils doivent apparaître.
- *   - Avec quel délai et quel espacement.
- *
- * Aucune modification HTML n'est nécessaire pour déclarer
- * les animations.
- *
- * ================================================================
+ *   Ce fichier est le moteur. Les appels sr.reveal() déterminent seuls les
+ *   éléments, les effets, les directions, les délais et les vitesses utilisés.
+ *   Les mots FADE, SLIDE, ZOOM et ROTATION décrivent des combinaisons d'options :
+ *   ce ne sont pas des méthodes séparées à appeler.
+ * ============================================================================
  */
 
 (function (global, factory) {
@@ -441,8 +398,12 @@
 	}
 
 	/**
-	 * Attempts to return a 4x4 matrix describing the CSS
-	 * matrix passed in, but will return the identity matrix as a fallback.
+	 * Attempts to return a 4x4 matrix describing the CSS transform
+	 * matrix passed in, but will return the identity matrix as a
+	 * fallback.
+	 *
+	 * > **Tip:** This method is used to convert a CSS matrix (retrieved as a
+	 * `string` from computed styles) to its equivalent array format.
 	 *
 	 * @param  {string} source - `matrix` or `matrix3d` CSS Transform value.
 	 * @return {array}
@@ -510,9 +471,11 @@
 	}
 
 	/**
-	 * Returns a 4x4 matrix describing 2D scaling.
+	 * Returns a 4x4 matrix describing 2D scaling. The first argument
+	 * is used for both X and Y-axis scaling, unless an optional
+	 * second argument is provided to explicitly define Y-axis scaling.
 	 *
-	 * @param  {number} scalar - Decimal multiplier.
+	 * @param  {number} scalar    - Decimal multiplier.
 	 * @param  {number} [scalarY] - Decimal multiplier.
 	 * @return {array}
 	 */
@@ -525,7 +488,7 @@
 		return matrix
 	}
 
-	/**
+		/**
 	 * Returns a 4x4 matrix describing X-axis translation.
 	 *
 	 * @param  {number} distance - Measured in pixels.
@@ -612,6 +575,7 @@
 		if (parseFloat(config.distance)) {
 			var axis = config.origin === 'top' || config.origin === 'bottom' ? 'Y' : 'X';
 
+			
 			var distance = config.distance;
 			if (config.origin === 'top' || config.origin === 'left') {
 				distance = /^-/.test(distance) ? distance.substr(1) : ("-" + distance);
@@ -629,6 +593,7 @@
 					distance = value;
 					break
 				case '%':
+					
 					distance =
 						axis === 'Y'
 							? (element.node.getBoundingClientRect().height * value) / 100
@@ -650,6 +615,7 @@
 		if (config.rotate.z) { transformations.push(rotateZ(config.rotate.z)); }
 		if (config.scale !== 1) {
 			if (config.scale === 0) {
+				
 				transformations.push(scale(0.0002));
 			} else {
 				transformations.push(scale(config.scale));
@@ -659,7 +625,7 @@
 		var transform = {};
 		if (transformations.length) {
 			transform.property = getPrefixedCssProp('transform');
-
+			
 			transform.computed = {
 				raw: computed[transform.property],
 				matrix: parse(computed[transform.property])
@@ -679,6 +645,7 @@
 			};
 		}
 
+		
 		var transition = {};
 		if (opacity.generated || transform.generated.initial) {
 			transition.property = getPrefixedCssProp('transition');
@@ -745,7 +712,7 @@
 		}
 	}
 
-  	/**
+	/**
 	 * apply a CSS string to an element using the CSSOM (element.style) rather
 	 * than setAttribute, which may violate the content security policy.
 	 *
@@ -773,6 +740,10 @@
 				if (id !== null) {
 					dirty = true;
 					var element = this$1.store.elements[id];
+					if (!element) {
+						node.removeAttribute('data-sr-id');
+						return
+					}
 					if (element.callbackTimer) {
 						window.clearTimeout(element.callbackTimer.clock);
 					}
@@ -798,6 +769,10 @@
 		var this$1 = this;
 
 		each(this.store.elements, function (element) {
+			if (element.callbackTimer) {
+				window.clearTimeout(element.callbackTimer.clock);
+				element.callbackTimer = null;
+			}
 			applyStyle(element.node, element.styles.inline.generated);
 			element.node.removeAttribute('data-sr-id');
 		});
@@ -827,6 +802,10 @@
 		if (isObject(target)) {
 			each(sources, function (source) {
 				each(source, function (data, key) {
+					// Refuser les clés pouvant modifier la chaîne de prototypes.
+					if (key === '__proto__' || key === 'prototype' || key === 'constructor') {
+						return
+					}
 					if (isObject(data)) {
 						if (!target[key] || !isObject(target[key])) {
 							target[key] = {};
@@ -878,7 +857,7 @@
 		each(this.store.containers, function (container) {
 			var target =
 				container.node === document.documentElement ? window : container.node;
-			target.addEventListener('scroll', this$1.delegate);
+			target.addEventListener('scroll', this$1.delegate, { passive: true });
 			target.addEventListener('resize', this$1.delegate);
 		});
 
@@ -999,7 +978,8 @@
 			}
 
 			if (
-				!seq.blocked.head &&
+
+								!seq.blocked.head &&
 				i === [].concat( revealed.head ).pop() &&
 				i >= [].concat( visible.body ).shift()
 			) {
@@ -1119,7 +1099,7 @@
 					if (existingId) {
 						clean.call(this$1, element);
 					}
-					return elementBuffer
+					return elementBuffer 
 				}
 
 				var containerNode = tealight(config.container)[0];
@@ -1127,7 +1107,7 @@
 					throw new Error('Invalid container.')
 				}
 				if (!containerNode.contains(elementNode)) {
-					return elementBuffer
+					return elementBuffer 
 				}
 
 				var containerId;
@@ -1187,7 +1167,7 @@
 		}
 	}
 
-  	function getContainerId(node) {
+	function getContainerId(node) {
 		var collections = [], len = arguments.length - 1;
 		while ( len-- > 0 ) collections[ len ] = arguments[ len + 1 ];
 
@@ -1237,6 +1217,7 @@
 		polyfill$1;
 
 	function getGeometry(target, isContainer) {
+		
 		var height = isContainer ? target.node.clientHeight : target.node.offsetHeight;
 		var width = isContainer ? target.node.clientWidth : target.node.offsetWidth;
 
@@ -1336,6 +1317,7 @@
 				container.scroll = scroll;
 			});
 
+			
 			each(elements, function (element) {
 				if (stale || element.geometry === undefined) {
 					element.geometry = getGeometry.call(this$1, element);
@@ -1454,13 +1436,14 @@
 		return instance ? instance : (instance = this)
 	}
 
-	// Vérification renforcée de la prise en charge du navigateur.
-	// Les préférences système de réduction des animations sont respectées.
+	// Ne pas activer le masquage des éléments si l'utilisateur demande
+	// une réduction des animations. Le fallback retire la classe .sr :
+	// le contenu reste ainsi visible sans dépendre d'une animation.
 	ScrollReveal.isSupported = function () {
 		var reducedMotion = false;
 		try {
 			reducedMotion = !!(
-				window.matchMedia &&
+				typeof window.matchMedia === 'function' &&
 				window.matchMedia('(prefers-reduced-motion: reduce)').matches
 			);
 		} catch (e) {

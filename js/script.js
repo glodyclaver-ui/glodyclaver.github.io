@@ -1162,9 +1162,83 @@
             { origin: 'top', interval: 150 }
         );
 
+        // ======================================================
+        // SECTION COMPÉTENCES — ANIMATION DES 3 COLONNES
+        // ======================================================
+
+        // 01 — Apparition des trois grandes catégories
+        sr.reveal('.skill-section .skill-category--fondamentale', {
+            origin: 'left',
+            distance: '55px',
+            duration: 1800,
+            delay: 150,
+            opacity: 0,
+            scale: 0.97,
+            interval: 0
+        });
+
+        sr.reveal('.skill-section .skill-category--specifique', {
+            origin: 'bottom',
+            distance: '45px',
+            duration: 1900,
+            delay: 350,
+            opacity: 0,
+            scale: 0.97,
+            interval: 0
+        });
+
+        sr.reveal('.skill-section .skill-category--technique', {
+            origin: 'right',
+            distance: '55px',
+            duration: 1800,
+            delay: 550,
+            opacity: 0,
+            scale: 0.97,
+            interval: 0
+        });
+
+
+        // ======================================================
+        // 02 — ANIMATION PROGRESSIVE DES COMPÉTENCES
+        // ======================================================
+
+        // Compétences fondamentales
         sr.reveal(
-            '.skill-section .skills-row-grid',
-            { origin: 'bottom', interval: 150 }
+            '.skill-category--fondamentale .skill-item',
+            {
+                origin: 'bottom',
+                distance: '20px',
+                duration: 1100,
+                delay: 650,
+                opacity: 0,
+                interval: 75
+            }
+        );
+
+        // Compétences spécifiques
+        sr.reveal(
+            '.skill-category--specifique .skill-item',
+            {
+                origin: 'bottom',
+                distance: '20px',
+                duration: 1100,
+                delay: 800,
+                opacity: 0,
+                interval: 75
+            }
+        );
+
+        // Compétences techniques
+        sr.reveal(
+            '.skill-category--technique .skill-item',
+            {
+                origin: 'bottom',
+                distance: '20px',
+                duration: 1100,
+                delay: 950,
+                opacity: 0,
+                interval: 75
+            }
         );
 
         /* CERTIFICATIONS ET LANGUES */
