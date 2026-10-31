@@ -196,7 +196,7 @@
 
         // Recherche du conteneur principal de la FAQ
         const faqContainer = document.querySelector(
-            ".faq-accordion-group"
+            "#faq-zone .faq-accordion-group"
         );
 
         // Vérification de l'existence du conteneur
