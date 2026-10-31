@@ -1,18 +1,156 @@
 /*
- * ScrollReveal.js - version améliorée et compatible
- * Basée sur ScrollReveal 4.0.9.
- * 
- * Auteur : Glody Claver
- * Objectif : Performance, accessibilité, stabilité et sécurité
- * 
- * Compatibilité conservée :
- *   const sr = ScrollReveal({ ... });
- *   sr.reveal('.selector', { ... });
- *   sr.sync(); sr.clean(); sr.destroy();
+ * ================================================================
+ * SCROLLREVEAL.JS — VERSION AMÉLIORÉE ET COMPATIBLE
+ * Basée sur ScrollReveal 4.0.9
+ * ================================================================
  *
- * Amélioration intégrée : respect de prefers-reduced-motion.
- * Aucune initialisation automatique par attribut HTML n'est ajoutée :
- * les animations restent entièrement pilotées par vos déclarations sr.reveal().
+ * Auteur : Glody Claver
+ *
+ * OBJECTIFS :
+ *   - Améliorer la fluidité des animations au défilement.
+ *   - Optimiser les performances sur ordinateur, tablette et mobile.
+ *   - Garantir la stabilité et la compatibilité du fonctionnement.
+ *   - Respecter les préférences d'accessibilité.
+ *   - Éviter les animations inutiles et les traitements excessifs.
+ *
+ * COMPATIBILITÉ :
+ *
+ *   const sr = ScrollReveal({
+ *       duration: 1500,
+ *       distance: '50px',
+ *       reset: false
+ *   });
+ *
+ *   sr.reveal('.selector', {
+ *       origin: 'left'
+ *   });
+ *
+ *   sr.sync();
+ *   sr.clean();
+ *   sr.destroy();
+ *
+ * ================================================================
+ * TYPES D'ANIMATIONS DISPONIBLES
+ * ================================================================
+ *
+ * 1. APPARITION SIMPLE — FADE
+ *    L'élément apparaît progressivement avec un effet de transparence.
+ *
+ *    { opacity: 0 }
+ *
+ * 2. GLISSEMENT VERS LE HAUT — SLIDE UP
+ *    L'élément apparaît depuis le bas de l'écran.
+ *
+ *    { origin: 'bottom', distance: '50px' }
+ *
+ * 3. GLISSEMENT VERS LE BAS — SLIDE DOWN
+ *    L'élément apparaît depuis le haut.
+ *
+ *    { origin: 'top', distance: '50px' }
+ *
+ * 4. GLISSEMENT VERS LA GAUCHE — SLIDE LEFT
+ *    L'élément apparaît depuis la droite.
+ *
+ *    { origin: 'right', distance: '50px' }
+ *
+ * 5. GLISSEMENT VERS LA DROITE — SLIDE RIGHT
+ *    L'élément apparaît depuis la gauche.
+ *
+ *    { origin: 'left', distance: '50px' }
+ *
+ * 6. AGRANDISSEMENT PROGRESSIF — ZOOM IN
+ *    L'élément apparaît avec un léger effet de grossissement.
+ *
+ *    { scale: 0.85, opacity: 0 }
+ *
+ * 7. RÉDUCTION PROGRESSIVE — ZOOM OUT
+ *    L'élément apparaît en diminuant légèrement de taille.
+ *
+ *    { scale: 1.15, opacity: 0 }
+ *
+ * 8. APPARITION DIAGONALE
+ *    L'élément combine un déplacement horizontal et vertical.
+ *
+ *    { origin: 'bottom', distance: '60px' }
+ *
+ * 9. APPARITION EN CASCADE — STAGGER
+ *    Plusieurs éléments apparaissent successivement.
+ *
+ *    { interval: 180 }
+ *
+ * 10. APPARITION AVEC ROTATION — ROTATE
+ *     L'élément apparaît avec une légère rotation.
+ *
+ *     { rotate: { x: 0, y: 0, z: 10 } }
+ *
+ * 11. APPARITION COMBINÉE
+ *     Combine transparence, déplacement et agrandissement.
+ *
+ *     {
+ *         origin: 'bottom',
+ *         distance: '40px',
+ *         opacity: 0,
+ *         scale: 0.92
+ *     }
+ *
+ * ================================================================
+ * OPTIONS DE PERSONNALISATION
+ * ================================================================
+ *
+ * origin       : Direction de provenance de l'élément.
+ * distance     : Distance parcourue pendant l'animation.
+ * duration     : Durée de l'animation en millisecondes.
+ * delay        : Temps d'attente avant le démarrage.
+ * interval     : Espacement entre les animations successives.
+ * easing       : Courbe de transition.
+ * opacity      : Opacité initiale de l'élément.
+ * scale        : Échelle initiale de l'élément.
+ * rotate       : Rotation initiale de l'élément.
+ * reset        : Autorise la répétition lors du défilement.
+ * viewFactor   : Pourcentage de visibilité nécessaire.
+ * viewOffset   : Ajustement de la zone de déclenchement.
+ * cleanup      : Nettoyage des styles après révélation.
+ *
+ * ================================================================
+ * ACCESSIBILITÉ ET SÉCURITÉ
+ * ================================================================
+ *
+ *   - Respect de prefers-reduced-motion.
+ *   - Aucun masquage permanent si les animations sont désactivées.
+ *   - Aucun traitement automatique basé sur des attributs HTML.
+ *   - Aucune initialisation automatique par data-sr.
+ *   - Aucune animation imposée aux éléments de la page.
+ *   - Les animations restent entièrement pilotées par les
+ *     déclarations explicites sr.reveal() du JavaScript principal.
+ *
+ * ================================================================
+ * PERFORMANCE
+ * ================================================================
+ *
+ *   - Utilisation optimisée de requestAnimationFrame.
+ *   - Limitation des traitements inutiles.
+ *   - Gestion des éléments visibles dans la fenêtre.
+ *   - Prise en charge des appareils mobiles.
+ *   - Réduction des animations lorsque nécessaire.
+ *
+ * ================================================================
+ * IMPORTANT
+ * ================================================================
+ *
+ * Ce fichier fournit le moteur d'animation.
+ * Les animations ne sont pas automatiquement appliquées.
+ *
+ * C'est le JavaScript principal qui décide :
+ *   - Quels éléments doivent être animés.
+ *   - Quel effet doit être utilisé.
+ *   - Dans quelle direction ils apparaissent.
+ *   - À quelle vitesse ils doivent apparaître.
+ *   - Avec quel délai et quel espacement.
+ *
+ * Aucune modification HTML n'est nécessaire pour déclarer
+ * les animations.
+ *
+ * ================================================================
  */
 
 (function (global, factory) {
