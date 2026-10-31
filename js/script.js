@@ -506,90 +506,55 @@ if (typeof ScrollReveal !== 'undefined') {
   });
 
   /*==================================================
-  ANIMATIONS SCROLLREARVAL - CONFIGURATIONS
+  STRUCTURE DES ANIMATIONS PAR SECTION SECTORISÉE
   ====================================================*/
 
-  // 1. Animation en cascade (Intervalle séquentiel standard)
-  sr.reveal(`.skill-section .skill-section-title, .pf-details .section-title, .services-section-bg .services-section-title, .Feautes .section-title, .section-realisations .section-title, .clearfix .section-title`, { interval: 100 });
+  /* >>> 1. À PROPOS (ABOUT) <<< */
+  sr.reveal(`.about .about-imageColumn.Slide-In-Left`, { origin: 'left' });
+  sr.reveal(`.about .about-detailsColumn.Slide-In-Right`, { origin: 'right' });
 
-  // 2. Glissement de la gauche vers la droite (Slide-In-Left)
-  sr.reveal(`.about .about-imageColumn.Slide-In-Left, .skill-section .skills-column.Slide-In-Left, .pf-details .aptitudes-card.fadeInLeft, .faq-map-section .faq-column`, { origin: 'left' });
+  /* >>> 2. CODEUR <<< */
+  sr.reveal('.Codeur .section-title, .Codeur .section-subtitle', { origin: 'top', interval: 300 });
+  sr.reveal(`.Codeur .Codeur-layout-fluid`, { scale: 0.85, opacity: 0 });
 
-  // 3. Glissement de la droite vers la gauche (Slide-In-Right)
-  sr.reveal(`.about .about-detailsColumn.Slide-In-Right, .skill-section .skills-column.Slide-In-Right, .certlang-global-section .certlang-vertical-track .certlang-track-node, .certlang-global-section .certlang-sidebar-stack .certlang-inner-block-white,
-  .resume-section .resume-column.experience-col .timeline-item, .resume-section .resume-column.formation-col .timeline-item, .pf-details .aptitudes-card.fadeInRight, .faq-map-section .map-column`, { origin: 'right' });
+  /* >>> 3. SERVICES (SERVICES-SECTION-BG) <<< */
+  sr.reveal(`.services-section-bg .services-section-title`, { interval: 100 });
+  sr.reveal('.services-section-bg .services-card', { origin: 'top', interval: 200 });
 
-  // 4. Zoom progressif avec fondu (Fade-In-Scale)
-  sr.reveal(`.Codeur .Codeur-layout-fluid, .skill-section .skills-column.Fade-In-Scale, .pf-details .aptitudes-card.zoomIn, .clearfix .portfolio-filters-wrapper`, { scale: 0.85, opacity: 0 });
+  /* >>> 4. FEATURES (FEAUTES) <<< */
+  sr.reveal(`.Feautes .section-title`, { interval: 100 });
+  sr.reveal('.feautes-grid-pure .feautes-item.fadeInLeft', { origin: 'left', distance: '60px', duration: 1000, opacity: 0, scale: 1 });
+  sr.reveal('.feautes-grid-pure .feautes-item.fadeInRight', { origin: 'right', distance: '60px', duration: 1000, opacity: 0, scale: 1 });
+  sr.reveal('.feautes-grid-pure .feautes-item.zoomIn', { duration: 1100, scale: 0.7, opacity: 0, distance: '0px' });
+  sr.reveal('.feautes-grid-pure .feautes-item .signle-icon i', { scale: 0.2, rotate: { x: 0, y: 0, z: 360 }, duration: 1800, delay: 600, distance: '0px' });
 
-  // 5. Plongée descendante rythmée (Top-Down Card Stagger)
-  sr.reveal('.Codeur .section-title, .Codeur .section-subtitle', { 
-    origin: 'top', 
-    interval: 300 
-  });
+  /* >>> 5. PORTFOLIO FILTERS (CLEARFIX) <<< */
+  sr.reveal(`.clearfix .section-title`, { interval: 100 });
+  sr.reveal(`.clearfix .portfolio-filters-wrapper`, { scale: 0.85, opacity: 0 });
 
-  // 6. Plongée descendante rythmée (Top-Down Card Stagger)
-  sr.reveal('.resume-section .section-title, .resume-section .resume-columns-wrapper .column-title', { 
-    origin: 'top', 
-    interval: 200 
-  });
+  /* >>> 6. RÉALISATIONS (SECTION-REALISATIONS) <<< */
+  sr.reveal(`.section-realisations .section-title`, { interval: 100 });
+  sr.reveal('.section-realisations .carte-stat', { origin: 'bottom', interval: 200 });
 
-  // 7. Plongée descendante rythmée (Top-Down Card Stagger)
-  sr.reveal('.certlang-global-section .certlang-section-title, .certlang-global-section .certlang-column-headline', { 
-    origin: 'top', 
-    interval: 200 
-  });
+  /* >>> 7. DETAIL DU PORTFOLIO (PF-DETAILS) <<< */
+  sr.reveal(`.pf-details .section-title`, { interval: 100 });
+  sr.reveal(`.pf-details .aptitudes-card.fadeInLeft`, { origin: 'left' });
+  sr.reveal(`.pf-details .aptitudes-card.fadeInRight`, { origin: 'right' });
+  sr.reveal(`.pf-details .aptitudes-card.zoomIn`, { scale: 0.85, opacity: 0 });
 
-  // 8. Plongée descendante rythmée (Top-Down Card Stagger)
-  sr.reveal('.services-section-bg .services-card', { 
-    origin: 'top', 
-    interval: 200 
-  });
+  /* >>> 8. PARCOURS ET EXPÉRIENCES (RESUME-SECTION) <<< */
+  sr.reveal('.resume-section .section-title, .resume-section .resume-columns-wrapper .column-title', { origin: 'top', interval: 200 });
+  sr.reveal(`.resume-section .resume-column.experience-col .timeline-item, .resume-section .resume-column.formation-col .timeline-item`, { origin: 'right' });
 
-  // 10. Grilles montantes rythmées (Grid Elevate Card Stagger)
-  sr.reveal('.section-realisations .carte-stat', { 
-    origin: 'bottom', 
-    interval: 200 
-  });
+  /* >>> 9. COMPÉTENCES (SKILL-SECTION) <<< */
+  sr.reveal('.skill-section .skill-section-kicker, .skill-section .skill-section-description', { origin: 'top', interval: 300 });
+  sr.reveal('.skill-section .skills-row-grid', { origin: 'bottom', interval: 200 });
 
-  /* >>> DEBUT : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
+  /* >>> 10. CERTIFICATIONS & LANGUES (CERTLANG-GLOBAL-SECTION) <<< */
+  sr.reveal('.certlang-global-section .certlang-section-title, .certlang-global-section .certlang-column-headline', { origin: 'top', interval: 200 });
+  sr.reveal(`.certlang-global-section .certlang-vertical-track .certlang-track-node, .certlang-global-section .certlang-sidebar-stack .certlang-inner-block-white`, { origin: 'right' });
 
-  // 1. Glissement de la gauche vers la droite pour les cartes à gauche
-  sr.reveal('.feautes-grid-pure .feautes-item.fadeInLeft', {
-    origin: 'left',
-    distance: '60px',
-    duration: 1000,
-    opacity: 0,
-    scale: 1
-  });
-
-  // 2. Glissement de la droite vers la gauche pour les cartes à droite
-  sr.reveal('.feautes-grid-pure .feautes-item.fadeInRight', {
-    origin: 'right',
-    distance: '60px',
-    duration: 1000,
-    opacity: 0,
-    scale: 1
-  });
-
-  // 3. Zoom progressif avec fondu pour les cartes centrales
-  sr.reveal('.feautes-grid-pure .feautes-item.zoomIn', {
-    duration: 1100,
-    scale: 0.7,
-    opacity: 0,
-    distance: '0px'
-  });
-
-  // 4. DOUBLE ANIMATION EN JS (Zoom "Woume" + Rotation à 360° complète)
-  // Cible le <i> qui forme le cercle
-  sr.reveal('.feautes-grid-pure .feautes-item .signle-icon i', {
-    scale: 0.2,                     // Démarre minuscule au centre (effet Zoom puissant)
-    rotate: { x: 0, y: 0, z: 360 }, // Fait un tour complet complet sur lui-même (effet Rotation)
-    duration: 1800,                 // Déroulement très fluide sur 1.8 seconde
-    delay: 600,                     // Se déclenche juste avant la stabilisation complète de la carte
-    distance: '0px'                 // Reste parfaitement centré (ne casse pas tes propriétés CSS d'alignement)
-  });
-
-  /* >>> FIN : ANIMATIONS PREMIUM SCROLLREVEAL POUR FEATURES <<< */
-
+  /* >>> 11. FAQ & CARTOGRAPHIE (FAQ-MAP-SECTION) <<< */
+  sr.reveal(`.faq-map-section .faq-column`, { origin: 'left' });
+  sr.reveal(`.faq-map-section .map-column`, { origin: 'right' });
 }
