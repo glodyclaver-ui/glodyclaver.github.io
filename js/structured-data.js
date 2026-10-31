@@ -1,288 +1,399 @@
-/*
-  TEMPLATED
-  @glody claver
-  3.0 license (glody_claver/license)
-*/
+"use strict";
 
 // ============================================================
-// SCHEMA.ORG — DONNÉES STRUCTURÉES COMPLÈTES
-// IDENTITÉ PROFESSIONNELLE, PORTFOLIO ET RÉALISATIONS
+// STRUCTURED DATA - PORTFOLIO GLODY CLAVER
+// Schema.org / JSON-LD
 // ============================================================
 
-(() => {
+(function () {
 
-  'use strict';
+    // ========================================================
+    // 1. CONFIGURATION GÉNÉRALE
+    // ========================================================
 
-  // ==========================================================
-  // 1. CONFIGURATION GÉNÉRALE
-  // ==========================================================
+    const SITE_URL =
+        "https://glodyclaver-ui.github.io/glodyclaver.github.io/";
 
-  const SITE_URL =
-    'https://glodyclaver-ui.github.io/glodyclaver.github.io/';
+    const LOGO_URL =
+        SITE_URL + "images/CLAVER%20LOGO.png";
 
-  const LOGO_URL =
-    SITE_URL + 'images/CLAVER%20LOGO.png';
 
-  // ==========================================================
-  // 2. DONNÉES STRUCTURÉES
-  // ==========================================================
+    // ========================================================
+    // 2. DONNÉES STRUCTURÉES PRINCIPALES
+    // ========================================================
 
-  const structuredData = {
+    const structuredData = {
 
-    "@context": "https://schema.org",
+        "@context": "https://schema.org",
 
-    "@graph": [
+        "@graph": [
 
-      // ======================================================
-      // 1. IDENTITÉ PROFESSIONNELLE — PERSON
-      // ======================================================
+            // =================================================
+            // PERSON - IDENTITÉ PROFESSIONNELLE
+            // =================================================
 
-      {
-        "@type": "Person",
+            {
+                "@type": "Person",
 
-        "@id": SITE_URL + "#person",
+                "@id": SITE_URL + "#person",
 
-        "name": "OLEKO DIOMBA Glodi-placide",
+                "name": "OLEKO DIOMBA Glodi-placide",
 
-        "alternateName": [
-          "Glody Claver",
-          "Glody-Claver"
-        ],
+                "alternateName": [
+                    "Glody Claver",
+                    "Glody-Claver"
+                ],
 
-        "url": SITE_URL,
+                "url": SITE_URL,
 
-        "image": {
-          "@type": "ImageObject",
-          "url": LOGO_URL
-        },
+                "image": {
+                    "@type": "ImageObject",
+                    "url": LOGO_URL
+                },
 
-        "jobTitle": [
-          "Data Analyst",
-          "Développeur logiciel",
-          "Analyste programmeur",
-          "Administrateur de bases de données",
-          "Administrateur réseaux",
-          "IT Support",
-          "UX/UI Designer",
-          "Web Designer"
-        ],
+                "jobTitle": [
+                    "Data Analyst",
+                    "Développeur logiciel",
+                    "Analyste programmeur",
+                    "Administrateur de bases de données",
+                    "Administrateur réseaux",
+                    "IT Support",
+                    "UX/UI Designer",
+                    "Web Designer"
+                ],
 
-        "description": "Portfolio professionnel de OLEKO DIOMBA Glodi-placide, connu sous le nom de Glody Claver. Spécialisé dans l'analyse de données, le développement logiciel, l'administration de bases de données et réseaux, le support informatique, la conception UX/UI et le développement web.",
+                "description":
+                    "Professionnel de l'informatique spécialisé dans l'analyse de données, le développement logiciel et web, l'administration des bases de données et des réseaux informatiques, le support informatique ainsi que la conception UX/UI.",
 
-        "knowsAbout": [
-          "Data Analysis",
-          "Data Analytics",
-          "Développement logiciel",
-          "Développement web",
-          "PHP",
-          "JavaScript",
-          "C++",
-          "HTML",
-          "CSS",
-          "MySQL",
-          "Administration de bases de données",
-          "Administration réseaux",
-          "Cybersécurité",
-          "UX Design",
-          "UI Design",
-          "Web Design",
-          "Support informatique"
-        ],
+                "knowsAbout": [
 
-        "sameAs": []
+                    "Data Analysis",
+                    "Data Analytics",
+                    "Développement logiciel",
+                    "Développement web",
+                    "PHP",
+                    "JavaScript",
+                    "C++",
+                    "HTML",
+                    "CSS",
+                    "MySQL",
+                    "Administration de bases de données",
+                    "Administration réseaux",
+                    "Cybersécurité",
+                    "UX Design",
+                    "UI Design",
+                    "Web Design",
+                    "Support informatique"
 
-      },
+                ],
 
-      // ======================================================
-      // 2. SITE WEB — WEBSITE
-      // ======================================================
+                "sameAs": []
 
-      {
-        "@type": "WebSite",
+            },
 
-        "@id": SITE_URL + "#website",
 
-        "url": SITE_URL,
+            // =================================================
+            // WEBSITE - SITE INTERNET
+            // =================================================
 
-        "name": "Glody-Claver | Consultant Tech",
+            {
+                "@type": "WebSite",
 
-        "alternateName": "Glody Portfolio",
+                "@id": SITE_URL + "#website",
 
-        "description": "Portfolio professionnel de Glody Claver présentant ses compétences, ses réalisations et ses projets dans les domaines des technologies, du développement logiciel et des réseaux.",
+                "url": SITE_URL,
 
-        "inLanguage": "fr-FR",
+                "name": "Glody-Claver | Consultant Tech",
 
-        "publisher": {
-          "@id": SITE_URL + "#person"
-        }
+                "alternateName": "Glody Portfolio",
 
-      },
+                "description":
+                    "Portfolio professionnel de Glody Claver présentant ses compétences, ses projets et ses réalisations dans les domaines de l'informatique, du développement logiciel, de l'analyse de données et des technologies numériques.",
 
-      // ======================================================
-      // 3. PAGE PRINCIPALE — WEBPAGE
-      // ======================================================
+                "inLanguage": "fr-FR",
 
-      {
-        "@type": "ProfilePage",
+                "publisher": {
+                    "@id": SITE_URL + "#person"
+                }
 
-        "@id": SITE_URL + "#webpage",
+            },
 
-        "url": SITE_URL,
 
-        "name": "Portfolio professionnel de Glody Claver",
+            // =================================================
+            // PROFILEPAGE - PAGE DU PORTFOLIO
+            // =================================================
 
-        "description": "Découvrez le parcours professionnel, les compétences techniques et les réalisations de Glody Claver.",
+            {
+                "@type": "ProfilePage",
 
-        "isPartOf": {
-          "@id": SITE_URL + "#website"
-        },
+                "@id": SITE_URL + "#webpage",
 
-        "about": {
-          "@id": SITE_URL + "#person"
-        },
+                "url": SITE_URL,
 
-        "mainEntity": {
-          "@id": SITE_URL + "#person"
-        },
+                "name": "Portfolio professionnel de Glody Claver",
 
-        "inLanguage": "fr-FR"
+                "description":
+                    "Découvrez le profil professionnel, les compétences techniques et les réalisations de Glody Claver dans les domaines de l'informatique et des technologies numériques.",
 
-      },
+                "isPartOf": {
+                    "@id": SITE_URL + "#website"
+                },
 
-      // ======================================================
-      // 4. PORTFOLIO ET RÉALISATIONS — CREATIVEWORK
-      // ======================================================
+                "about": {
+                    "@id": SITE_URL + "#person"
+                },
 
-      {
-        "@type": "CreativeWork",
+                "mainEntity": {
+                    "@id": SITE_URL + "#person"
+                },
 
-        "@id": SITE_URL + "#portfolio",
+                "inLanguage": "fr-FR"
 
-        "name": "Réalisations professionnelles de Glody Claver",
+            },
 
-        "description": "Collection de réalisations professionnelles comprenant des projets de développement logiciel, de conception web, de création graphique, de bases de données et de solutions informatiques.",
 
-        "url": SITE_URL + "#portfolio",
+            // =================================================
+            // CREATIVEWORK - RÉALISATIONS PROFESSIONNELLES
+            // =================================================
 
-        "creator": {
-          "@id": SITE_URL + "#person"
-        },
+            {
+                "@type": "CreativeWork",
 
-        "author": {
-          "@id": SITE_URL + "#person"
-        },
+                "@id": SITE_URL + "#portfolio",
 
-        "image": LOGO_URL,
+                "name":
+                    "Réalisations professionnelles de Glody Claver",
 
-        "inLanguage": "fr-FR"
+                "description":
+                    "Présentation des projets et réalisations professionnelles dans les domaines du développement logiciel, du développement web, de l'analyse de données, de l'administration des bases de données et des réseaux informatiques.",
 
-      },
+                "url": SITE_URL + "#portfolio",
 
-      // ======================================================
-      // 5. QUESTIONS FRÉQUENTES — FAQPAGE
-      // ======================================================
+                "creator": {
+                    "@id": SITE_URL + "#person"
+                },
 
-      {
-        "@type": "FAQPage",
+                "author": {
+                    "@id": SITE_URL + "#person"
+                },
 
-        "@id": SITE_URL + "#faq",
+                "image": LOGO_URL,
 
-        "url": SITE_URL + "#faq",
+                "inLanguage": "fr-FR"
 
-        "name": "Questions fréquentes — Glody Claver",
-
-        "inLanguage": "fr-FR",
-
-        "mainEntity": [
-
-          {
-            "@type": "Question",
-
-            "name": "Quelles sont les compétences professionnelles de Glody Claver ?",
-
-            "acceptedAnswer": {
-              "@type": "Answer",
-
-              "text": "Glody Claver possède des compétences dans l'analyse de données, le développement logiciel, la programmation, l'administration de bases de données et réseaux, le support informatique, le développement web et la conception UX/UI."
             }
-
-          },
-
-          {
-            "@type": "Question",
-
-            "name": "Quelles technologies sont utilisées dans ses projets ?",
-
-            "acceptedAnswer": {
-              "@type": "Answer",
-
-              "text": "Les technologies utilisées dépendent des besoins de chaque projet. Elles comprennent notamment PHP, JavaScript, C++, HTML, CSS et MySQL."
-            }
-
-          },
-
-          {
-            "@type": "Question",
-
-            "name": "Quels types de projets réalise Glody Claver ?",
-
-            "acceptedAnswer": {
-              "@type": "Answer",
-
-              "text": "Ses réalisations couvrent notamment le développement de logiciels, la conception de sites web, la création graphique, la gestion de bases de données et les solutions informatiques."
-            }
-
-          },
-
-          {
-            "@type": "Question",
-
-            "name": "Comment contacter Glody Claver pour une collaboration ?",
-
-            "acceptedAnswer": {
-              "@type": "Answer",
-
-              "text": "Les personnes intéressées peuvent utiliser le formulaire de contact disponible sur son portfolio professionnel pour présenter leur besoin ou proposer une collaboration."
-            }
-
-          }
 
         ]
 
-      }
+    };
 
-    ]
 
-  };
+    // ========================================================
+    // 3. FAQPAGE - GÉNÉRATION AUTOMATIQUE DES QUESTIONS
+    // ========================================================
 
-  // ==========================================================
-  // 3. INJECTION DES DONNÉES STRUCTURÉES DANS LE HTML
-  // ==========================================================
+    function generateFAQStructuredData() {
 
-  // Éviter les injections multiples.
-  if (
-    document.querySelector(
-      'script[data-schema="glody-structured-data"]'
-    )
-  ) {
-    return;
-  }
+        // Recherche du conteneur principal de la FAQ
+        const faqContainer = document.querySelector(
+            ".faq-accordion-group"
+        );
 
-  // Création du script JSON-LD.
-  const schemaScript = document.createElement('script');
+        // Vérification de l'existence du conteneur
+        if (!faqContainer) {
+            return;
+        }
 
-  schemaScript.type = 'application/ld+json';
+        // Récupération de toutes les questions
+        const faqItems = Array.from(
+            faqContainer.querySelectorAll(".faq-item")
+        );
 
-  schemaScript.dataset.schema = 'glody-structured-data';
+        // Extraction des questions et réponses
+        const faqQuestions = faqItems
 
-  schemaScript.textContent = JSON.stringify(structuredData);
+            .map(function (item) {
 
-  // Insertion dans le document.
-  (document.head || document.documentElement)
-    .appendChild(schemaScript);
+                const questionElement = item.querySelector(
+                    ".faq-title-text"
+                );
 
-  console.info(
-    '[Schema.org] Données structurées chargées avec succès.'
-  );
+                const answerElement = item.querySelector(
+                    ".faq-content"
+                );
+
+                // Vérification des éléments
+                if (!questionElement || !answerElement) {
+                    return null;
+                }
+
+                // Extraction du texte de la question
+                const question = questionElement.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                // Extraction du texte de la réponse
+                const answer = answerElement.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+                // Ignorer les éléments vides
+                if (!question || !answer) {
+                    return null;
+                }
+
+                // Construction de l'objet Schema.org
+                return {
+
+                    "@type": "Question",
+
+                    "name": question,
+
+                    "acceptedAnswer": {
+
+                        "@type": "Answer",
+
+                        "text": answer
+
+                    }
+
+                };
+
+            })
+
+            .filter(Boolean);
+
+
+        // Aucune FAQ valide : arrêt
+        if (faqQuestions.length === 0) {
+            return;
+        }
+
+
+        // ====================================================
+        // SUPPRESSION D'UNE ANCIENNE FAQPAGE
+        // ====================================================
+
+        structuredData["@graph"] = structuredData["@graph"].filter(
+            function (entity) {
+
+                return entity["@type"] !== "FAQPage";
+
+            }
+        );
+
+
+        // ====================================================
+        // CONSTRUCTION DE LA NOUVELLE FAQPAGE
+        // ====================================================
+
+        const faqSchema = {
+
+            "@type": "FAQPage",
+
+            "@id": SITE_URL + "#faq",
+
+            "url": SITE_URL + "#faq",
+
+            "name": "Questions fréquentes - Glody Claver",
+
+            "description":
+                "Questions fréquentes concernant le profil professionnel, les compétences, les technologies et les services de Glody Claver.",
+
+            "inLanguage": "fr-FR",
+
+            "mainEntity": faqQuestions
+
+        };
+
+
+        // Ajout de la FAQ au graphe principal
+        structuredData["@graph"].push(faqSchema);
+
+    }
+
+
+    // ========================================================
+    // 4. INITIALISATION DU SCHÉMA FAQ
+    // ========================================================
+
+    function initializeStructuredData() {
+
+        generateFAQStructuredData();
+
+
+        // ====================================================
+        // 5. PROTECTION CONTRE LES INJECTIONS MULTIPLES
+        // ====================================================
+
+        if (
+            document.querySelector(
+                'script[data-schema="glody-structured-data"]'
+            )
+        ) {
+            return;
+        }
+
+
+        // ====================================================
+        // 6. CRÉATION DU SCRIPT JSON-LD
+        // ====================================================
+
+        const schemaScript = document.createElement("script");
+
+        schemaScript.type = "application/ld+json";
+
+        schemaScript.dataset.schema = "glody-structured-data";
+
+        schemaScript.textContent = JSON.stringify(
+            structuredData
+        );
+
+
+        // ====================================================
+        // 7. INJECTION DANS LE DOCUMENT HTML
+        // ====================================================
+
+        (document.head || document.documentElement)
+            .appendChild(schemaScript);
+
+
+        // ====================================================
+        // 8. CONFIRMATION DANS LA CONSOLE
+        // ====================================================
+
+        console.info(
+            "[Schema.org] Données structurées initialisées avec succès."
+        );
+
+        console.info(
+            "[Schema.org] Questions FAQ détectées :",
+            structuredData["@graph"].find(
+                function (entity) {
+                    return entity["@type"] === "FAQPage";
+                }
+            )?.mainEntity.length || 0
+        );
+
+    }
+
+
+    // ========================================================
+    // 9. LANCEMENT APRÈS CHARGEMENT DU DOM
+    // ========================================================
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeStructuredData,
+            { once: true }
+        );
+
+    } else {
+
+        initializeStructuredData();
+
+    }
 
 })();
