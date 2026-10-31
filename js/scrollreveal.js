@@ -1,3 +1,20 @@
+/*
+ * ScrollReveal.js - version améliorée et compatible
+ * Basée sur ScrollReveal 4.0.9.
+ * 
+ * Auteur : Glody Claver
+ * Objectif : Performance, accessibilité, stabilité et sécurité
+ * 
+ * Compatibilité conservée :
+ *   const sr = ScrollReveal({ ... });
+ *   sr.reveal('.selector', { ... });
+ *   sr.sync(); sr.clean(); sr.destroy();
+ *
+ * Amélioration intégrée : respect de prefers-reduced-motion.
+ * Aucune initialisation automatique par attribut HTML n'est ajoutée :
+ * les animations restent entièrement pilotées par vos déclarations sr.reveal().
+ */
+
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -286,12 +303,8 @@
 	}
 
 	/**
-	 * Attempts to return a 4x4 matrix describing the CSS transform
-	 * matrix passed in, but will return the identity matrix as a
-	 * fallback.
-	 *
-	 * > **Tip:** This method is used to convert a CSS matrix (retrieved as a
-	 * `string` from computed styles) to its equivalent array format.
+	 * Attempts to return a 4x4 matrix describing the CSS
+	 * matrix passed in, but will return the identity matrix as a fallback.
 	 *
 	 * @param  {string} source - `matrix` or `matrix3d` CSS Transform value.
 	 * @return {array}
@@ -359,11 +372,9 @@
 	}
 
 	/**
-	 * Returns a 4x4 matrix describing 2D scaling. The first argument
-	 * is used for both X and Y-axis scaling, unless an optional
-	 * second argument is provided to explicitly define Y-axis scaling.
+	 * Returns a 4x4 matrix describing 2D scaling.
 	 *
-	 * @param  {number} scalar    - Decimal multiplier.
+	 * @param  {number} scalar - Decimal multiplier.
 	 * @param  {number} [scalarY] - Decimal multiplier.
 	 * @return {array}
 	 */
@@ -463,7 +474,6 @@
 		if (parseFloat(config.distance)) {
 			var axis = config.origin === 'top' || config.origin === 'bottom' ? 'Y' : 'X';
 
-			
 			var distance = config.distance;
 			if (config.origin === 'top' || config.origin === 'left') {
 				distance = /^-/.test(distance) ? distance.substr(1) : ("-" + distance);
@@ -481,7 +491,6 @@
 					distance = value;
 					break
 				case '%':
-					
 					distance =
 						axis === 'Y'
 							? (element.node.getBoundingClientRect().height * value) / 100
@@ -503,7 +512,6 @@
 		if (config.rotate.z) { transformations.push(rotateZ(config.rotate.z)); }
 		if (config.scale !== 1) {
 			if (config.scale === 0) {
-				
 				transformations.push(scale(0.0002));
 			} else {
 				transformations.push(scale(config.scale));
@@ -513,7 +521,7 @@
 		var transform = {};
 		if (transformations.length) {
 			transform.property = getPrefixedCssProp('transform');
-			
+
 			transform.computed = {
 				raw: computed[transform.property],
 				matrix: parse(computed[transform.property])
@@ -533,7 +541,6 @@
 			};
 		}
 
-		
 		var transition = {};
 		if (opacity.generated || transform.generated.initial) {
 			transition.property = getPrefixedCssProp('transition');
@@ -600,12 +607,12 @@
 		}
 	}
 
-	/**
+  	/**
 	 * apply a CSS string to an element using the CSSOM (element.style) rather
 	 * than setAttribute, which may violate the content security policy.
 	 *
-	 * @param {Node}   [el]  
-	 * @param {string} [declaration] 
+	 * @param {Node}   [el]
+	 * @param {string} [declaration]
 	 */
 	function applyStyle (el, declaration) {
 		declaration.split(';').forEach(function (pair) {
@@ -974,7 +981,7 @@
 					if (existingId) {
 						clean.call(this$1, element);
 					}
-					return elementBuffer 
+					return elementBuffer
 				}
 
 				var containerNode = tealight(config.container)[0];
@@ -982,7 +989,7 @@
 					throw new Error('Invalid container.')
 				}
 				if (!containerNode.contains(elementNode)) {
-					return elementBuffer 
+					return elementBuffer
 				}
 
 				var containerId;
@@ -1042,7 +1049,7 @@
 		}
 	}
 
-	function getContainerId(node) {
+  	function getContainerId(node) {
 		var collections = [], len = arguments.length - 1;
 		while ( len-- > 0 ) collections[ len ] = arguments[ len + 1 ];
 
@@ -1092,7 +1099,6 @@
 		polyfill$1;
 
 	function getGeometry(target, isContainer) {
-		
 		var height = isContainer ? target.node.clientHeight : target.node.offsetHeight;
 		var width = isContainer ? target.node.clientWidth : target.node.offsetWidth;
 
@@ -1192,7 +1198,6 @@
 				container.scroll = scroll;
 			});
 
-			
 			each(elements, function (element) {
 				if (stale || element.geometry === undefined) {
 					element.geometry = getGeometry.call(this$1, element);
@@ -1311,7 +1316,20 @@
 		return instance ? instance : (instance = this)
 	}
 
-	ScrollReveal.isSupported = function () { return isTransformSupported() && isTransitionSupported(); };
+	// Vérification renforcée de la prise en charge du navigateur.
+	// Les préférences système de réduction des animations sont respectées.
+	ScrollReveal.isSupported = function () {
+		var reducedMotion = false;
+		try {
+			reducedMotion = !!(
+				window.matchMedia &&
+				window.matchMedia('(prefers-reduced-motion: reduce)').matches
+			);
+		} catch (e) {
+			reducedMotion = false;
+		}
+		return !reducedMotion && isTransformSupported() && isTransitionSupported();
+	};
 
 	Object.defineProperty(ScrollReveal, 'debug', {
 		get: function () { return debug || false; },

@@ -1,560 +1,1285 @@
-/*
-  JavaScript Global Modifié & Optimisé
-  Author Name: OLEKO DIOMBA Glodi-placide glody-claver
-  3.0 license (glody_claver/license)
-*/
+/* ============================================================
+   JAVASCRIPT GLOBAL 4.0 — VERSION OPTIMISÉE
+   Auteur : Glody Claver
+   Objectif : Performance, accessibilité, stabilité et sécurité
+============================================================ */
 
-// ==================== VARIABLES GLOBALES PARTAGÉES ====================
-const globalBody = document.querySelector('body');
-const globalHeader = document.querySelector("header");
-const globalScrollUpBtn = document.querySelector('.scrollUp-btn');
-const globalNavMenu = globalBody ? globalBody.querySelector('.menu-content') : null;
-const globalSplashScreen = document.getElementById('splash-screen'); 
+(() => {
+    'use strict';
 
-const portfolioSections = document.querySelectorAll('section[id]');
-const cachedNavLinks = [];
+    /* ========================================================
+       1. CONFIGURATION GLOBALE
+    ======================================================== */
 
-if (history.scrollRestoration) {
-  history.scrollRestoration = 'manual'; // Empêche le navigateur de restaurer l'ancienne position au refresh
-}
-window.scrollTo(0, 0);
+    const CONFIG = {
+        splashDuration: 2100,
+        typingSpeed: 65,
+        deletingSpeed: 35,
+        typingPause: 1800,
+        deletingPause: 450,
+        counterDuration: 2000,
+        portfolioThreshold: 0.08,
+        scrollThreshold: 250,
+        logoRotation: 15
+    };
 
-if (portfolioSections.length > 0) {
-  portfolioSections.forEach(section => {
-    const navLink = document.querySelector(`.menu-content a[href='#${section.id}']`);
-    if (navLink) {
-      cachedNavLinks.push({ section, navLink });
-      
-      navLink.addEventListener("click", () => {
-        if (globalNavMenu) globalNavMenu.classList.remove("open");
-        if (globalBody) globalBody.classList.remove('hide-scrollbar'); 
-      });
+    const SELECTORS = {
+        body: 'body',
+        header: 'header',
+        splash: '#splash-screen',
+        typedText: '#typed-text',
+        navMenu: '.menu-content',
+        navOpen: '.navOpen-btn',
+        navClose: '.navClose-btn',
+        scrollUp: '.scrollUp-btn',
+        portfolio: '#portfolio',
+        portfolioItem: '.portfolio-item',
+        portfolioFilters: '#portfolio-flters li',
+        portfolioLightbox: '#portfolio-lightbox',
+        galleryModal: '#galerie-travail-modal-unique',
+        galleryImage: '#galerie-travail-img-unique',
+        logoTrack: '#pisteLogosTravailUnique',
+        logoZone: '.partenaires-decor-3d',
+        counters: '.compteur'
+    };
+
+    const DOM = {};
+
+    const reducedMotion = window.matchMedia
+        ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        : false;
+
+    let scrollFrame = null;
+    let typingTimer = null;
+    let splashTimer = null;
+
+    const lockedModals = new Set();
+    let previousBodyOverflow = '';
+    let previousHtmlOverflow = '';
+
+    /* ========================================================
+       2. INITIALISATION DOM
+    ======================================================== */
+
+    function cacheDOM() {
+        DOM.body = document.body;
+        DOM.html = document.documentElement;
+        DOM.header = document.querySelector(SELECTORS.header);
+        DOM.splash = document.querySelector(SELECTORS.splash);
+        DOM.typedText = document.querySelector(SELECTORS.typedText);
+        DOM.navMenu = document.querySelector(SELECTORS.navMenu);
+        DOM.navOpen = document.querySelector(SELECTORS.navOpen);
+        DOM.navClose = document.querySelector(SELECTORS.navClose);
+        DOM.scrollUp = document.querySelector(SELECTORS.scrollUp);
+
+        DOM.portfolioModal = document.querySelector(
+            SELECTORS.portfolioLightbox
+        );
+
+        DOM.galleryModal = document.querySelector(
+            SELECTORS.galleryModal
+        );
+
+        DOM.galleryImage = document.querySelector(
+            SELECTORS.galleryImage
+        );
+
+        DOM.logoTrack = document.querySelector(
+            SELECTORS.logoTrack
+        );
+
+        DOM.logoZone = document.querySelector(
+            SELECTORS.logoZone
+        );
     }
-  });
-}
 
-// ==================== 1. ANIMATION D'OUVERTURE SPLASH SCREEN ====================
-function handleSplashScreen() {
-  if (globalSplashScreen && globalBody) {
-    globalBody.classList.add('hide-scrollbar');
-    document.documentElement.style.overflow = 'hidden';
-    window.scrollTo(0, 0);
+    /* ========================================================
+       3. OUTILS UTILITAIRES
+    ======================================================== */
 
-    globalSplashScreen.addEventListener('animationend', (e) => {
-      if (e.animationName === 'vanishOut') {
-        globalSplashScreen.style.display = 'none';
-        globalBody.classList.remove('hide-scrollbar');
-        document.documentElement.style.overflow = '';
-        document.documentElement.style.overflowX = 'hidden';
-        globalBody.style.overflowX = 'hidden';
-        window.scrollTo(0, 0);
-      }
-    });
+    const Utils = {
 
-    setTimeout(() => {
-      if (globalSplashScreen.style.display !== 'none') {
-        globalSplashScreen.style.display = 'none';
-        globalBody.classList.remove('hide-scrollbar');
-        document.documentElement.style.overflow = '';
-        document.documentElement.style.overflowX = 'hidden';
-        globalBody.style.overflowX = 'hidden';
-        window.scrollTo(0, 0);
-      }
-    }, 2800); 
-  }
-}
+        exists(element) {
+            return element !== null && element !== undefined;
+        },
 
-// ==================== 2. EFFET D'ÉCRITURE AUTOMATIQUE SÉCURISÉ ====================
-const words = [
-  "DATA ANALYST", "DIGITAL MARKETING", "GRAPHISTE", "IT SUPPORT", "WEBDESIGNER",
-  "ANALYSTE PROGRAMMEUR", "DÉVELOPPEUR LOGICIEL", "CONCEPTEUR DE BDD",
-  "ADMINISTRATEUR RÉSEAU", "UX-UI DESIGNER"
-];
+        safeQuery(selector, parent = document) {
+            try {
+                return parent.querySelector(selector);
+            } catch (error) {
+                return null;
+            }
+        },
 
-let wordIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-const typedTextElement = document.getElementById('typed-text');
+        safeQueryAll(selector, parent = document) {
+            try {
+                return Array.from(parent.querySelectorAll(selector));
+            } catch (error) {
+                return [];
+            }
+        },
 
-function typeEffect() {
-  if (!typedTextElement) return;
-  
-  const currentWord = words[wordIndex];
-  
-  if (isDeleting) {
-    typedTextElement.textContent = currentWord.substring(0, charIndex);
-    charIndex--;
-  } else {
-    typedTextElement.textContent = currentWord.substring(0, charIndex);
-    charIndex++;
-  }
+        debounce(callback, delay = 150) {
+            let timer;
 
-  let typeSpeed = isDeleting ? 35 : 70;
+            return (...args) => {
+                clearTimeout(timer);
 
-  if (!isDeleting && charIndex > currentWord.length) {
-    typeSpeed = 2000; 
-    isDeleting = true;
-  } else if (isDeleting && charIndex < 0) {
-    isDeleting = false;
-    charIndex = 0;
-    wordIndex = (wordIndex + 1) % words.length;
-    typeSpeed = 500; 
-  }
+                timer = setTimeout(() => {
+                    callback.apply(null, args);
+                }, delay);
+            };
+        },
 
-  setTimeout(typeEffect, typeSpeed);
-}
+        throttleFrame(callback) {
+            let frame = null;
 
-// ==================== 3. ANIMATION AU DEFILEMENT DES PROJETS ====================
-function initPortfolioScrollAnimation() {
-  const portfolioItems = document.querySelectorAll('#portfolio .portfolio-item');
-  if (portfolioItems.length === 0) return;
+            return (...args) => {
+                if (frame !== null) return;
 
-  portfolioItems.forEach(item => {
-    item.style.opacity = '0';
-    item.style.transform = 'translateY(35px)';
-    item.style.transition = 'opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1), transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
-  });
+                frame = requestAnimationFrame(() => {
+                    callback.apply(null, args);
+                    frame = null;
+                });
+            };
+        },
 
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -50px 0px', 
-    threshold: 0.05
-  };
+        isVisible(element) {
+            return !!(
+                element &&
+                element.getClientRects().length &&
+                getComputedStyle(element).visibility !== 'hidden'
+            );
+        }
+    };
 
-  const observer = new IntersectionObserver((entries, observer) => {
-    let delayCounter = 0;
-    const visibleEntries = entries.filter(entry => entry.isIntersecting);
+    /* ========================================================
+       4. VERROUILLAGE DU DÉFILEMENT
+    ======================================================== */
 
-    visibleEntries.forEach(entry => {
-      const item = entry.target;
-      setTimeout(() => {
-        item.style.opacity = '1';
-        item.style.transform = 'translateY(0)';
-      }, delayCounter * 120); 
+    function lockPage(modalName) {
+        if (lockedModals.has(modalName)) return;
 
-      delayCounter++;
-      observer.unobserve(item); 
-    });
-  }, observerOptions);
+        if (lockedModals.size === 0) {
+            previousBodyOverflow = DOM.body.style.overflow;
+            previousHtmlOverflow = DOM.html.style.overflow;
 
-  portfolioItems.forEach(item => observer.observe(item));
-}
+            DOM.body.style.overflow = 'hidden';
+            DOM.html.style.overflow = 'hidden';
+        }
 
-// ==================== 4. OUVERTURE / FERMETURE DU MENU RESPONSIVE ====================
-const navOpenBtn = globalBody ? globalBody.querySelector('.navOpen-btn') : null;
-const navCloseBtn = globalNavMenu ? globalNavMenu.querySelector('.navClose-btn') : null;
-
-if (globalNavMenu && navOpenBtn) {
-  navOpenBtn.addEventListener("click", () => {
-    globalNavMenu.classList.add("open");
-    if (globalBody) globalBody.classList.add('hide-scrollbar');
-  });
-}
-
-if (globalNavMenu && navCloseBtn) {
-  navCloseBtn.addEventListener("click", () => {
-    globalNavMenu.classList.remove("open");
-    if (globalBody) globalBody.classList.remove('hide-scrollbar');
-  });
-}
-
-// ==================== 5. ÉVÉNEMENT AU DÉFILEMENT COMPORTEMENT GENERAL ====================
-window.addEventListener("scroll", () => {
-  const scrollY = window.pageYOffset || window.scrollY;
-
-  if (globalHeader) {
-    globalHeader.classList.toggle("header-active", scrollY > 5);
-  }
-
-  if (globalScrollUpBtn) {
-    globalScrollUpBtn.classList.toggle("scrollUpBtn-active", scrollY > 250);
-  }
-  
-  cachedNavLinks.forEach(({ section, navLink }) => {
-    const sectionHeight = section.offsetHeight;
-    const sectionTop = section.offsetTop - 100;
-
-    if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-      navLink.classList.add("active-navlink");           
-    } else {
-      navLink.classList.remove("active-navlink");     
+        lockedModals.add(modalName);
     }
-  });
-});
 
-// ==================== 6. MODAL GESTIONNAIRES DE VISIONNEUSE (LIGHTBOX) ====================
-function closeLightboxView(modalNode) {
-  if (!modalNode) return;
-  modalNode.classList.remove('lightbox-active');
-  if (globalBody) {
-    globalBody.classList.remove('hide-scrollbar');
-    globalBody.style.overflowX = 'hidden';
-    document.documentElement.style.overflowX = 'hidden';
-  }
-}
+    function unlockPage(modalName) {
+        lockedModals.delete(modalName);
 
-// ==================== GALERIE DE TRAVAIL UNIQUE ====================
-const uniqueLightboxModal = document.getElementById('galerie-travail-modal-unique');
-const uniqueLightboxImg = document.getElementById('galerie-travail-img-unique');
-
-function ouvrirAperçuGalerie(cheminImage) {
-  if (uniqueLightboxModal && uniqueLightboxImg) {
-    uniqueLightboxImg.src = cheminImage;
-    uniqueLightboxModal.classList.add('galerie-travail-active');
-    if (globalBody) {
-      globalBody.classList.add('hide-scrollbar');
-      document.documentElement.style.overflowX = 'hidden';
+        if (lockedModals.size === 0) {
+            DOM.body.style.overflow = previousBodyOverflow;
+            DOM.html.style.overflow = previousHtmlOverflow;
+        }
     }
-  }
-}
 
-function fermerGalerieEtRetourFormulaire(redirigerFormulaire = true) {
-  if (uniqueLightboxModal) {
-    uniqueLightboxModal.classList.remove('galerie-travail-active');
-    if (globalBody) {
-      globalBody.classList.remove('hide-scrollbar');
-      globalBody.style.overflowX = 'hidden';
+    /* ========================================================
+       5. SPLASH SCREEN
+    ======================================================== */
+
+    function handleSplashScreen() {
+        const splash = DOM.splash;
+
+        if (!splash) return;
+
+        if (reducedMotion) {
+            splash.style.display = 'none';
+            return;
+        }
+
+        lockPage('splash');
+
+        let closed = false;
+
+        function closeSplash() {
+            if (closed) return;
+
+            closed = true;
+
+            clearTimeout(splashTimer);
+
+            splash.classList.add('fade-out');
+
+            window.setTimeout(() => {
+                splash.style.display = 'none';
+                unlockPage('splash');
+            }, 700);
+        }
+
+        splash.addEventListener('animationend', event => {
+            if (
+                event.target === splash &&
+                event.animationName === 'vanishOut'
+            ) {
+                closeSplash();
+            }
+        });
+
+        splashTimer = window.setTimeout(
+            closeSplash,
+            CONFIG.splashDuration
+        );
     }
-  }
-  if (redirigerFormulaire) {
-    const formulaire = document.getElementById('mon-formulaire'); 
-    if (formulaire) formulaire.scrollIntoView({ behavior: 'smooth' });
-  }
-}
 
-if (uniqueLightboxModal) {
-  uniqueLightboxModal.addEventListener('click', function(event) {
-    if (event.target === uniqueLightboxModal) fermerGalerieEtRetourFormulaire(false);
-  });
-}
+    /* ========================================================
+       6. EFFET D'ÉCRITURE AUTOMATIQUE
+    ======================================================== */
 
-// Accessibilité Touche Échap Globale
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        const portfolioModal = document.getElementById('portfolio-lightbox');
-        if (portfolioModal && portfolioModal.classList.contains('lightbox-active')) closeLightboxView(portfolioModal);
-        if (uniqueLightboxModal && uniqueLightboxModal.classList.contains('galerie-travail-active')) fermerGalerieEtRetourFormulaire(false);
+    const typingWords = [
+        'DATA ANALYST',
+        'DIGITAL MARKETING',
+        'GRAPHISTE',
+        'IT SUPPORT',
+        'WEBDESIGNER',
+        'ANALYSTE PROGRAMMEUR',
+        'DÉVELOPPEUR LOGICIEL',
+        'CONCEPTEUR DE BDD',
+        'ADMINISTRATEUR RÉSEAU',
+        'UX-UI DESIGNER'
+    ];
+
+    let typingState = {
+        wordIndex: 0,
+        charIndex: 0,
+        deleting: false
+    };
+
+    function typeEffect() {
+        const element = DOM.typedText;
+
+        if (!element || typingWords.length === 0) return;
+
+        if (reducedMotion) {
+            element.textContent = typingWords[0];
+            return;
+        }
+
+        const currentWord = typingWords[typingState.wordIndex];
+
+        if (!typingState.deleting) {
+            typingState.charIndex++;
+
+            element.textContent = currentWord.substring(
+                0,
+                typingState.charIndex
+            );
+
+            if (typingState.charIndex >= currentWord.length) {
+                typingState.deleting = true;
+
+                typingTimer = setTimeout(
+                    typeEffect,
+                    CONFIG.typingPause
+                );
+
+                return;
+            }
+
+            typingTimer = setTimeout(
+                typeEffect,
+                CONFIG.typingSpeed
+            );
+
+        } else {
+            typingState.charIndex--;
+
+            element.textContent = currentWord.substring(
+                0,
+                Math.max(0, typingState.charIndex)
+            );
+
+            if (typingState.charIndex <= 0) {
+                typingState.deleting = false;
+
+                typingState.wordIndex =
+                    (typingState.wordIndex + 1) %
+                    typingWords.length;
+
+                typingTimer = setTimeout(
+                    typeEffect,
+                    CONFIG.deletingPause
+                );
+
+                return;
+            }
+
+            typingTimer = setTimeout(
+                typeEffect,
+                CONFIG.deletingSpeed
+            );
+        }
     }
-});
 
-// ==================== PERSPECTIVE CINÉTIQUE DES LOGOS (PC SEULEMENT SÉCURISÉ) ==========================
-const pisteLogosCinétique = document.getElementById('pisteLogosTravailUnique');
-const zoneDecorsCinétique = document.querySelector('.partenaires-decor-3d');
-const isMobileDevice = window.matchMedia("(max-width: 768px)").matches || ('ontouchstart' in window);
+    /* ========================================================
+       7. ANIMATIONS DES PROJETS AU SCROLL
+    ======================================================== */
 
-if (zoneDecorsCinétique && pisteLogosCinétique && !isMobileDevice) {
-  pisteLogosCinétique.style.transition = 'transform 0.15s ease-out';
+    function initPortfolioScrollAnimation() {
+        const items = Utils.safeQueryAll(
+            '#portfolio .portfolio-item'
+        );
 
-  zoneDecorsCinétique.addEventListener('mousemove', (e) => {
-    const width = zoneDecorsCinétique.clientWidth;
-    const mouseX = e.clientX - zoneDecorsCinétique.getBoundingClientRect().left;
-    const positionPourcent = (mouseX / width) - 0.5;
-    const angleRotationY = positionPourcent * 15; 
-    pisteLogosCinétique.style.transform = `rotateX(10deg) rotateY(${angleRotationY}deg)`;
-  });
+        if (!items.length) return;
 
-  zoneDecorsCinétique.addEventListener('mouseleave', () => {
-    pisteLogosCinétique.style.transform = `rotateX(10deg) rotateY(0deg)`;
-  });
-}
+        if (reducedMotion || !('IntersectionObserver' in window)) {
+            items.forEach(item => {
+                item.style.opacity = '1';
+                item.style.transform = 'none';
+            });
 
-// ==================== 7. COMPTEURS DE STATISTIQUES ANIMÉS ====================
-function initCounterStatistics() {
-  const compteurs = document.querySelectorAll('.compteur');
-  if (compteurs.length === 0) return;
-  const DURATION = 2000; 
+            return;
+        }
 
-  const animerCompteur = (entrees, observateur) => {
-    entrees.forEach(entree => {
-      if (entree.isIntersecting) {
-        const cible = entree.target;
-        const carte = cible.closest('.carte-stat');
-        const valeurFinale = parseInt(cible.getAttribute('data-target'), 10);
-        
-        if(carte) carte.classList.add('active-glow');
+        const observer = new IntersectionObserver(
+            (entries, currentObserver) => {
 
-        let tempsDebut = null;
+                entries.forEach((entry, index) => {
+                    if (!entry.isIntersecting) return;
 
-        const etape = (tempsActuel) => {
-          if (!tempsDebut) tempsDebut = tempsActuel;
-          const progression = tempsActuel - tempsDebut;
-          
-          const valeurActuelle = Math.min(
-            Math.ceil((progression / DURATION) * valeurFinale), 
-            valeurFinale
-          );
-          
-          cible.innerText = valeurActuelle;
+                    const item = entry.target;
 
-          if (progression < DURATION) {
-            requestAnimationFrame(etape); 
-          } else {
-            cible.innerText = valeurFinale; 
-          }
-        };
+                    item.style.transition =
+                        'opacity .65s ease, transform .65s ease';
 
-        requestAnimationFrame(etape);
-        observateur.unobserve(cible); 
-      }
-    });
-  };
+                    requestAnimationFrame(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    });
 
-  const options = { threshold: 0.3 };
-  const observateur = new IntersectionObserver(animerCompteur, options);
-  
-  compteurs.forEach(compteur => observateur.observe(compteur));
-}
+                    currentObserver.unobserve(item);
+                });
+            },
+            {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: CONFIG.portfolioThreshold
+            }
+        );
 
-// ==================== 8. POINT D'ENTRÉE DOMContentLoaded EXCLUSIF UNIQUE ====================
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialisation immédiate des structures graphiques
-    handleSplashScreen();
-    typeEffect(); 
-    initPortfolioScrollAnimation(); 
-    initCounterStatistics();
+        items.forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(30px)';
 
-    // ---- FILTRES PORTFOLIO ----
-    const filterTabs = document.querySelectorAll('#portfolio-flters li');
-    const portfolioCards = document.querySelectorAll('.portfolio-item'); 
+            observer.observe(item);
+        });
+    }
 
-    if (filterTabs.length > 0 && portfolioCards.length > 0) {
-        filterTabs.forEach(tab => {
+    /* ========================================================
+       8. MENU RESPONSIVE
+    ======================================================== */
+
+    function initResponsiveMenu() {
+        const menu = DOM.navMenu;
+        const openButton = DOM.navOpen;
+        const closeButton = DOM.navClose;
+
+        if (!menu || !openButton) return;
+
+        function openMenu() {
+            menu.classList.add('open');
+
+            openButton.setAttribute('aria-expanded', 'true');
+
+            lockPage('navigation');
+
+            if (closeButton) {
+                closeButton.focus();
+            }
+        }
+
+        function closeMenu() {
+            menu.classList.remove('open');
+
+            openButton.setAttribute('aria-expanded', 'false');
+
+            unlockPage('navigation');
+
+            openButton.focus();
+        }
+
+        openButton.setAttribute('aria-expanded', 'false');
+
+        openButton.addEventListener('click', openMenu);
+
+        if (closeButton) {
+            closeButton.addEventListener('click', closeMenu);
+        }
+
+        menu.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('open');
+
+                openButton.setAttribute('aria-expanded', 'false');
+
+                unlockPage('navigation');
+            });
+        });
+
+        document.addEventListener('keydown', event => {
+            if (
+                event.key === 'Escape' &&
+                menu.classList.contains('open')
+            ) {
+                closeMenu();
+            }
+        });
+    }
+
+    /* ========================================================
+       9. NAVIGATION ACTIVE ET HEADER DYNAMIQUE
+    ======================================================== */
+
+    function initScrollNavigation() {
+        const header = DOM.header;
+        const scrollButton = DOM.scrollUp;
+
+        const sections = Utils.safeQueryAll('section[id]');
+
+        const navigationLinks = sections
+            .map(section => ({
+                section,
+                link: Utils.safeQuery(
+                    `.menu-content a[href="#${section.id}"]`
+                )
+            }))
+            .filter(item => item.link);
+
+        function updateScrollState() {
+            const scrollY = window.scrollY || window.pageYOffset;
+
+            if (header) {
+                header.classList.toggle(
+                    'header-active',
+                    scrollY > 5
+                );
+            }
+
+            if (scrollButton) {
+                scrollButton.classList.toggle(
+                    'scrollUpBtn-active',
+                    scrollY > CONFIG.scrollThreshold
+                );
+            }
+
+            let currentSection = null;
+
+            navigationLinks.forEach(({ section, link }) => {
+                const top = section.offsetTop - 120;
+                const bottom = top + section.offsetHeight;
+
+                const active =
+                    scrollY >= top &&
+                    scrollY < bottom;
+
+                link.classList.toggle(
+                    'active-navlink',
+                    active
+                );
+
+                if (active) {
+                    currentSection = link;
+                }
+            });
+
+            if (!currentSection && navigationLinks.length) {
+                navigationLinks.forEach(({ link }) => {
+                    link.classList.remove('active-navlink');
+                });
+            }
+        }
+
+        window.addEventListener(
+            'scroll',
+            () => {
+                if (scrollFrame !== null) return;
+
+                scrollFrame = requestAnimationFrame(() => {
+                    updateScrollState();
+                    scrollFrame = null;
+                });
+            },
+            { passive: true }
+        );
+
+        window.addEventListener(
+            'resize',
+            Utils.debounce(updateScrollState, 150),
+            { passive: true }
+        );
+
+        updateScrollState();
+    }
+
+    /* ========================================================
+       10. BOUTON RETOUR EN HAUT
+    ======================================================== */
+
+    function initScrollTop() {
+        if (!DOM.scrollUp) return;
+
+        DOM.scrollUp.addEventListener('click', event => {
+            event.preventDefault();
+
+            window.scrollTo({
+                top: 0,
+                behavior: reducedMotion ? 'auto' : 'smooth'
+            });
+        });
+    }
+
+    /* ========================================================
+       11. FILTRES DU PORTFOLIO
+    ======================================================== */
+
+    function initPortfolioFilters() {
+        const tabs = Utils.safeQueryAll(
+            SELECTORS.portfolioFilters
+        );
+
+        const cards = Utils.safeQueryAll(
+            '#portfolio .portfolio-item'
+        );
+
+        if (!tabs.length || !cards.length) return;
+
+        tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                filterTabs.forEach(t => t.classList.remove('filter-active'));
+
+                const filter = tab.getAttribute('data-filter');
+
+                if (!filter) return;
+
+                tabs.forEach(item => {
+                    item.classList.remove('filter-active');
+                });
+
                 tab.classList.add('filter-active');
 
-                const classTarget = tab.getAttribute('data-filter');
+                const cleanFilter = filter.startsWith('.')
+                    ? filter.slice(1)
+                    : filter;
 
-                portfolioCards.forEach(card => {
-                    card.style.animation = 'none';
-                    card.offsetHeight; 
+                cards.forEach(card => {
+                    const visible =
+                        filter === '*' ||
+                        card.classList.contains(cleanFilter);
 
-                    const cleanClass = classTarget.startsWith('.') ? classTarget.substring(1) : classTarget;
+                    card.style.display = visible ? '' : 'none';
 
-                    if (classTarget === '*' || card.classList.contains(cleanClass)) {
-                        card.style.display = 'block';
-                        card.style.animation = 'projectFadeInMatrix 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards';
+                    if (visible && !reducedMotion) {
+                        card.style.animation =
+                            'projectFadeInMatrix .4s ease forwards';
                     } else {
-                        card.style.display = 'none';
+                        card.style.animation = '';
                     }
                 });
             });
         });
     }
 
-    // ---- VISIONNEUSE / LIGHTBOX PORTFOLIO ----
-    const lightboxModal = document.getElementById('portfolio-lightbox');
-    const lightboxImageNode = document.getElementById('lightbox-target-img');
-    const lightboxTitleNode = document.getElementById('lightbox-target-title');
-    const lightboxCloseButton = document.querySelector('.lightbox-close-btn');
-    const previewTriggers = document.querySelectorAll('.btn-trigger-lightbox');
+    /* ========================================================
+       12. GESTION DES VISIONNEUSES
+    ======================================================== */
 
-    if (lightboxModal && lightboxImageNode && previewTriggers.length > 0) {
-        previewTriggers.forEach(trigger => {
-            trigger.addEventListener('click', (event) => {
-                event.preventDefault(); 
+    function openLightbox(modal, name) {
+        if (!modal) return;
+
+        modal.classList.add('lightbox-active');
+
+        lockPage(name);
+    }
+
+    function closeLightbox(modal, name) {
+        if (!modal) return;
+
+        modal.classList.remove('lightbox-active');
+
+        unlockPage(name);
+    }
+
+    function initPortfolioLightbox() {
+        const modal = DOM.portfolioModal;
+
+        const image = document.getElementById(
+            'lightbox-target-img'
+        );
+
+        const title = document.getElementById(
+            'lightbox-target-title'
+        );
+
+        const closeButton = document.querySelector(
+            '.lightbox-close-btn'
+        );
+
+        const triggers = Utils.safeQueryAll(
+            '.btn-trigger-lightbox'
+        );
+
+        if (!modal || !image) return;
+
+        triggers.forEach(trigger => {
+            trigger.addEventListener('click', event => {
+                event.preventDefault();
+
                 const imageSource = trigger.getAttribute('href');
-                const wrapperCard = trigger.closest('.portfolio-wrap');
-                
-                if (wrapperCard) {
-                    const mainTitleEl = wrapperCard.querySelector('.portfolio-info h4 a');
-                    const subTitleEl = wrapperCard.querySelector('.portfolio-info p');
-                    const mainTitleText = mainTitleEl ? mainTitleEl.textContent : '';
-                    const subTitleText = subTitleEl ? subTitleEl.textContent : '';
 
-                    if (lightboxTitleNode) {
-                        lightboxTitleNode.textContent = subTitleText ? `${mainTitleText} — ${subTitleText}` : mainTitleText;
-                    }
+                if (!imageSource) return;
+
+                const card = trigger.closest('.portfolio-wrap');
+
+                const mainTitle = card
+                    ? Utils.safeQuery(
+                        '.portfolio-info h4 a',
+                        card
+                    )
+                    : null;
+
+                const subTitle = card
+                    ? Utils.safeQuery(
+                        '.portfolio-info p',
+                        card
+                    )
+                    : null;
+
+                image.src = imageSource;
+
+                image.alt = mainTitle
+                    ? mainTitle.textContent.trim()
+                    : 'Aperçu du projet';
+
+                if (title) {
+                    const first = mainTitle
+                        ? mainTitle.textContent.trim()
+                        : '';
+
+                    const second = subTitle
+                        ? subTitle.textContent.trim()
+                        : '';
+
+                    title.textContent = second
+                        ? `${first} — ${second}`
+                        : first;
                 }
 
-                lightboxImageNode.src = imageSource;
-                lightboxModal.classList.add('lightbox-active');
-                if (globalBody) {
-                    globalBody.classList.add('hide-scrollbar');
-                    document.documentElement.style.overflowX = 'hidden';
-                }
+                openLightbox(modal, 'portfolio-lightbox');
             });
         });
 
-        if (lightboxCloseButton) {
-            lightboxCloseButton.addEventListener('click', () => closeLightboxView(lightboxModal));
-        }
-        lightboxModal.addEventListener('click', (e) => {
-            if (e.target === lightboxModal) closeLightboxView(lightboxModal);
-        });
-    }
-
-    // ---- CONFIGURATION DES ÉVÉNEMENTS GOOGLE ANALYTICS (GA4) ----
-    
-    // 1. Téléchargement du CV
-    const boutonCV = document.querySelector('a[href*="cv.pdf"]');
-    if (boutonCV) {
-        boutonCV.addEventListener('click', function() {
-            if (typeof gtag === 'function') {
-                gtag('event', 'download_cv', {
-                    'event_category': 'Engagement',
-                    'event_label': 'Téléchargement CV Glody-Claver'
-                });
-            }
-        });
-    }
-
-    // 2. Clic Contact (Correctif de syntaxe inclus)
-    const boutonContactAbout = document.querySelector('.about-actions .link-contact');
-    if (boutonContactAbout) {
-        boutonContactAbout.addEventListener('click', function() {
-            if (typeof gtag === 'function') {
-                gtag('event', 'click_contact_me', {
-                    'event_category': 'Engagement',
-                    'event_label': 'Bouton Contactez-moi Section About'
-                });
-            }
-        });
-    }
-
-    // 3. Clic sur les Réseaux Sociaux
-    const liensSociaux = document.querySelectorAll('.single-footer .social a');
-    liensSociaux.forEach(function(lien) {
-        lien.addEventListener('click', function() {
-            const nomReseau = lien.getAttribute('aria-label') || 'Réseau Inconnu';
-            if (typeof gtag === 'function') {
-                gtag('event', 'click_social_network', {
-                    'event_category': 'Social',
-                    'event_label': 'Clic Reseau : ' + nomReseau
-                });
-            }
-        });
-    });
-
-    // 4. Détection des Saisies et Chemins Suspects (Ex: /.github, .env, ../)
-    // Fonction de sécurité locale pour éviter d'envoyer des e-mails par accident à Google
-    function isSafeToLog(inputValue) {
-        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-        return !emailRegex.test(inputValue);
-    }
-
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function() {
-            const inputElement = form.querySelector('input[type="text"], input[type="search"]');
-            if (!inputElement) return;
-            
-            const inputValue = inputElement.value.trim();
-            
-            if (isSafeToLog(inputValue)) {
-                if (inputValue.includes('/.github') || inputValue.includes('.env') || inputValue.includes('../') || inputValue.includes('wp-admin')) {
-                    if (typeof gtag === 'function') {
-                        gtag('event', 'suspect_input_detected', {
-                            'input_value': inputValue,
-                            'page_location': window.location.href
-                        });
-                    }
-                }
-            }
-        });
-    });
-
-    // 5. Détection des Erreurs de Scripts (Bugs ou plantages JavaScript)
-    window.addEventListener('error', function(event) {
-        if (typeof gtag === 'function') {
-            gtag('event', 'javascript_error', {
-                'error_message': event.message,
-                'error_url': event.filename,
-                'error_line': event.lineno
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                closeLightbox(modal, 'portfolio-lightbox');
             });
         }
-    });
 
-    // 6. Détection des Erreurs de Connexion Internet (PWA Hors-ligne)
-    window.addEventListener('offline', function() {
-        if (typeof gtag === 'function') {
-            gtag('event', 'pwa_network_status', { 'status': 'offline', 'page_url': window.location.href });
-        }
-    });
-    window.addEventListener('online', function() {
-        if (typeof gtag === 'function') {
-            gtag('event', 'pwa_network_status', { 'status': 'online', 'page_url': window.location.href });
-        }
-    });
+        modal.addEventListener('click', event => {
+            if (event.target === modal) {
+                closeLightbox(modal, 'portfolio-lightbox');
+            }
+        });
+    }
 
-    // 7. Détection du Copier Sauvage (Vol de contenu important)
-    document.addEventListener('copy', function() {
-        const selectedText = window.getSelection().toString();
-        if (selectedText.length > 120 && isSafeToLog(selectedText)) {
-            if (typeof gtag === 'function') {
-                gtag('event', 'content_copied', { 'text_length': selectedText.length, 'page_location': window.location.href });
+    /* ========================================================
+       13. GALERIE PHOTOS
+    ======================================================== */
+
+    function openGalleryPreview(imagePath) {
+        if (!DOM.galleryModal || !DOM.galleryImage) return;
+
+        if (!imagePath) return;
+
+        DOM.galleryImage.src = imagePath;
+
+        DOM.galleryImage.alt = 'Aperçu de la photographie';
+
+        DOM.galleryModal.classList.add('galerie-travail-active');
+
+        lockPage('gallery-lightbox');
+    }
+
+    function closeGalleryPreview(redirect = false) {
+        if (DOM.galleryModal) {
+            DOM.galleryModal.classList.remove(
+                'galerie-travail-active'
+            );
+        }
+
+        unlockPage('gallery-lightbox');
+
+        if (redirect) {
+            const form = document.getElementById('mon-formulaire');
+
+            if (form) {
+                form.scrollIntoView({
+                    behavior: reducedMotion ? 'auto' : 'smooth',
+                    block: 'start'
+                });
             }
         }
-    });
+    }
 
-}); // <--- Cette accolade ferme TRÈS PROPREMENT le bloc 'DOMContentLoaded' principal
+    function initGallery() {
+        if (!DOM.galleryModal) return;
 
+        DOM.galleryModal.addEventListener('click', event => {
+            if (event.target === DOM.galleryModal) {
+                closeGalleryPreview(false);
+            }
+        });
+    }
 
-// ==================== 9. INITIALISATION DES ANIMATIONS SCROLLREVEAL ====================
-if (typeof ScrollReveal !== 'undefined') {
-  const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
+    /* ========================================================
+       14. EXPOSITION DES FONCTIONS POUR LE HTML EXISTANT
+    ======================================================== */
 
-  const sr = ScrollReveal({
-    origin: 'top', 
-    distance: isSmallScreen ? '20px' : '60px', 
-    duration: 2500, 
-    delay: 300, 
-    easing: 'ease-out', 
-    reset: !isSmallScreen, 
-    interval: 150, 
-    viewFactor: 0.1, 
-    mobile: true 
-  });
+    window.ouvrirAperçuGalerie = openGalleryPreview;
 
-  /*==================================================
-  STRUCTURE DES ANIMATIONS PAR SECTION SECTORISÉE
-  ====================================================*/
+    window.fermerGalerieEtRetourFormulaire = function(redirect = true) {
+        closeGalleryPreview(redirect);
+    };
 
-  /* >>> 1. À PROPOS (ABOUT) <<< */
-  sr.reveal(`.about .about-imageColumn.Slide-In-Left`, { origin: 'left' });
-  sr.reveal(`.about .about-detailsColumn.Slide-In-Right`, { origin: 'right' });
+        /* ========================================================
+       15. COMPTEURS STATISTIQUES ANIMÉS
+    ======================================================== */
 
-  /* >>> 2. CODEUR <<< */
-  sr.reveal('.Codeur .section-title, .Codeur .section-subtitle', { origin: 'top', interval: 300 });
-  sr.reveal(`.Codeur .Codeur-layout-fluid`, { scale: 0.85, opacity: 0 });
+    function initCounterStatistics() {
+        const counters = Utils.safeQueryAll(
+            SELECTORS.counters
+        );
 
-  /* >>> 3. SERVICES (SERVICES-SECTION-BG) <<< */
-  sr.reveal(`.services-section-bg .services-section-title`, { interval: 100 });
-  sr.reveal('.services-section-bg .services-card', { origin: 'top', interval: 200 });
+        if (!counters.length) return;
 
-  /* >>> 4. FEATURES (FEAUTES) <<< */
-  sr.reveal(`.Feautes .section-title`, { interval: 100 });
-  sr.reveal('.feautes-grid-pure .feautes-item.fadeInLeft', { origin: 'left', distance: '60px', duration: 1000, opacity: 0, scale: 1 });
-  sr.reveal('.feautes-grid-pure .feautes-item.fadeInRight', { origin: 'right', distance: '60px', duration: 1000, opacity: 0, scale: 1 });
-  sr.reveal('.feautes-grid-pure .feautes-item.zoomIn', { duration: 1100, scale: 0.7, opacity: 0, distance: '0px' });
-  sr.reveal('.feautes-grid-pure .feautes-item .signle-icon i', { scale: 0.2, rotate: { x: 0, y: 0, z: 360 }, duration: 1800, delay: 600, distance: '0px' });
+        if (!('IntersectionObserver' in window)) {
+            counters.forEach(counter => {
+                const target = Number(
+                    counter.getAttribute('data-target')
+                );
 
-  /* >>> 5. PORTFOLIO FILTERS (CLEARFIX) <<< */
-  sr.reveal(`.clearfix .section-title`, { interval: 100 });
-  sr.reveal(`.clearfix .portfolio-filters-wrapper`, { scale: 0.85, opacity: 0 });
+                if (Number.isFinite(target)) {
+                    counter.textContent = target;
+                }
+            });
 
-  /* >>> 6. RÉALISATIONS (SECTION-REALISATIONS) <<< */
-  sr.reveal(`.section-realisations .section-title`, { interval: 100 });
-  sr.reveal('.section-realisations .carte-stat', { origin: 'bottom', interval: 200 });
+            return;
+        }
 
-  /* >>> 7. DETAIL DU PORTFOLIO (PF-DETAILS) <<< */
-  sr.reveal(`.pf-details .section-title`, { interval: 100 });
-  sr.reveal(`.pf-details .aptitudes-card.fadeInLeft`, { origin: 'left' });
-  sr.reveal(`.pf-details .aptitudes-card.fadeInRight`, { origin: 'right' });
-  sr.reveal(`.pf-details .aptitudes-card.zoomIn`, { scale: 0.85, opacity: 0 });
+        const observer = new IntersectionObserver(
+            (entries, currentObserver) => {
 
-  /* >>> 8. PARCOURS ET EXPÉRIENCES (RESUME-SECTION) <<< */
-  sr.reveal('.resume-section .section-title, .resume-section .resume-columns-wrapper .column-title', { origin: 'top', interval: 200 });
-  sr.reveal(`.resume-section .resume-column.experience-col .timeline-item, .resume-section .resume-column.formation-col .timeline-item`, { origin: 'right' });
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
 
-  /* >>> 9. COMPÉTENCES (SKILL-SECTION) <<< */
-  sr.reveal('.skill-section .skill-section-kicker, .skill-section .skill-section-description', { origin: 'top', interval: 300 });
-  sr.reveal('.skill-section .skills-row-grid', { origin: 'bottom', interval: 200 });
+                    const counter = entry.target;
 
-  /* >>> 10. CERTIFICATIONS & LANGUES (CERTLANG-GLOBAL-SECTION) <<< */
-  sr.reveal('.certlang-global-section .certlang-section-title, .certlang-global-section .certlang-column-headline', { origin: 'top', interval: 200 });
-  sr.reveal(`.certlang-global-section .certlang-vertical-track .certlang-track-node, .certlang-global-section .certlang-sidebar-stack .certlang-inner-block-white`, { origin: 'right' });
+                    const finalValue = Number(
+                        counter.getAttribute('data-target')
+                    );
 
-  /* >>> 11. FAQ & CARTOGRAPHIE (FAQ-MAP-SECTION) <<< */
-  sr.reveal(`.faq-map-section .faq-column`, { origin: 'left' });
-  sr.reveal(`.faq-map-section .map-column`, { origin: 'right' });
-}
+                    if (!Number.isFinite(finalValue)) {
+                        currentObserver.unobserve(counter);
+                        return;
+                    }
+
+                    const card = counter.closest('.carte-stat');
+
+                    if (card) {
+                        card.classList.add('active-glow');
+                    }
+
+                    if (reducedMotion) {
+                        counter.textContent = finalValue;
+                        currentObserver.unobserve(counter);
+                        return;
+                    }
+
+                    const startTime = performance.now();
+
+                    function animateCounter(currentTime) {
+                        const elapsed = currentTime - startTime;
+
+                        const progress = Math.min(
+                            elapsed / CONFIG.counterDuration,
+                            1
+                        );
+
+                        const eased = 1 - Math.pow(1 - progress, 3);
+
+                        const currentValue =
+                            finalValue * eased;
+
+                        counter.textContent = Number.isInteger(finalValue)
+                            ? Math.round(currentValue)
+                            : currentValue.toFixed(1);
+
+                        if (progress < 1) {
+                            requestAnimationFrame(animateCounter);
+                        } else {
+                            counter.textContent = finalValue;
+                        }
+                    }
+
+                    requestAnimationFrame(animateCounter);
+
+                    currentObserver.unobserve(counter);
+                });
+            },
+            {
+                threshold: 0.3
+            }
+        );
+
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    }
+
+    /* ========================================================
+       16. ANIMATION 3D DES LOGOS
+    ======================================================== */
+
+    function initLogoAnimation() {
+        const zone = DOM.logoZone;
+        const track = DOM.logoTrack;
+
+        if (!zone || !track) return;
+
+        const isTouchDevice =
+            window.matchMedia('(hover: none)').matches ||
+            window.matchMedia('(max-width: 768px)').matches;
+
+        if (isTouchDevice || reducedMotion) return;
+
+        let animationFrame = null;
+        let targetAngle = 0;
+        let currentAngle = 0;
+
+        function updateRotation() {
+            currentAngle += (targetAngle - currentAngle) * 0.12;
+
+            track.style.transform =
+                `rotateX(10deg) rotateY(${currentAngle}deg)`;
+
+            if (Math.abs(targetAngle - currentAngle) > 0.01) {
+                animationFrame = requestAnimationFrame(updateRotation);
+            } else {
+                animationFrame = null;
+            }
+        }
+
+        zone.addEventListener('pointermove', event => {
+            const rect = zone.getBoundingClientRect();
+
+            if (!rect.width) return;
+
+            const relativeX = (
+                (event.clientX - rect.left) / rect.width
+            );
+
+            targetAngle = (
+                (relativeX - 0.5) * CONFIG.logoRotation
+            );
+
+            if (animationFrame === null) {
+                animationFrame = requestAnimationFrame(updateRotation);
+            }
+        }, { passive: true });
+
+        zone.addEventListener('pointerleave', () => {
+            targetAngle = 0;
+
+            if (animationFrame === null) {
+                animationFrame = requestAnimationFrame(updateRotation);
+            }
+        });
+    }
+
+    /* ========================================================
+       17. GOOGLE ANALYTICS — VERSION RESPECTUEUSE DE LA VIE PRIVÉE
+    ======================================================== */
+
+    function trackEvent(eventName, parameters = {}) {
+        if (typeof window.gtag !== 'function') return;
+
+        try {
+            window.gtag('event', eventName, parameters);
+        } catch (error) {
+            // Une erreur Analytics ne doit jamais bloquer le site.
+        }
+    }
+
+    function initAnalytics() {
+
+        // Téléchargement du CV
+        const cvButton = document.querySelector(
+            'a[href*="cv.pdf"]'
+        );
+
+        if (cvButton) {
+            cvButton.addEventListener('click', () => {
+                trackEvent('download_cv', {
+                    event_category: 'Engagement',
+                    event_label: 'Téléchargement CV'
+                });
+            });
+        }
+
+        // Bouton de contact
+        const contactButton = document.querySelector(
+            '.about-actions .link-contact'
+        );
+
+        if (contactButton) {
+            contactButton.addEventListener('click', () => {
+                trackEvent('click_contact_me', {
+                    event_category: 'Engagement',
+                    event_label: 'Bouton Contact'
+                });
+            });
+        }
+
+        // Réseaux sociaux
+        const socialLinks = Utils.safeQueryAll(
+            '.single-footer .social a'
+        );
+
+        socialLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const network =
+                    link.getAttribute('aria-label') ||
+                    'Réseau social';
+
+                trackEvent('click_social_network', {
+                    event_category: 'Social',
+                    event_label: network
+                });
+            });
+        });
+
+        // IMPORTANT :
+        // Aucun contenu de formulaire n'est transmis.
+        // Aucun mot de passe, e-mail ou numéro de téléphone.
+        // Aucun texte du presse-papiers.
+        // Aucune URL complète contenant des paramètres.
+
+        // État de connexion
+        window.addEventListener('online', () => {
+            trackEvent('pwa_network_status', {
+                status: 'online'
+            });
+        });
+
+        window.addEventListener('offline', () => {
+            trackEvent('pwa_network_status', {
+                status: 'offline'
+            });
+        });
+
+        // Erreurs JavaScript anonymisées
+        window.addEventListener('error', event => {
+            trackEvent('javascript_error', {
+                error_type: 'runtime_error',
+                error_line: Number(event.lineno) || 0
+            });
+        });
+
+        // Promesses rejetées
+        window.addEventListener('unhandledrejection', () => {
+            trackEvent('javascript_promise_error', {
+                error_type: 'unhandled_rejection'
+            });
+        });
+    }
+
+    /* ========================================================
+       18. SCROLLREVEAL — ANIMATIONS OPTIMISÉES
+    ======================================================== */
+
+    function initScrollReveal() {
+        if (reducedMotion) return;
+
+        if (typeof window.ScrollReveal !== 'function') {
+            return;
+        }
+
+        let sr;
+
+        try {
+            const isSmallScreen = window.matchMedia(
+                '(max-width: 768px)'
+            ).matches;
+
+            sr = window.ScrollReveal({
+                origin: 'top',
+
+                // Distance parcourue par les éléments
+                distance: isSmallScreen ? '25px' : '55px',
+
+                // Durée des animations
+                duration: isSmallScreen ? 1200 : 1500,
+
+                // Délai avant le démarrage
+                delay: 200,
+
+                // Transition plus douce
+                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+
+                // Ne pas rejouer les animations
+                reset: false,
+
+                // Espacement entre les animations successives
+                interval: 180,
+
+                // Déclenchement lorsque l'élément est suffisamment visible
+                viewFactor: 0.15,
+
+                mobile: true
+            });
+
+        } catch (error) {
+            return;
+        }
+
+        if (!sr) return;
+
+        /* À PROPOS */
+        sr.reveal(
+            '.about .about-imageColumn.Slide-In-Left',
+            { origin: 'left' }
+        );
+
+        sr.reveal(
+            '.about .about-detailsColumn.Slide-In-Right',
+            { origin: 'right' }
+        );
+
+        /* CODEUR */
+        sr.reveal(
+            '.Codeur .section-title, .Codeur .section-subtitle',
+            { origin: 'top', interval: 200 }
+        );
+
+        sr.reveal(
+            '.Codeur .Codeur-layout-fluid',
+            { scale: 0.95, opacity: 0 }
+        );
+
+        /* SERVICES */
+        sr.reveal(
+            '.services-section-bg .services-section-title',
+            { origin: 'top' }
+        );
+
+        sr.reveal(
+            '.services-section-bg .services-card',
+            { interval: 150 }
+        );
+
+        /* FEATURES */
+        sr.reveal(
+            '.Feautes .section-title',
+            { origin: 'top' }
+        );
+
+        sr.reveal(
+            '.feautes-grid-pure .feautes-item.fadeInLeft',
+            { origin: 'left', duration: 1300 }
+        );
+
+        sr.reveal(
+            '.feautes-grid-pure .feautes-item.fadeInRight',
+            { origin: 'right', duration: 1300 }
+        );
+
+        sr.reveal(
+            '.feautes-grid-pure .feautes-item.zoomIn',
+            { scale: 0.9, opacity: 0, distance: '0px' }
+        );
+
+        /* PORTFOLIO */
+        sr.reveal(
+            '.clearfix .section-title',
+            { origin: 'top' }
+        );
+
+        sr.reveal(
+            '.clearfix .portfolio-filters-wrapper',
+            { scale: 0.95, opacity: 0 }
+        );
+
+        /* RÉALISATIONS */
+        sr.reveal(
+            '.section-realisations .section-title',
+            { origin: 'top' }
+        );
+
+        sr.reveal(
+            '.section-realisations .carte-stat',
+            { origin: 'bottom', interval: 150 }
+        );
+
+        /* DÉTAILS PORTFOLIO */
+        sr.reveal(
+            '.pf-details .section-title',
+            { origin: 'top' }
+        );
+
+        sr.reveal(
+            '.pf-details .aptitudes-card.fadeInLeft',
+            { origin: 'left' }
+        );
+
+        sr.reveal(
+            '.pf-details .aptitudes-card.fadeInRight',
+            { origin: 'right' }
+        );
+
+        sr.reveal(
+            '.pf-details .aptitudes-card.zoomIn',
+            { scale: 0.9, opacity: 0 }
+        );
+
+        /* PARCOURS */
+        sr.reveal(
+            '.resume-section .section-title, .resume-section .resume-columns-wrapper .column-title',
+            { origin: 'top', interval: 150 }
+        );
+
+        sr.reveal(
+            '.resume-section .resume-column .timeline-item',
+            { origin: 'right', interval: 100 }
+        );
+
+        /* COMPÉTENCES */
+        sr.reveal(
+            '.skill-section .skill-section-kicker, .skill-section .skill-section-description',
+            { origin: 'top', interval: 150 }
+        );
+
+        sr.reveal(
+            '.skill-section .skills-row-grid',
+            { origin: 'bottom', interval: 150 }
+        );
+
+        /* CERTIFICATIONS ET LANGUES */
+        sr.reveal(
+            '.certlang-global-section .certlang-section-title, .certlang-global-section .certlang-column-headline',
+            { origin: 'top', interval: 150 }
+        );
+
+        sr.reveal(
+            '.certlang-global-section .certlang-vertical-track .certlang-track-node',
+            { origin: 'right' }
+        );
+
+        sr.reveal(
+            '.certlang-global-section .certlang-sidebar-stack .certlang-inner-block-white',
+            { origin: 'right' }
+        );
+
+        /* FAQ ET CARTE */
+        sr.reveal(
+            '.faq-map-section .faq-column',
+            { origin: 'left' }
+        );
+
+        sr.reveal(
+            '.faq-map-section .map-column',
+            { origin: 'right' }
+        );
+    }
+
+    /* ========================================================
+       19. GESTION GLOBALE DE LA TOUCHE ÉCHAP
+    ======================================================== */
+
+    function initGlobalKeyboard() {
+        document.addEventListener('keydown', event => {
+
+            if (event.key !== 'Escape') return;
+
+            if (
+                DOM.portfolioModal &&
+                DOM.portfolioModal.classList.contains('lightbox-active')
+            ) {
+                closeLightbox(
+                    DOM.portfolioModal,
+                    'portfolio-lightbox'
+                );
+            }
+
+            if (
+                DOM.galleryModal &&
+                DOM.galleryModal.classList.contains('galerie-travail-active')
+            ) {
+                closeGalleryPreview(false);
+            }
+        });
+    }
+
+    /* ========================================================
+       20. INITIALISATION GLOBALE
+    ======================================================== */
+
+    function initializeWebsite() {
+
+        if (!document.body) return;
+
+        cacheDOM();
+
+        handleSplashScreen();
+
+        typeEffect();
+
+        initPortfolioScrollAnimation();
+
+        initResponsiveMenu();
+
+        initScrollNavigation();
+
+        initScrollTop();
+
+        initPortfolioFilters();
+
+        initPortfolioLightbox();
+
+        initGallery();
+
+        initCounterStatistics();
+
+        initLogoAnimation();
+
+        initAnalytics();
+
+        initScrollReveal();
+
+        initGlobalKeyboard();
+
+        document.documentElement.style.overflowX = 'hidden';
+    }
+
+    /* ========================================================
+       21. DÉMARRAGE COMPATIBLE AVEC TOUS LES CHARGEMENTS
+    ======================================================== */
+
+    if (document.readyState === 'loading') {
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            initializeWebsite,
+            { once: true }
+        );
+
+    } else {
+
+        initializeWebsite();
+
+    }
+
+})();
