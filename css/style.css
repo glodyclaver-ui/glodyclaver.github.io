@@ -1872,11 +1872,15 @@ img {
     letter-spacing: 1.4px;
 }
 
-.skill-section-description {
-    margin: 13px auto 0;
-    color: #0066ff;
-    font-size: 14px;
-    line-height: 1.75;
+.skill-section-description { 
+  margin: 20px auto 0; 
+  line-height: 1.75; 
+  color: var(--p-color-1); 
+  font-size: 13px; 
+  font-weight: 700; 
+  
+  /* Augmentez cette valeur jusqu'à obtenir l'effet voulu */
+  letter-spacing: 3px; 
 }
 
 .skill-title-line {
