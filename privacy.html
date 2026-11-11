@@ -70,6 +70,9 @@
                         
                         <link rel="manifest" href="./json/manifest.json">
 
+                        <!-- Splash : une seule fois par session -->
+                        <script src="js/splash-init.js"></script>
+
                         <!-- Feuilles de style (CSS) -->
                         <link rel="stylesheet" href="css/icofont.css">
                         <link rel="stylesheet" href="css/ionicons/css/ionicons.min.css">
@@ -128,56 +131,84 @@
 
 
 
-                        <!-- Home Section -->
-                        <section class="home" id="home">
-                                <div class="home-content">
-                                        <div class="swiper mySwiper">
-                                                <div class="swiper-wrapper">
-                                                        <div class="swiper-slide">
+<!-- Home Section -->
+<section class="home" id="home">
+        <!-- Container principal asymétrique (Texte, Avatar, Compétences) -->
+        <div class="home-container">
+                
+                <!-- Intro Info (Colonne Gauche) -->
+                <div class="intro-info">
+                        
+                        <!-- BLOC 1 : Colonne verticale des icônes réseaux -->
+                        <div class="home-social-sidebar">
+                                <div class="social-item icon-linkedin">
+                                        <a href="https://www.linkedin.com/in/glody-claver" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin"></i></a>
+                                </div>
+                                <div class="social-item icon-github">
+                                        <a href="https://github.com/glodyclaver-ui" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><i class="fa fa-github"></i></a>
+                                </div>
+                                <div class="social-item icon-youtube">
+                                        <a href="https://youtube.com" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fa fa-youtube-play"></i></a>
+                                </div>
+                        </div>
 
-                                                                <!-- Avatar -->
-                                                                <div class="intro-img">
-                                                                        <div class="avatar">
-                                                                                <img src="images/about-me-image.png" alt="Portrait de Glody-Claver" class="img-fluid">
-                                                                        </div>
-                                                                </div>
-
-                                                                <!-- Intro Info -->
-                                                                <div class="intro-info container">
-                                                                        <div class="fadeInDown">
-                                                                                <h2>Je suis <br><span id="typed-text"></span></h2>
-                                                                        </div>
-
-                                                                        <div class="zoomIn">
-                                                                                <p>Je suis ravi de vous accueillir dans mon espace créatif. Ce site est une vitrine de mon parcours, de mes compétences professionnelles et de ma passion pour les nouvelles technologies.</p>
-                                                                        </div>
-
-                                                                        <!-- Social Links -->
-                                                                        <div class="single-footer">
-                                                                                <ul class="social flex">
-                                                                                        <li><a href="https://www.linkedin.com/in/glody-claver" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                                                                        <li><a href="mailto:glodyclaver@gmail.com" aria-label="Email"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
-                                                                                        <li><a href="https://x.com/ClaverGlody" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                                                                        <li><a href="https://github.com/glodyclaver-ui" aria-label="Github" target="_blank" rel="noopener noreferrer"><i class="fa fa-github" aria-hidden="true"></i></a></li>
-                                                                                </ul>
-                                                                        </div>
-                                                                </div>
-
-                                                        </div>
-                                                </div>
-                                                <div class="swiper-pagination"></div>
-                                        </div>
+                        <!-- BLOC 2 : Contenu texte avec sa ligne blanche verticale à gauche -->
+                        <div class="intro-content-wrapper">
+                                <div class="fadeInDown">
+                                        <h1 class="main-title">GLODY CLAVER</h1>
                                 </div>
 
-                                <!-- Bouton Scroll Down Animé -->
-                                <a href="#prochaine-section" class="scroll-down" aria-label="Faire défiler vers le bas">
-                                        <span class="mouse">
-                                                <span class="wheel"></span>
-                                        </span>
-                                </a>
+                                <div class="zoomIn Fade-In-Scale">
+                                        <p class="intro-text">Je suis ravi de vous accueillir dans mon espace créatif. Ce site est une vitrine de mon parcours, de mes compétences professionnelles et de ma passion pour les nouvelles technologies.</p>
+                                </div>
 
-                        </section>
-                        <!--/ Home Section fin -->
+                                <!-- Lien d'appel à l'action épuré -->
+                                <a href="mailto:glodyclaver@gmail.com" class="hire-me-btn">ME CONTACTER &rarr;</a>
+                        </div>
+
+                </div>
+
+                <!-- Avatar (Colonne Centrale) -->
+                <div class="intro-img">
+                        <div class="avatar">
+                                <img src="images/about-me-2.png" alt="Portrait de Glody-Claver" class="img-fluid">
+                                <!-- Le calque de fondu pour camoufler la coupure droite de la photo -->
+                                <div class="fade-overlay"></div>
+                        </div>
+                </div>
+
+                <!-- Liste d'expertises (Colonne Droite) - Gérée par ton JS -->
+                <div class="intro-skills">
+                        <ul>
+                                <!-- Ton script JS injecte directement les métiers ici -->
+                                <li class="active-skill" id="typed-text"></li>
+                        </ul>
+                </div>
+        </div>
+
+        <!-- Bandeau de compétences réelles et de technologies en bas de page -->
+        <div class="partners-footer">
+                <div class="partner-logo">
+                        <span class="logo-icon"><i class="fa fa-bar-chart" aria-hidden="true"></i></span> Data Analytics
+                </div>
+                <div class="partner-logo">
+                        <span class="logo-icon"><i class="fa fa-database" aria-hidden="true"></i></span> Database System
+                </div>
+                <div class="partner-logo">
+                        <span class="logo-icon"><i class="fa fa-code" aria-hidden="true"></i></span> Software Dev
+                </div>
+                <div class="partner-logo">
+                        <span class="logo-icon"><i class="fa fa-server" aria-hidden="true"></i></span> Network & IT
+                </div>
+                <div class="partner-logo">
+                        <span class="logo-icon"><i class="fa fa-paint-brush" aria-hidden="true"></i></span> UI/UX Design
+                </div>
+                <div class="partner-logo">
+                        <span class="logo-icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span> Digital Marketing
+                </div>
+        </div>
+</section>
+<!--/ Home Section fin -->
 
        
 
@@ -211,7 +242,7 @@
                                                 </nav>
 
                                                 <!-- Contenu Juridique Principal -->
-                                                <main class="privacy-content">
+                                                <div class="privacy-content">
                                                         
                                                         <article id="definition" class="privacy-card">
                                                                 <h2>1. Définitions & Cadre Juridique</h2>
@@ -302,7 +333,7 @@
                                                                 <p>Ce portfolio est hébergé de manière statique sur la plateforme d'infrastructure <strong>GitHub Pages</strong>, un service opéré par la société GitHub Inc. située aux États-Unis. Dans le cadre strict de la sécurité réseau, de la maintenance technique des serveurs et de la prévention des attaques informatiques, GitHub peut être amené à collecter et traiter des données de journalisation de base (fichiers logs) incluant notamment les adresses IP des connexions entrantes.</p>
                                                         </article>
 
-                                                </main>
+                                                </div>
                                         </div>
                                 </div>
                         </section>
@@ -319,9 +350,9 @@
                                         <div class="footer-content">
                                                 
                                                 <!-- 1. Présentation -->
-                                                <div class="footer-box presentation" itemscope itemtype="https://schema.org">
-                                                        <h3 class="footer-title" itemprop="name">Claver claver</h3>
-                                                        <p class="content-description" itemprop="hasCredential">
+                                                <div class="footer-box presentation" itemscope itemtype="https://schema.org/Person">
+                                                        <h3 class="footer-title" itemprop="alternateName">Claver claver</h3>
+                                                        <p class="content-description" itemprop="jobTitle">
                                                                 DATA ANALYST || GRAPHISTE || WEBDESIGNER || ANALYSTE PROGRAMMEUR || IT SUPPORT || DEVELOPPEUR LOGICIEL || ADMINISTRATEUR ET CONCEPTEUR DE BASE DE DONNÉES || ADMINISTRATEUR DE RÉSEAU INFORMATIQUE ET UX-UI DESIGNER
                                                         </p>
                                                 </div>
@@ -330,10 +361,10 @@
                                                 <div class="footer-box navigation">
                                                         <h3 class="footer-title">Accueil</h3>
                                                         <ul class="footer-links single-footer f-link">
-                                                                <li><a href="index.html" class="footer-link">Accueil</a></li>
-                                                                <li><a href="index.html#about" class="footer-link">À propos</a></li>
-                                                                <li><a href="index.html#services" class="footer-link">Services</a></li>
-                                                                <li><a href="index.html#portfolio" class="footer-link">Portfolio</a></li>
+                                                                <li><a href="#about" class="footer-link">À propos</a></li>
+                                                                <li><a href="#services" class="footer-link">Services</a></li>
+                                                                <li><a href="#portfolio" class="footer-link">Portfolio</a></li>
+                                                                <li><a href="privacy.html" class="footer-link">Politique</a></li>
                                                         </ul>
                                                 </div>
 
@@ -348,7 +379,6 @@
                                                         <div class="single-footer">  
                                                                 <ul class="social">
                                                                         <li><a href="https://www.linkedin.com/in/glody-claver" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                                                        <li><a href="mailto:glodyclaver@gmail.com" aria-label="Email"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
                                                                         <li><a href="https://x.com/ClaverGlody" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
                                                                         <li><a href="https://github.com/glodyclaver-ui" aria-label="github" target="_blank" rel="noopener noreferrer"><i class="fa fa-github" aria-hidden="true"></i></a></li>
                                                                 </ul>
@@ -356,7 +386,7 @@
 
                                                         <!-- contact -->
                                                         <div class="contact-info">
-                                                                <p class="location-text"><i class="fa fa-envelope"></i> glodyclaver@gmail.com</p>
+                                                                <p class="location-text" aria-label="Email"><i class="fa fa-envelope"></i> glodyclaver@gmail.com</p>
                                                                 <p class="location-text"><i class="fa fa-map-marker map-icon"></i> Kinshasa, RDC</p>
                                                         </div>
                                                 </div>
@@ -366,11 +396,12 @@
 
                                 <!-- 4. COPYRIGHT -->
                                 <a href="#">
-                                        <div class="footer-copyRight">© Claver claver. Tous les droits sont réservés, Les Informations exclusives.</div>
+                                        <div class="footer-copyRight">© 2026 Glody-claver. Tous les droits sont réservés, Les Informations exclusives.</div>
                                 </a>
 
                         </footer>
-                        <!--/ footer fin -->
+                        <!--/ footer fin-->
+
 
                         <!-- Scroll Up -->
                                 <a href="#home" class="scrollUp-btn flex">

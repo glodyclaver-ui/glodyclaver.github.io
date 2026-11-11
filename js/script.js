@@ -40,7 +40,10 @@
         galleryImage: '#galerie-travail-img-unique',
         logoTrack: '#pisteLogosTravailUnique',
         logoZone: '.partenaires-decor-3d',
-        counters: '.compteur'
+        counters: '.compteur',
+        toggleCertsBtn: '#toggle-certs-btn',
+        moreCertsBlock: '#more-certs-block',
+        certificationsSection: '#certifications'
     };
 
     const DOM = {};
@@ -71,6 +74,11 @@
         DOM.navOpen = document.querySelector(SELECTORS.navOpen);
         DOM.navClose = document.querySelector(SELECTORS.navClose);
         DOM.scrollUp = document.querySelector(SELECTORS.scrollUp);
+        
+        // Déclaration et mise en cache de la section Formations :
+        DOM.toggleCertsBtn = document.querySelector(SELECTORS.toggleCertsBtn);
+        DOM.moreCertsBlock = document.querySelector(SELECTORS.moreCertsBlock);
+        DOM.certificationsSection = document.querySelector(SELECTORS.certificationsSection);
 
         DOM.portfolioModal = document.querySelector(
             SELECTORS.portfolioLightbox
@@ -184,15 +192,37 @@
        5. SPLASH SCREEN
     ======================================================== */
 
+    const SPLASH_KEY = 'gc_splash_seen';
+
+    function hasSeenSplash() {
+        try {
+            return sessionStorage.getItem(SPLASH_KEY) === '1';
+        } catch (error) {
+            return false; // stockage bloque : on affiche le splash
+        }
+    }
+
+    function markSplashSeen() {
+        try {
+            sessionStorage.setItem(SPLASH_KEY, '1');
+        } catch (error) {
+            // Pas grave : le splash s'affichera a chaque chargement.
+        }
+    }
+
     function handleSplashScreen() {
         const splash = DOM.splash;
 
         if (!splash) return;
 
-        if (reducedMotion) {
+        // Deja vu pendant cette session (actualisation, autre page) ou animations reduites
+        if (hasSeenSplash() || reducedMotion) {
             splash.style.display = 'none';
             return;
         }
+
+        // Note des le debut : une actualisation pendant l'animation ne la rejoue pas
+        markSplashSeen();
 
         lockPage('splash');
 
@@ -228,9 +258,9 @@
         );
     }
 
-    /* ========================================================
-       6. EFFET D'ÉCRITURE AUTOMATIQUE
-    ======================================================== */
+    /* ==========================================================================
+   6. EFFET D'ÉCRITURE AUTOMATIQUE AVEC ÉLÉVATION VERTICALE
+   ========================================================================== */
 
     const typingWords = [
         'DATA ANALYST',
@@ -248,73 +278,187 @@
     let typingState = {
         wordIndex: 0,
         charIndex: 0,
-        deleting: false
+        isWaiting: false
     };
 
     function typeEffect() {
-        const element = DOM.typedText;
+        const container = DOM.typedText;
+        if (!container || typingWords.length === 0) return;
 
-        if (!element || typingWords.length === 0) return;
-
+        // Mode accessibilité (sans animation)
         if (reducedMotion) {
-            element.textContent = typingWords[0];
+            container.innerHTML = `<div class="skill-line active-line">${typingWords[0]}</div>`;
             return;
         }
 
         const currentWord = typingWords[typingState.wordIndex];
 
-        if (!typingState.deleting) {
-            typingState.charIndex++;
-
-            element.textContent = currentWord.substring(
-                0,
-                typingState.charIndex
-            );
-
-            if (typingState.charIndex >= currentWord.length) {
-                typingState.deleting = true;
-
-                typingTimer = setTimeout(
-                    typeEffect,
-                    CONFIG.typingPause
-                );
-
-                return;
-            }
-
-            typingTimer = setTimeout(
-                typeEffect,
-                CONFIG.typingSpeed
-            );
-
-        } else {
-            typingState.charIndex--;
-
-            element.textContent = currentWord.substring(
-                0,
-                Math.max(0, typingState.charIndex)
-            );
-
-            if (typingState.charIndex <= 0) {
-                typingState.deleting = false;
-
-                typingState.wordIndex =
-                    (typingState.wordIndex + 1) %
-                    typingWords.length;
-
-                typingTimer = setTimeout(
-                    typeEffect,
-                    CONFIG.deletingPause
-                );
-
-                return;
-            }
-
-            typingTimer = setTimeout(
-                typeEffect,
-                CONFIG.deletingSpeed
-            );
+        // Initialisation ou récupération de la ligne active
+        let activeLine = container.querySelector('.skill-line.active-line');
+        if (!activeLine) {
+            container.innerHTML = '<div class="skill-line active-line"></div>';
+            activeLine = container.querySelector('.skill-line.active-line');
         }
+
+        if (!typingState.isWaiting) {
+            typingState.charIndex++;
+            activeLine.textContent = currentWord.substring(0, typingState.charIndex);
+
+            // Si le mot est entièrement écrit
+            if (typingState.charIndex >= currentWord.length) {
+                typingState.isWaiting = true;
+                
+                // Temps de pause pendant lequel le mot reste fixe et visible en noir
+                typingTimer = setTimeout(() => {
+                    // 1. L'ancien mot perd son état actif, monte et devient gris clair
+                    activeLine.classList.remove('active-line');
+                    activeLine.classList.add('blurred-skill');
+
+                    // 2. On prépare l'index du mot suivant
+                    typingState.wordIndex = (typingState.wordIndex + 1) % typingWords.length;
+                    typingState.charIndex = 0;
+                    typingState.isWaiting = false;
+
+                    // 3. On crée la nouvelle ligne en dessous pour le prochain mot
+                    const newLine = document.createElement('div');
+                    newLine.classList.add('skill-line', 'active-line');
+                    container.appendChild(newLine);
+
+                    // 4. Nettoyage : On ne garde que les 3 dernières lignes pour éviter d'encombrer le DOM
+                    while (container.children.length > 3) {
+                        container.removeChild(container.firstChild);
+                    }
+
+                    // Relance immédiate du cycle d'écriture pour le mot suivant
+                    typeEffect();
+                }, CONFIG.typingPause || 2000);
+
+                return;
+            }
+
+            // Vitesse d'écriture lettre par lettre
+            typingTimer = setTimeout(typeEffect, CONFIG.typingSpeed || 100);
+        }
+    }
+
+    /* ==========================================================================
+   7. GESTION DE L'AFFICHAGE EXTENSIBLE DES FORMATIONS ("VOIR PLUS")
+   ========================================================================== */
+    function initCertificationsToggle() {
+        const toggleBtn = DOM.toggleCertsBtn;
+        const hiddenBlock = DOM.moreCertsBlock;
+        const section = DOM.certificationsSection;
+
+        if (!toggleBtn || !hiddenBlock) return;
+
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.setAttribute('aria-controls', hiddenBlock.id);
+
+        toggleBtn.addEventListener('click', () => {
+            const willOpen = !hiddenBlock.classList.contains('is-open');
+
+            hiddenBlock.classList.toggle('is-open', willOpen);
+            toggleBtn.setAttribute('aria-expanded', String(willOpen));
+            toggleBtn.innerHTML = willOpen
+                ? 'RÉDUIRE <i class="ion-arrow-left-c"></i>'
+                : 'VOIR TOUT <i class="ion-arrow-right-c"></i>';
+
+            // A la fermeture, on remonte en haut de la section
+            if (!willOpen && section) {
+                section.scrollIntoView({
+                    behavior: reducedMotion ? 'auto' : 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    }
+
+    /* ==========================================================================
+       7.b OUVERTURE / FERMETURE DES TABLEAUX DE COMPÉTENCES
+       ========================================================================== */
+    function initSkillsShowcase() {
+        const showcase = document.getElementById('skills-showcase');
+        const details = document.getElementById('skills-details');
+        const section = document.getElementById('skill');
+
+        if (!showcase || !details) return;
+
+        const panels = Utils.safeQueryAll('[data-skill-panel]', details);
+        const openers = Utils.safeQueryAll('[data-skill-open]');
+        const backButtons = [
+            document.getElementById('skills-back'),
+            document.getElementById('skills-back-footer')
+        ].filter(Boolean);
+
+        function scrollToSection() {
+            if (!section) return;
+            section.scrollIntoView({
+                behavior: reducedMotion ? 'auto' : 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Animation d'ouverture : compteur + compétences qui sortent une par une
+        function animatePanel(panel) {
+            if (!panel || reducedMotion) return;
+
+            const items = Utils.safeQueryAll('.skill-item', panel);
+            const count = panel.querySelector('.skill-category-count');
+
+            items.forEach((item, index) => {
+                item.style.setProperty('--i', index);
+            });
+
+            // On relance l'animation CSS à chaque ouverture
+            panel.classList.remove('is-entering');
+            void panel.offsetWidth;
+            panel.classList.add('is-entering');
+
+            if (count) {
+                const total = items.length || parseInt(count.textContent, 10) || 0;
+                const start = performance.now();
+                const duration = 900;
+
+                (function tick(now) {
+                    const t = Math.min(1, (now - start) / duration);
+                    const eased = 1 - Math.pow(1 - t, 3);
+
+                    count.textContent =
+                        Math.round(total * eased) + ' compétences';
+
+                    if (t < 1) window.requestAnimationFrame(tick);
+                })(start);
+            }
+        }
+
+        function openPanel(name) {
+            panels.forEach(panel => {
+                panel.hidden = panel.getAttribute('data-skill-panel') !== name;
+            });
+
+            showcase.hidden = true;
+            details.hidden = false;
+            animatePanel(panels.find(panel => !panel.hidden));
+            scrollToSection();
+        }
+
+        function closePanels() {
+            panels.forEach(panel => { panel.hidden = true; });
+
+            details.hidden = true;
+            showcase.hidden = false;
+            scrollToSection();
+        }
+
+        openers.forEach(button => {
+            button.addEventListener('click', () => {
+                openPanel(button.getAttribute('data-skill-open'));
+            });
+        });
+
+        backButtons.forEach(button => {
+            button.addEventListener('click', closePanels);
+        });
     }
 
     /* ========================================================
@@ -1061,12 +1205,12 @@
 
         /* CODEUR */
         sr.reveal(
-            '.Codeur .section-title, .Codeur .section-subtitle',
+            '.about-me-section .sec-title, .about-me-section .sec-subtitle',
             { origin: 'top', interval: 200 }
         );
 
         sr.reveal(
-            '.Codeur .Codeur-layout-fluid',
+            '.about-me-section .aboutme-tabs',
             { scale: 0.95, opacity: 0 }
         );
 
@@ -1147,13 +1291,13 @@
 
         /* PARCOURS */
         sr.reveal(
-            '.resume-section .section-title, .resume-section .resume-columns-wrapper .column-title',
+            '.parcours-section .sec-title, .parcours-section .sec-subtitle',
             { origin: 'top', interval: 150 }
         );
 
         sr.reveal(
-            '.resume-section .resume-column .timeline-item',
-            { origin: 'right', interval: 100 }
+            '.parcours-section .parcours-side',
+            { origin: 'left' }
         );
 
         /* COMPÉTENCES */
@@ -1162,99 +1306,21 @@
             { origin: 'top', interval: 150 }
         );
 
-        // ======================================================
-        // SECTION COMPÉTENCES — ANIMATION DES 3 COLONNES
-        // ======================================================
-
-        // 01 — Apparition des trois grandes catégories
-        sr.reveal('.skill-section .skill-category--fondamentale', {
-            origin: 'left',
-            distance: '55px',
-            duration: 1800,
-            delay: 150,
-            opacity: 0,
-            scale: 0.97,
-            interval: 0
-        });
-
-        sr.reveal('.skill-section .skill-category--specifique', {
-            origin: 'bottom',
-            distance: '45px',
-            duration: 1900,
-            delay: 350,
-            opacity: 0,
-            scale: 0.97,
-            interval: 0
-        });
-
-        sr.reveal('.skill-section .skill-category--technique', {
-            origin: 'right',
-            distance: '55px',
-            duration: 1800,
-            delay: 550,
-            opacity: 0,
-            scale: 0.97,
-            interval: 0
-        });
-
-
-        // ======================================================
-        // 02 — ANIMATION PROGRESSIVE DES COMPÉTENCES
-        // ======================================================
-
-        // Compétences fondamentales
-        sr.reveal(
-            '.skill-category--fondamentale .skill-item',
-            {
-                origin: 'bottom',
-                distance: '20px',
-                duration: 1100,
-                delay: 650,
-                opacity: 0,
-                interval: 75
-            }
-        );
-
-        // Compétences spécifiques
-        sr.reveal(
-            '.skill-category--specifique .skill-item',
-            {
-                origin: 'bottom',
-                distance: '20px',
-                duration: 1100,
-                delay: 800,
-                opacity: 0,
-                interval: 75
-            }
-        );
-
-        // Compétences techniques
-        sr.reveal(
-            '.skill-category--technique .skill-item',
-            {
-                origin: 'bottom',
-                distance: '20px',
-                duration: 1100,
-                delay: 950,
-                opacity: 0,
-                interval: 75
-            }
-        );
-
         /* CERTIFICATIONS ET LANGUES */
         sr.reveal(
             '.certlang-global-section .certlang-section-title, .certlang-global-section .certlang-column-headline',
             { origin: 'top', interval: 150 }
         );
 
+        // Uniquement le bloc visible : le bloc masque "Voir tout" est anime en CSS
         sr.reveal(
-            '.certlang-global-section .certlang-vertical-track .certlang-track-node',
+            '.certlang-global-section .certlang-expandable-wrapper > .certlang-sub-grid .certlang-track-node',
             { origin: 'right' }
         );
 
         sr.reveal(
-            '.certlang-global-section .certlang-sidebar-stack .certlang-inner-block-white',
-            { origin: 'right' }
+            '.certlang-global-section .certlang-sidebar-stack .certlang-home-text-row',
+            { origin: 'right', interval: 120 }
         );
 
         /* FAQ ET CARTE */
@@ -1266,6 +1332,22 @@
         sr.reveal(
             '.faq-map-section .map-column',
             { origin: 'right' }
+        );
+
+        /* PARTENAIRES ET TIMELINES */
+        sr.reveal(
+            '.partenaires-logos-section .logo-item-3d',
+            { origin: 'bottom', interval: 110, scale: 0.9 }
+        );
+
+        sr.reveal(
+            '.parcours-section .timeline-viewport',
+            { origin: 'right', distance: '50px' }
+        );
+
+        sr.reveal(
+            '.aboutme-display',
+            { origin: 'right', distance: '40px' }
         );
     }
 
@@ -1309,7 +1391,7 @@
 
         handleSplashScreen();
 
-        typeEffect();
+        typeEffect();                  // un seul appel
 
         initPortfolioScrollAnimation();
 
@@ -1335,7 +1417,285 @@
 
         initGlobalKeyboard();
 
+        initCertificationsToggle();    // bouton "Voir tout" des formations
+
+        initSkillsShowcase();          // cartes / tableaux de compétences
+
+        initAboutTabs();               // à propos : onglets
+
+        initParcoursTimelines();       // expérience / formation
+
+        initScrollEffects();           // barre de progression + accueil recouvert
+
+        initPageTransitions();         // transition entre les pages
+
+        initGalleryFocus();            // galerie : photo centrale agrandie
+
         document.documentElement.style.overflowX = 'hidden';
+    }
+
+    /* ========================================================
+       20b. A PROPOS : ONGLETS (identité / profil / vision)
+    ======================================================== */
+
+    function initAboutTabs() {
+        const root = document.getElementById('aboutme-tabs');
+
+        if (!root) return;
+
+        const tabs = Utils.safeQueryAll('.aboutme-tab', root);
+        const panels = Utils.safeQueryAll('.aboutme-content', root);
+        const empty = root.querySelector('.aboutme-empty');
+
+        function show(name) {
+            tabs.forEach(tab => {
+                tab.setAttribute(
+                    'aria-selected',
+                    String(tab.dataset.tab === name)
+                );
+            });
+
+            panels.forEach(panel => {
+                panel.hidden = panel.dataset.content !== name;
+            });
+
+            if (empty) empty.hidden = Boolean(name);
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const active = tab.getAttribute('aria-selected') === 'true';
+                show(active ? '' : tab.dataset.tab);
+            });
+        });
+
+        panels.forEach(panel => {
+            const close = panel.querySelector('.aboutme-close');
+            if (close) close.addEventListener('click', () => show(''));
+        });
+
+        // Echap = retour à l'état par défaut
+        root.addEventListener('keydown', event => {
+            if (event.key === 'Escape') show('');
+        });
+
+        show('');
+    }
+
+    /* ========================================================
+       20c. EXPERIENCE / FORMATION : TIMELINES DEFILANTES
+       - hauteur = 2 éléments visibles
+       - la ligne bleue se remplit au défilement
+    ======================================================== */
+
+    function initParcoursTimelines() {
+        const viewports = Utils.safeQueryAll('[data-timeline]');
+
+        viewports.forEach(viewport => {
+            const scroller = viewport.querySelector('.timeline-scroll');
+            const timeline = viewport.querySelector('.timeline');
+            const fill = viewport.querySelector('.timeline-fill');
+            const items = Utils.safeQueryAll('.timeline-item', timeline);
+
+            if (!scroller || !timeline || !fill || !items.length) return;
+
+            function setHeight() {
+                // 2 éléments visibles (limité à la hauteur de l'écran sur mobile)
+                const last = items[Math.min(2, items.length) - 1];
+                let height = last.offsetTop + last.offsetHeight + 8;
+
+                height = Math.min(height, Math.round(window.innerHeight * 0.85));
+                scroller.style.maxHeight = height + 'px';
+            }
+
+            function update() {
+                const max = scroller.scrollHeight - scroller.clientHeight;
+                const top = scroller.scrollTop;
+                const reach = top + scroller.clientHeight;
+                const ratio = Math.min(1, reach / scroller.scrollHeight);
+
+                // Ligne bleue : proportionnelle au bas de la zone visible
+                fill.style.height = Math.round(ratio * timeline.offsetHeight) + 'px';
+
+                // Icône colorée une fois atteinte par la ligne
+                items.forEach(item => {
+                    item.classList.toggle(
+                        'is-reached',
+                        item.offsetTop + 42 <= reach
+                    );
+                });
+
+                // Le dégradé du bas disparaît en fin de liste
+                viewport.classList.toggle('is-end', max <= 2 || top >= max - 2);
+            }
+
+            let ticking = false;
+
+            scroller.addEventListener('scroll', () => {
+                if (ticking) return;
+                ticking = true;
+
+                window.requestAnimationFrame(() => {
+                    update();
+                    ticking = false;
+                });
+            }, { passive: true });
+
+            function refresh() {
+                setHeight();
+                update();
+            }
+
+            window.addEventListener('resize', refresh);
+            window.addEventListener('load', refresh);
+
+            refresh();
+        });
+    }
+
+    /* ========================================================
+       20d. TRANSITIONS : progression, accueil recouvert, pages
+    ======================================================== */
+
+    function initScrollEffects() {
+        // Barre de progression de lecture
+        const bar = document.createElement('div');
+        bar.className = 'scroll-progress';
+        bar.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(bar);
+
+        const home = document.getElementById('home');
+        let ticking = false;
+
+        function update() {
+            const doc = document.documentElement;
+            const max = doc.scrollHeight - window.innerHeight;
+            const y = window.pageYOffset || doc.scrollTop || 0;
+
+            bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
+
+            // L'accueil s'efface légèrement pendant que la section suivante monte dessus
+            if (home && !reducedMotion) {
+                const cover = Math.max(0, Math.min(1, y / (home.offsetHeight || 1)));
+                home.style.setProperty('--cover', cover.toFixed(3));
+            }
+
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(update);
+        }, { passive: true });
+
+        window.addEventListener('resize', update);
+        update();
+    }
+
+    function initPageTransitions() {
+        if (reducedMotion) return;
+
+        const root = document.documentElement;
+
+        document.addEventListener('click', event => {
+            const link = event.target.closest ? event.target.closest('a[href]') : null;
+
+            if (
+                !link ||
+                event.defaultPrevented ||
+                event.button !== 0 ||
+                event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
+            ) return;
+
+            if (link.target && link.target !== '_self') return;
+            if (link.hasAttribute('download')) return;
+
+            let url;
+
+            try {
+                url = new URL(link.href, window.location.href);
+            } catch (error) {
+                return;
+            }
+
+            // Pages du même site uniquement (mailto:, liens externes, ancres : rien à faire)
+            if (!/^https?:$|^file:$/.test(url.protocol)) return;
+            if (url.origin !== window.location.origin) return;
+            if (url.pathname === window.location.pathname) return;
+
+            event.preventDefault();
+
+            try {
+                sessionStorage.setItem('gc_page_transition', '1');
+            } catch (error) {}
+
+            root.classList.add('page-leaving');
+
+            window.setTimeout(() => {
+                window.location.href = link.href;
+            }, 560);
+        });
+
+        // Retour arrière du navigateur : on retire le rideau
+        window.addEventListener('pageshow', event => {
+            if (event.persisted) {
+                root.classList.remove('page-leaving');
+            }
+        });
+    }
+
+    /* ========================================================
+       20e. GALERIE : la photo du milieu est la plus grande,
+       les côtés rétrécissent et changent de forme.
+    ======================================================== */
+
+    function initGalleryFocus() {
+        const axis = document.querySelector('.galerie-axe-defilement');
+
+        if (!axis) return;
+
+        const cards = Utils.safeQueryAll('.galerie-carte', axis);
+
+        if (!cards.length || reducedMotion) return;
+
+        let visible = false;
+        let rafId = 0;
+
+        function frame() {
+            const box = axis.getBoundingClientRect();
+            const center = box.left + box.width / 2;
+            const reach = Math.max(180, box.width * 0.36);
+
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const raw = Math.max(0, 1 - Math.abs(cx - center) / reach);
+                const p = raw * raw * (3 - 2 * raw);          // lissage
+
+                card.style.setProperty('--p', p.toFixed(3));
+                card.style.setProperty('--s', (0.66 + 0.5 * p).toFixed(3));
+                // même arrondi sur les 4 coins ; il grandit un peu vers le centre
+                // (valeur divisée par l'échelle pour garder un arrondi visuel constant)
+                const scale = 0.66 + 0.5 * p;
+                card.style.setProperty('--rt', Math.round((40 + 26 * p) / scale) + 'px');
+            });
+
+            rafId = visible ? window.requestAnimationFrame(frame) : 0;
+        }
+
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(entries => {
+                visible = entries[0].isIntersecting;
+
+                if (visible && !rafId) {
+                    rafId = window.requestAnimationFrame(frame);
+                }
+            }).observe(axis);
+        } else {
+            visible = true;
+            rafId = window.requestAnimationFrame(frame);
+        }
     }
 
     /* ========================================================

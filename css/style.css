@@ -9,7 +9,11 @@
 /* ==========================================================================
 1. POLICES & CONFIGURATION GLOBALE SÉCURISÉE
 ========================================================================== */
-@import url('https://googleapis.com');
+/* Poppins en local (aucun lien externe) */
+@font-face { font-family: "Poppins"; font-style: normal; font-weight: 300;     font-display: swap; src: url("fonts/Poppins-Light.ttf") format("truetype"); }
+@font-face { font-family: "Poppins"; font-style: normal; font-weight: 400;     font-display: swap; src: url("fonts/Poppins-Regular.ttf") format("truetype"); }
+@font-face { font-family: "Poppins"; font-style: normal; font-weight: 500 600; font-display: swap; src: url("fonts/Poppins-Medium.ttf") format("truetype"); }
+@font-face { font-family: "Poppins"; font-style: normal; font-weight: 700 900; font-display: swap; src: url("fonts/Poppins-Bold.ttf") format("truetype"); }
 
 * {
   margin: 0;
@@ -100,6 +104,20 @@ body {
   --section-bg-light-2: #0f0a47;
   --section-bg-light-4: #150f5c;
   --section-bg-light-5: #1c1575;
+
+  /* Politique de confidentialite (variables auparavant manquantes) */
+  --p-bg-main: #f9f9f9;
+  --p-bg-card: #ffffff;
+  --p-text-main: #0f172a;
+  --p-text-muted: #475569;
+  --p-border: #e2e8f0;
+  --p-primary: #0066ff;
+  --p-primary-hover: #0050cc;
+  --p-radius: 14px;
+  --p-transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Utilisee par #services .box::before */
+  --accent-green: #00e676;
 }
 
 /* Font sizes adaptatives pour écrans sous 990px */
@@ -732,341 +750,294 @@ img {
 
 
 
-
 /* ==========================================================================
-8. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION)
+8. ACCUEIL - DESIGN ASYMÉTRIQUE SUR FOND STUDIO NOIR SOMBRE
 ========================================================================== */
 .home {
   min-height: 100vh;
   width: 100%;
   position: relative;
   overflow: hidden;
-  border-radius: 0 0 120px 0;
+  background-color: #111111; /* Couleur noire du studio photo */
   display: flex;
-  align-items: center;
-  background-color: var(--section-bg);
-
-  /* Protège le contenu pour qu'il ne se glisse pas sous la barre fixe */
-  padding-top: var(--header-height);
+  flex-direction: column;
+  justify-content: space-between;
   box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  padding-top: var(--header-height, 90px);
 }
 
-.swiper, 
-.swiper-wrapper {
+/* --- GRILLE ET STRUCTURE (3 COLONNES ASYMÉTRIQUES) --- */
+.home-container {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 0.8fr;
+  align-items: center;
   width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem 6rem;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+/* --- COLONNE GAUCHE : IDENTITÉ, RÉSEAUX ET LIGNE VERTICALE --- */
+.home .intro-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2.5rem;
+  padding-right: 3rem;
+  z-index: 2;
+}
+
+.home .home-social-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3.5rem;
+  min-width: 32px;
+}
+
+.home .social-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  width: 32px;
+}
+
+.home .home-social-sidebar a {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.3rem;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.home .home-social-sidebar a:hover {
+  color: #ffffff;
+  transform: scale(1.15);
+}
+
+/* Conteneur avec la ligne blanche verticale */
+.home .intro-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding-left: 2.5rem;
+  gap: 1.5rem;
+}
+
+.home .main-title {
+  color: #ffffff;
+  font-size: clamp(3.2rem, 6.5vw, 6rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -3px;
+  margin: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.home .intro-text {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  max-width: 350px;
+  margin: 1.5rem 0;
+  font-weight: 400;
+  text-align: justify;
+}
+
+.home .hire-me-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-decoration: none !important;
+  outline: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: none !important;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.home .hire-me-btn i {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.home .hire-me-btn:hover {
+  opacity: 0.85;
+  transform: translateX(5px);
+}
+
+.home .hire-me-btn:hover i {
+  transform: translateX(4px);
+}
+
+/* --- COLONNE CENTRALE : AVATAR & MASQUE DÉGRADÉ NOIR --- */
+.home .intro-img {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   height: 100%;
 }
 
-/* Alignement ordonné des éléments internes du carrousel */
-.home .swiper-slide {
-  display: flex !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: space-between;
+.home .avatar {
   width: 100%;
-  padding: 6rem 2rem;
-  gap: 3rem;
-  box-sizing: border-box;
+  max-width: 440px;
+  position: relative;
+  display: inline-block;
 }
 
-/* Gestion de l'Avatar et de l'animation de flottaison */
-.home .swiper-slide .intro-img {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.home .swiper-slide .avatar {
-  max-width: 380px;
-  width: 100%;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.home .swiper-slide .avatar .img-fluid {
+.home .avatar .img-fluid {
   width: 100%;
   height: auto;
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  animation: flottaison 4s ease-in-out infinite alternate !important;
-  will-change: transform;
+  display: block;
 }
 
-@keyframes flottaison {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-20px); }
+/* Masque dégradé noir studio */
+.home .avatar .fade-overlay {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(to top, #111111 15%, rgba(17, 17, 17, 0) 100%);
+  pointer-events: none;
+  z-index: 2;
 }
 
-/* Zone textuelle de présentation */
-.home .swiper-slide .intro-info {
-  flex: 1;
-  text-align: left;
-  opacity: 1 !important;
-  visibility: visible !important;
+/* --- COLONNE DROITE : CONTENEUR JAVASCRIPT --- */
+.home .intro-skills {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
 }
 
-/* Neutralisation des classes d'animation conflictuelles externes */
-.home .swiper-slide .intro-info .fadeInDown,
-.home .swiper-slide .intro-info .zoomIn {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
+.home #typed-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.8rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
-.home .swiper-slide .intro-info h2 {
-  color: var(--white-color);
-  margin-bottom: 1.5rem;
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1.3;
+.home #typed-text .skill-line {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  text-transform: uppercase;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, color 0.6s ease;
 }
 
-/* Effet curseur de la machine à écrire (JavaScript TypeEffect) */
-.home .swiper-slide .intro-info h2 span {
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(45deg, #00f2fe, #4facfe);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  border-right: 3px solid #4facfe;
-  padding-right: 5px;
-  animation: clignotementCurseur 0.8s step-end infinite !important;
+.home #typed-text .blurred-skill {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 500;
+}
+
+.home #typed-text .active-line {
+  color: #ffffff;
+  font-weight: 600;
+  border-right: 2px solid #ffffff;
+  padding-right: 6px;
+  min-height: 1.6rem;
+  animation: clignotementCurseur 0.8s step-end infinite;
 }
 
 @keyframes clignotementCurseur {
   from, to { border-color: transparent }
-  50% { border-color: #4facfe; }
+  50% { border-color: #ffffff; }
 }
 
-.home .swiper-slide .intro-info p {
-  color: var(--p-color-3);
-  margin-bottom: 2rem;
-  font-size: var(--smaller-font);
-  font-weight: 400;
-  line-height: 1.6;
-  text-align: justify;
+/* --- BANDEAU INFÉRIEUR : MARQUES ET LOGOS --- */
+.home .partners-footer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 6rem;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #111111;
+  z-index: 3;
 }
 
-/* Boutons de réseaux sociaux */
-.home .swiper-slide .intro-info .single-footer .social {
-  display: flex !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.home .swiper-slide .intro-info .single-footer .social li {
-  list-style: none;
-}
-
-.home .swiper-slide .intro-info .single-footer .social li a {
-  height: 42px;
-  width: 42px;
+.home .partner-logo {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  color: var(--white-color);
+  gap: 0.6rem;
+  letter-spacing: -0.2px;
+}
+
+.home .logo-icon i {
   font-size: 1.1rem;
-  transition: var(--transition-smooth);
-  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.6);
 }
-
-.home .swiper-slide .intro-info .single-footer .social li a:hover {
-  color: var(--white-color);
-  background: var(--text-color-light);
-  border-color: transparent;
-  text-decoration: none;
-  transform: scale(1.15) translateY(-4px);
-  box-shadow: 0 10px 25px rgba(87, 38, 179, 0.4);
-}
-
-.home .swiper-slide .intro-info .single-footer.f-link li { 
-  display: block; 
-  margin-bottom: 12px; 
-}
-
-.home .swiper-slide .intro-info .single-footer.f-link li:last-child { 
-  margin-bottom: 0; 
-}
-
-.home .swiper-slide .intro-info .single-footer.f-link li a {
-  display: block;
-  color: var(--text-color-light);
-  text-transform: capitalize;
-  transition: var(--transition-smooth);
-  font-weight: 400;
-}
-
-.home .swiper-slide .intro-info .single-footer.f-link li a:hover { 
-  padding-left: 8px; 
-  color: var(--white-color); 
-}
-
-/* Indicateur animée de défilement (Souris CSS) */
-.scroll-down {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  transition: var(--transition-smooth);
-}
-
-.scroll-down .mouse {
-  width: 26px;
-  height: 42px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-
-.scroll-down .wheel {
-  width: 4px;
-  height: 8px;
-  background-color: var(--white-color);
-  border-radius: 2px;
-  animation: scrollWheel 1.6s ease-in-out infinite;
-}
-
-@keyframes scrollWheel {
-  0%  { transform: translateY(0); opacity: 0; }
-  30% { opacity: 1; }
-  100%{ transform: translateY(12px); opacity: 0; }
-}
-/* ==========================================================================
-8.1. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
-========================================================================== */
 
 /* ==========================================================================
-8.2 ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU)
+8.2 RESPONSIVE DESIGN COMPLET
 ========================================================================== */
+@media screen and (max-width: 1200px) {
+  .home-container {
+    padding: 2rem 4rem;
+    grid-template-columns: 1.3fr 1fr 0.7fr;
+  }
+  .home .main-title { font-size: 4.8rem; }
+  .home .partners-footer { padding: 2.5rem 4rem; }
+}
+
+@media screen and (max-width: 1024px) {
+  .home-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    padding: 3rem;
+  }
+  .home .main-title { white-space: normal; font-size: 4rem; }
+  .home .intro-info { padding-right: 0; }
+  .home .intro-skills { grid-column: span 2; justify-content: center; text-align: center; margin-top: 1rem; }
+  .home #typed-text { align-items: center; }
+  .home .partners-footer { padding: 2.5rem 2rem; flex-wrap: wrap; justify-content: center; gap: 2.5rem; }
+}
+
 @media screen and (max-width: 768px) {
-  .contact-content { display: none; }
-  .navClose-btn, .navOpen-btn { display: block; }
-
-  /* Volet coulissant latéral du menu mobile */
-  .nav .menu-content {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    max-width: 300px;
-    width: 100%;
-    height: 100%;
-    z-index: var(--z-fixed);
-    padding: 8rem 2rem 3rem;
-    background-color: var(--white-color);
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    transition: var(--transition-smooth);
-    will-change: right;
-  }
-
-  .nav .menu-content.open { 
-    right: 0 !important; 
-  }
-  
-  .menu-list { 
-    flex-direction: column; 
-    row-gap: 2.5rem; 
-    align-items: center; 
-  }
-  
-  .nav-link { 
-    color: var(--text-color); 
-    font-size: 1.2rem; 
-  }
-  
-  .nav-link::before { 
-    background-color: var(--text-color); 
-  }
-  
-  .navClose-btn { 
-    position: absolute; 
-    top: 2rem; 
-    right: 2rem; 
-    font-size: 2.2rem; 
-    color: var(--text-color); 
-    cursor: pointer; 
-  }
-  
-  .navOpen-btn { 
-    font-size: 1.8rem; 
-    color: var(--white-color); 
-    cursor: pointer; 
-  }
-  
-  .header-active .navOpen-btn { 
-    color: var(--text-color); 
-  }
-
-  /* Transformation verticale adaptative de l'accueil */
-  .home {
-    height: auto;
-    min-height: 100vh;
-    border-radius: 0 0 50px 0;
-  }
-
-  .home .swiper-slide {
-    flex-direction: column-reverse !important;
-    padding: 7rem 1.5rem 5rem;
-    gap: 2rem;
-    box-sizing: border-box;
-  }
-
-  .home .swiper-slide .intro-info,
-  .home .swiper-slide .intro-img {
-    padding: 0;
-    width: 100%;
-  }
-
-  .home .swiper-slide .intro-info h2 {
-    font-size: 2rem;
-    text-align: center;
-  }
-
-  .home .swiper-slide .intro-info h2 span {
-    font-size: 2rem;
-    border-right-width: 2px;
-  }
-  
-  .home .swiper-slide .intro-info p {
-    font-size: 0.95rem;
-    text-align: center;
-  }
-  
-  .home .swiper-slide .avatar {
-    max-width: 230px;
-  }
-  
-  .home .swiper-slide .intro-info .single-footer .social {
-    justify-content: center !important;
-  }
-  
-  .scroll-down { 
-    display: none; 
-  }
+  .home-container { grid-template-columns: 1fr; text-align: center; padding: 3rem 2rem; gap: 3.5rem; }
+  .home .intro-info { flex-direction: column; align-items: center; gap: 2rem; }
+  .home .home-social-sidebar { flex-direction: row; gap: 2.5rem; }
+  .home .intro-content-wrapper { border-left: none; padding-left: 0; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 2rem; align-items: center; }
+  .home .main-title { font-size: 3.5rem; white-space: normal; text-align: center; }
+  .home .intro-text { text-align: center; max-width: 450px; margin: 1.5rem 0; }
+  .home .intro-img { order: 2; }
+  .home .avatar { max-width: 320px; }
+  .home .intro-skills { order: 3; grid-column: span 1; }
+  .home .partners-footer { padding: 2rem 1rem; gap: 1.8rem; }
 }
-/* ==========================================================================
-8.2. ADAPTATION RESPONSIVE SMARTPHONES ET TABLETTES (MENU & CONTENU) FIN
-========================================================================== */
+
+@media screen and (max-width: 480px) {
+  .home { padding-top: var(--header-height, 70px); }
+  .home-container { padding: 2rem 1.2rem; gap: 2.5rem; }
+  .home .main-title { font-size: 2.8rem; letter-spacing: -1.5px; }
+  .home .avatar { max-width: 230px; }
+  .home .avatar .fade-overlay { height: 80px; }
+  .home .partners-footer { padding: 2rem 1rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; justify-items: center; }
+  .home .partner-logo { justify-content: flex-start; width: 100%; max-width: 110px; font-size: 0.9rem; }
+}
 
 /* ==========================================================================
-8. ACCUEIL ET PRÉSENTATION PRINCIPALE (HOME SECTION) FIN
+8. ACCUEIL - DESIGN ASYMÉTRIQUE SUR FOND STUDIO NOIR SOMBRE FIN
 ========================================================================== */
+
 
 
 
@@ -1247,7 +1218,7 @@ img {
 
 .about .content-title {
   color: var(--primary-color-cl);
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   margin-bottom: 2.5rem;
 }
@@ -1542,18 +1513,19 @@ img {
 
 
 
-/*==================================================
-20. Section Footer 
-====================================================*/
+/* ==========================================================================
+20. SECTION FOOTER (HARMONISATION THÈME SOMBRE BLEU ROYAL & NOIR STUDIO)
+========================================================================== */
 .footer {
   padding: 6rem 2rem 3rem;
-  background-color: var(--section-bg);
+  background-color: #111111; /* Fond noir du studio photo qui fusionne avec ton portrait */
   position: relative;
   overflow: hidden;
   z-index: 5;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Halo lumineux "Cyber Glow" discret en arrière-plan */
+/* Halo blanc tamisé discret en arrière-plan */
 .footer::before {
   content: '';
   position: absolute;
@@ -1562,29 +1534,31 @@ img {
   transform: translateX(-50%);
   width: 500px;
   height: 300px;
-  background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(26, 79, 219, 0.05) 0%, transparent 70%);
   pointer-events: none;
   z-index: -1;
 }
 
 /* Couleur des écrits généraux (Gris clair pour s'intégrer à l'écran) */
 .footer-link {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: var(--small-font);
+  transition: all 0.3s ease;
 }
 
 .footer .content-description {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
   text-align: justify !important;
   font-size: var(--small-font);
   line-height: 1.6;
 }
 
 .footer-container {
-  max-width: 1140px;
+  max-width: 1400px; /* Aligné sur la grille maximale de ton nouvel accueil */
   margin: 0 auto;
 }
 
-/* FORMAT ORDINATEUR (Grille asymétrique pour déserrer l'Accueil) */
+/* FORMAT ORDINATEUR (Grille asymétrique) */
 .footer-content {
   display: grid;
   grid-template-columns: 1.8fr 1.1fr 1.1fr; 
@@ -1593,24 +1567,24 @@ img {
   align-items: start;
 }
 
-/* Le titre du marque (logo-text) */
+/* --- LOGO ET MARQUE EN BLEU ROYAL --- */
 .footer .logo-text {
-  color: #FFD700;
+  color: #1a4fdb; /* Bleu royal éclatant assorti à ton costume */
   font-size: 1.8rem; 
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.5px;
 }
 
 .footer .logo-icon {
-  color: #FFD700;
+  color: #1a4fdb; /* Icône de marque assortie */
   font-size: 2.2rem;
   margin-bottom: 0.5rem;
 }
 
-/* Le titre de section ajusté à une taille parfaite */
+/* --- TITRES DE SECTIONS EN BLEU ROYAL --- */
 .footer .footer-title {
-  color: #FFD700; 
-  font-size: 1.6rem; 
+  color: #1a4fdb; /* Les en-têtes de colonnes passent en bleu */
+  font-size: 1.2rem; 
   font-weight: 700; 
   letter-spacing: 0.5px; 
   margin-bottom: 1.5rem; 
@@ -1620,7 +1594,7 @@ img {
 /* Hiérarchie : Éléments sous les titres légèrement plus petits */
 .footer-links,
 .contact-info {
-  font-size: 1.3rem; 
+  font-size: 1.1rem; 
 }
 
 .footer-box {
@@ -1633,7 +1607,7 @@ img {
   text-decoration: none;
 }
 
-/* MISE EN VALEUR ET ANIMATION DES ICÔNES DE CONTACT (ENVELOPPE & MAP-MARKER) */
+/* --- MISE EN VALEUR ET ANIMATION DES ICÔNES DE CONTACT --- */
 .contact-info {
   display: flex;
   flex-direction: column;
@@ -1642,7 +1616,7 @@ img {
 }
 
 .footer .location-text {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
   font-size: var(--small-font);
   line-height: 1.6;
   display: flex;
@@ -1650,39 +1624,44 @@ img {
   transition: color 0.3s ease;
   cursor: pointer;
   text-align: left;
-  text-align: justify;
 }
 
-/* Allumage en jaune vif des icônes de contact */
+/* Allumage en bleu royal des icônes de contact */
 .footer .location-text i {
-  color: #FFD700 !important; 
+  color: #1a4fdb !important; 
   font-size: 1.4rem;
   margin-right: 1rem;
   display: inline-block;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
 }
 
 .footer .location-text:hover {
   color: #ffffff; 
 }
 
+/* Éclat blanc pur sur l'icône survolée */
+.footer .location-text:hover i {
+  color: #ffffff !important;
+}
+
 /* L'enveloppe subit un micro-battement au survol */
 .footer .location-text:hover .fa-envelope {
-  transform: scale(1.25) rotate(5deg);
+  transform: scale(1.2) rotate(3deg);
 }
 
 /* Le marqueur de carte simule un effet de "drop-pin" au survol */
 .footer .location-text:hover .map-icon {
-  transform: translateY(-4px) scale(1.1);
+  transform: translateY(-3px) scale(1.05);
 }
 
-/* STYLE DES ICÔNES RÉSEAUX SOCIAUX */
+/* --- STYLE DES ICÔNES RÉSEAUX SOCIAUX --- */
 .footer-content .single-footer .social {
   margin-top: 5px;
   margin: 5px 0;
   display: flex;
   gap: 12px;
   justify-content: flex-start;
+  padding: 0;
 }
 
 .footer-content .single-footer .social li {
@@ -1694,11 +1673,11 @@ img {
   width: 38px;
   line-height: 36px;
   text-align: center;
-  border: 1px solid #8E9297;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 0;
   border-radius: 100%;
   display: block;
-  color: #8E9297;
+  color: rgba(255, 255, 255, 0.5);
   font-size: 16px;
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -1706,11 +1685,11 @@ img {
 }
 
 .footer-content .single-footer .social li a:hover {
-  color: var(--primary-black) !important;
-  background: #FFD700;
+  color: #111111 !important;
+  background: #ffffff; /* Inversion minimaliste blanche au survol */
   border-color: transparent;
-  transform: translateY(-5px) scale(1.15);
-  box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4), 0 0 12px rgba(255, 215, 0, 0.2);
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
 }
 
 .footer-content .single-footer.f-link li a i {
@@ -1733,9 +1712,10 @@ img {
   font-weight: 400;
 }
 
+/* Glissement léger et bascule en blanc au survol */
 .footer-content .single-footer.f-link li a:hover {
-  padding-left: 8px;
-  color: #FFD700;
+  padding-left: 6px;
+  color: #ffffff;
 }
 
 .footer .map-icon {
@@ -1747,27 +1727,28 @@ img {
   row-gap: 1rem;
   font-weight: var(--font-medium);
   padding: 0;
-}
-
-.footer-link {
-  font-size: var(--small-font);
-  transition: var(--tran-0-3);
+  list-style: none;
 }
 
 .footer-link:hover {
-  color: #FFD700;
+  color: #ffffff;
 }
 
+/* --- COPYRIGHT INFÉRIEUR --- */
 .footer-copyRight {
-  max-width: 970px;
+  max-width: 1400px;
   margin: 0 auto;
   text-align: center;
   padding-top: 3rem;
   margin-top: 3rem;
   font-size: var(--small-font);
-  border-top: 2px solid #FFD700;
-  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.05); /* Ligne sombre ultra-fine */
+  color: rgba(255, 255, 255, 0.4);
 }
+
+/* ==========================================================================
+20.2 ADAPTATION RESPONSIVE (MÉDIAS QUERIES PRÉSERVÉS)
+========================================================================== */
 
 /* FORMAT TABLETTE (Écrans de 577px à 992px) */
 @media screen and (max-width: 992px) {
@@ -1791,9 +1772,8 @@ img {
   .footer-box.presentation {
     grid-column: span 1;
   }
-  /* Sur mobile, on garde le justifié pour les longs textes, mais on centre les blocs de contact étroits */
   .footer .content-description {
-    text-align: justify;
+    text-align: center !important;
   }
   .footer .location-text {
     text-align: center;
@@ -1805,7 +1785,11 @@ img {
   .logo-content {
     justify-content: center;
   }
+  .footer-content .single-footer.f-link li a:hover {
+    padding-left: 0; /* Bloque le décalage pour maintenir le centrage mobile parfait */
+  }
 }
+
 /*==================================================
 10. Section Footer FIN
 ====================================================*/
@@ -1817,446 +1801,1169 @@ img {
 /* ==========================================================================
 12. SECTION COMPÉTENCES REVISÉE 
 ========================================================================== */
+/* ==========================================================
+   SECTION COMPÉTENCES — CSS COMPLET
+   PARTIE 1/3
+   STRUCTURE — EN-TÊTE — CARTES PHOTOGRAPHIQUES
+========================================================== */
 
-.skill-section {
+/* SECTION PRINCIPALE */
+
+#skill.skill-section {
     position: relative;
-    padding: 76px 0;
-    background: var(--section-bg);
+    isolation: isolate;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px 5% 90px;
     overflow: hidden;
+    background: #f9f9f9
 }
 
-.skills-container {
-    width: min(1240px, calc(100% - 42px));
+#skill .skills-container {
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
-/* ==================== EN-TÊTE ==================== */
+/* ==========================================================
+   EN-TÊTE
+========================================================== */
 
-.skill-section-header {
-    max-width: 720px;
-    margin: 0 auto 42px;
+#skill .skill-section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 850px;
+    margin: 0 auto 60px;
     text-align: center;
 }
 
-.skill-section-kicker {
+#skill .skill-section-kicker {
     display: inline-block;
-    margin-bottom: 12px;
-    color: var(--white-color);
-    font-size:2.2rem;
-    font-weight: 800;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-
-    position: relative;
-    margin: 0;
-}
-
-/* Fine jauge décorative sous le titre principal */
-.skill-section-kicker::after {
-  content: '';
-  position: absolute;
-  bottom: -10px; 
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  background: #0066ff;
-  border-radius: 2px;
-}
-
-.skill-section-title {
-    margin: 0;
-    color: #ff0000;
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 1.4px;
-}
-
-.skill-section-description { 
-  margin: 20px auto 0; 
-  line-height: 1.75; 
-  color: var(--p-color-1); 
-  font-size: 13px; 
-  font-weight: 700; 
-  
-  /* Augmentez cette valeur jusqu'à obtenir l'effet voulu */
-  letter-spacing: 3px; 
-}
-
-.skill-title-line {
-    display: block;
-    width: 66px;
-    height: 3px;
-    margin: 19px auto 0;
-    border-radius: 20px;
-    background: #0066ff;
-}
-
-/* ==================== GRILLE PRINCIPALE ==================== */
-
-.skills-row-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-    gap: 22px;
-}
-
-/* ==================== CARTES DES CATÉGORIES ==================== */
-
-.skill-category {
-    --category-accent: #38bdf8;
-
-    min-width: 0;
-    padding: 0 16px 18px;
-
-    background: #020111;
-    border: 1px solid rgba(0, 210, 255, 0.10);
-    border-radius: 15px;
-
-    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.18);
-
-    overflow: hidden;
-
-    transition:
-        border-color .25s ease,
-        transform .25s ease,
-        box-shadow .25s ease;
-
-}
-
-.skill-category:hover {
-    transform: translateY(-5px);
-    border-color: rgba(0, 102, 255, .55);
-    box-shadow: 0 18px 42px rgba(0, 102, 255, .10);
-}
-
-/* Couleurs originales des trois catégories */
-
-.skill-category--fondamentale {
-    --category-accent: #ffeb60;
-}
-
-.skill-category--specifique {
-    --category-accent: #ff4d4d;
-}
-
-.skill-category--technique {
-    --category-accent: #38bdf8;
-}
-
-/* ==================== TITRES DES CATÉGORIES ==================== */
-
-.skill-category-header {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    min-height: 82px;
-    margin: 0 -16px 12px;
-    padding: 16px;
-
-    border-bottom: 1px solid rgba(148, 163, 184, .13);
-}
-
-.skill-category-header::before {
-    position: absolute;
-    top: 0;
-    left: 16px;
-
-    width: 42px;
-    height: 3px;
-
-    border-radius: 0 0 5px 5px;
-    background: var(--category-accent);
-
-    content: "";
-}
-
-.skill-category-number {
-    display: grid;
-    flex: 0 0 38px;
-
-    width: 38px;
-    height: 38px;
-
-    place-items: center;
-
-    border: 1px solid rgba(148, 163, 184, .2);
-    border-radius: 11px;
-
-    color: var(--category-accent);
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.skill-category-heading {
-    flex: 1;
-    min-width: 0;
-}
-
-.skill-category-heading h2 {
-    margin: 0;
-
-    color: #ffffff;
+    margin-bottom: 15px;
+    color: #0066ff;
     font-size: 13px;
     font-weight: 800;
-    letter-spacing: .45px;
-    line-height: 1.45;
+    letter-spacing: 5px;
+    text-transform: uppercase;
 }
 
-.skill-category-count {
+/* ==========================================================
+   ESPACE DES CARTES
+========================================================== */
+
+#skills-showcase {
+    position: relative;
     display: block;
-    margin-top: 4px;
-
-    color: #64748b;
-    font-size: 10px;
-    font-weight: 600;
+    width: 100%;
+    animation: skillsShowcaseAppear 0.7s ease both;
 }
 
-.skill-category-symbol {
+#skills-showcase[hidden] {
+    display: none !important;
+}
+
+#skill .skills-showcase-grid {
     display: grid;
-    flex: 0 0 34px;
-
-    width: 34px;
-    height: 34px;
-
-    place-items: center;
-
-    border-radius: 10px;
-    background: rgba(255, 255, 255, .04);
-
-    color: var(--category-accent);
-    font-size: 17px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+    width: 100%;
 }
 
-/* ==================== LISTE DES COMPÉTENCES ==================== */
+/* ==========================================================
+   CARTES PHOTOGRAPHIQUES
+========================================================== */
 
-.skills-list {
+#skill .skill-showcase-card {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-/* On conserve les classes HTML existantes */
-
-.skill-item {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-
-    min-height: 43px;
-    padding: 7px 9px;
-
-    border: 1px solid transparent;
-    border-radius: 8px;
-
-    background: rgba(255, 255, 255, .025);
+    align-items: flex-end;
+    width: 100%;
+    min-height: 480px;
+    overflow: hidden;
+    isolation: isolate;
+    background: #020111;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
 
     transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
+        transform 0.5s ease,
+        border-color 0.5s ease,
+        box-shadow 0.5s ease;
 }
 
-.skill-item:hover {
-    transform: translateX(3px);
+/* IMAGES */
 
-    border-color: rgba(0, 102, 255, .28);
-    background: rgba(0, 102, 255, .065);
+#skill .skill-showcase-image {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: scale(1);
+
+    transition: transform 0.8s ease;
 }
 
-/* ==================== ICÔNES ==================== */
+/* Remplacer les trois chemins par tes images réelles */
 
-.skill-icon-box {
-    display: grid;
-    flex: 0 0 27px;
-
-    width: 27px;
-    height: 27px;
-
-    place-items: center;
-
-    border-radius: 7px;
-    background: rgba(0, 102, 255, .09);
-
-    color: var(--category-accent);
-    font-size: 15px;
+#skill .skill-showcase-specifique .skill-showcase-image {
+    background-image: url("../images/travail/ton-travail17.png");
 }
 
-/* ==================== INFORMATIONS ==================== */
-
-.skill-info {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 5px;
-
-    min-width: 0;
+#skill .skill-showcase-fondamentale .skill-showcase-image {
+    background-image: url("../images/travail/ton-travail16.png");
 }
 
-.skill-name {
-    min-width: 0;
-
-    color: #94a3b8;
-    font-size: 11px;
-    font-weight: 650;
-    line-height: 1.4;
-
-    overflow-wrap: anywhere;
+#skill .skill-showcase-technique .skill-showcase-image {
+    background-image: url("../images/travail/ton-travail3.jpg");
 }
 
-/* ==================== NIVEAUX ==================== */
+/* ==========================================================
+   DÉGRADÉ SOMBRE
+========================================================== */
 
-.skill-level {
+#skill .skill-showcase-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background: linear-gradient(
+        180deg,
+        rgba(2, 1, 17, 0.05) 0%,
+        rgba(2, 1, 17, 0.30) 35%,
+        rgba(2, 1, 17, 0.85) 75%,
+        #020111 100%
+    );
+
+    transition: background 0.5s ease;
+}
+
+/* ==========================================================
+   SURVOL DES CARTES
+========================================================== */
+
+#skill .skill-showcase-card:hover {
+    transform: translateY(-10px);
+
+    border-color: rgba(0, 102, 255, 0.8);
+
+    box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.45),
+        0 0 25px rgba(0, 102, 255, 0.12);
+}
+
+#skill .skill-showcase-card:hover .skill-showcase-image {
+    transform: scale(1.09);
+}
+
+#skill .skill-showcase-card:hover .skill-showcase-overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(2, 1, 17, 0.12) 0%,
+        rgba(2, 1, 17, 0.45) 35%,
+        rgba(2, 1, 17, 0.94) 80%,
+        #020111 100%
+    );
+}
+
+/* ==========================================================
+   CONTENU DES CARTES
+========================================================== */
+
+#skill .skill-showcase-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 30px;
+    color: #fff;
+}
+
+#skill .skill-showcase-number {
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    padding: 4px 7px;
+    width: 43px;
+    height: 43px;
+    margin-bottom: 20px;
 
+    color: #fff;
+    background: rgba(0, 102, 255, 0.85);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.35);
+}
+
+#skill .skill-showcase-label {
+    display: block;
+    margin-bottom: 12px;
+
+    color: #38bdf8;
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+#skill .skill-showcase-content h2 {
+    margin: 0 0 15px;
+
+    color: #fff;
+
+    font-size: clamp(20px, 2vw, 25px);
+    font-weight: 900;
+    line-height: 1.35;
+
+    text-transform: uppercase;
+}
+
+#skill .skill-showcase-content p {
+    min-height: 75px;
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.78);
+
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* ==========================================================
+   ICÔNES DES CARTES
+========================================================== */
+
+#skill .skill-showcase-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+#skill .skill-showcase-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+
+    color: #fff;
+    background: rgba(0, 102, 255, 0.2);
+
+    border: 1px solid rgba(0, 102, 255, 0.65);
+    border-radius: 12px;
+
+    font-size: 24px;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+#skill .skill-showcase-card:hover .skill-showcase-icon {
+    background: #0066ff;
+    transform: rotate(-5deg);
+}
+
+/* ==========================================================
+   BOUTON VOIR PLUS
+========================================================== */
+
+#skill .skill-showcase-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    min-height: 45px;
+    padding: 0 20px;
+
+    color: #fff;
+    background: #0066ff;
+
+    border: 1px solid #0066ff;
     border-radius: 5px;
 
-    font-size: 9px;
-    font-weight: 750;
-    line-height: 1.2;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
 
-    white-space: nowrap;
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
-/* Couleurs originales conservées */
-
-.skill-level.lvl-expert {
-    background: rgba(76, 217, 100, .08);
-    color: #248a3d;
+#skill .skill-showcase-button i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
 }
 
-.skill-level.lvl-avance {
-    background: rgba(0, 122, 255, .08);
-    color: #0056b3;
+#skill .skill-showcase-button:hover {
+    color: #fff;
+    background: transparent;
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 5px 20px rgba(0, 102, 255, 0.3);
 }
 
-.skill-level.lvl-intermediaire {
-    background: rgba(255, 149, 0, .08);
-    color: #b36b00;
+#skill .skill-showcase-button:hover i {
+    transform: translateX(5px);
 }
 
-.skill-level.lvl-maitrise {
-    background: rgba(88, 86, 214, .08);
-    color: #3b3994;
+#skill .skill-showcase-button:focus-visible {
+    outline: 3px solid #38bdf8;
+    outline-offset: 4px;
 }
 
-/* ==================== TABLETTES ==================== */
+/* ==========================================================
+   ANIMATION
+========================================================== */
 
-@media (max-width: 1050px) {
-
-    .skills-row-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+@keyframes skillsShowcaseAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-    .skill-category--technique {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================
+   SECTION COMPÉTENCES — CSS COMPLET
+   PARTIE 2/3
+   TABLEAUX — COMPÉTENCES — NIVEAUX
+========================================================== */
+
+/* ==========================================================
+   ESPACE DES DÉTAILS
+========================================================== */
+
+#skills-details {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    animation: skillsDetailsAppear 0.6s ease both;
+}
+
+#skills-details[hidden] {
+    display: none !important;
+}
+
+@keyframes skillsDetailsAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================
+   NAVIGATION DE RETOUR
+========================================================== */
+
+#skill .skill-details-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    width: 100%;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#skill .skill-details-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    min-height: 46px;
+    padding: 0 20px;
+
+    color: #fff;
+    background: #0066ff;
+
+    border: 1px solid #0066ff;
+    border-radius: 5px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+#skill .skill-details-back i {
+    font-size: 19px;
+}
+
+#skill .skill-details-back:hover {
+    background: transparent;
+    transform: translateX(-4px);
+
+    box-shadow: 0 5px 20px rgba(0, 102, 255, 0.2);
+}
+
+#skill .skill-details-back:focus-visible,
+#skill .skill-details-footer-close:focus-visible {
+    outline: 3px solid #38bdf8;
+    outline-offset: 4px;
+}
+
+#skill .skill-details-reference {
+    color: rgba(255, 255, 255, 0.5);
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* ==========================================================
+   PANNEAUX DES CATÉGORIES
+========================================================== */
+
+#skill .skill-details-panel {
+    display: block;
+    width: 100%;
+    min-width: 0;
+
+    animation: skillPanelAppear 0.5s ease both;
+}
+
+#skill .skill-details-panel[hidden] {
+    display: none !important;
+}
+
+@keyframes skillPanelAppear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================
+   CARTE PRINCIPALE DU TABLEAU
+========================================================== */
+
+#skill .skill-category {
+    position: relative;
+    width: 100%;
+    padding: 30px;
+    overflow: hidden;
+
+    background: #020111;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================
+   EN-TÊTE DU TABLEAU
+========================================================== */
+
+#skill .skill-category-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    width: 100%;
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#skill .skill-category-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+
+    color: #fff;
+    background: #0066ff;
+
+    border-radius: 12px;
+
+    font-size: 16px;
+    font-weight: 900;
+}
+
+#skill .skill-category-heading {
+    flex: 1;
+    min-width: 0;
+}
+
+#skill .skill-category-heading h2 {
+    margin: 0 0 8px;
+
+    color: #fff;
+
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 900;
+    line-height: 1.4;
+}
+
+#skill .skill-category-count {
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#skill .skill-category-symbol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+
+    color: #0066ff;
+    background: rgba(0, 102, 255, 0.12);
+
+    border: 1px solid rgba(0, 102, 255, 0.4);
+    border-radius: 12px;
+
+    font-size: 25px;
+}
+
+/* ==========================================================
+   COULEURS DES TROIS CATÉGORIES
+========================================================== */
+
+/* FONDAMENTALES : JAUNE */
+
+#skill .skill-category--fondamentale {
+    border-top: 3px solid #ffeb60;
+}
+
+#skill .skill-category--fondamentale .skill-category-number {
+    color: #020111;
+    background: #ffeb60;
+}
+
+#skill .skill-category--fondamentale .skill-category-symbol {
+    color: #ffeb60;
+    background: rgba(255, 235, 96, 0.1);
+    border-color: rgba(255, 235, 96, 0.4);
+}
+
+/* SPÉCIFIQUES : ROUGE */
+
+#skill .skill-category--specifique {
+    border-top: 3px solid #ff4d4d;
+}
+
+#skill .skill-category--specifique .skill-category-number {
+    background: #ff4d4d;
+}
+
+#skill .skill-category--specifique .skill-category-symbol {
+    color: #ff4d4d;
+    background: rgba(255, 77, 77, 0.1);
+    border-color: rgba(255, 77, 77, 0.4);
+}
+
+/* TECHNIQUES : CYAN */
+
+#skill .skill-category--technique {
+    border-top: 3px solid #38bdf8;
+}
+
+#skill .skill-category--technique .skill-category-number {
+    color: #020111;
+    background: #38bdf8;
+}
+
+#skill .skill-category--technique .skill-category-symbol {
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(56, 189, 248, 0.4);
+}
+
+/* ==========================================================
+   LISTE DES COMPÉTENCES
+========================================================== */
+
+#skill .skills-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+
+    width: 100%;
+}
+
+/* ==========================================================
+   BLOC INDIVIDUEL
+========================================================== */
+
+#skill .skill-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    width: 100%;
+    min-width: 0;
+    min-height: 80px;
+
+    padding: 16px;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+#skill .skill-item:hover {
+    transform: translateY(-4px);
+
+    background: rgba(0, 102, 255, 0.08);
+
+    border-color: rgba(0, 102, 255, 0.5);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================
+   ICÔNES DES COMPÉTENCES
+========================================================== */
+
+#skill .skill-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    flex-shrink: 0;
+
+    color: #0066ff;
+    background: rgba(0, 102, 255, 0.1);
+
+    border: 1px solid rgba(0, 102, 255, 0.25);
+    border-radius: 9px;
+
+    font-size: 22px;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+#skill .skill-item:hover .skill-icon-box {
+    color: #fff;
+    background: #0066ff;
+}
+
+/* ==========================================================
+   INFORMATIONS DE LA COMPÉTENCE
+========================================================== */
+
+#skill .skill-info {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+
+    min-width: 0;
+}
+
+#skill .skill-name {
+    display: block;
+    width: 100%;
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+#skill .skill-level {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    max-width: 100%;
+
+    padding: 5px 10px;
+
+    color: #fff;
+    background: rgba(0, 102, 255, 0.16);
+
+    border: 1px solid rgba(0, 102, 255, 0.3);
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================
+   NIVEAUX DE COMPÉTENCES
+========================================================== */
+
+/* EXPERT */
+
+#skill .lvl-expert {
+    color: #38f5a3;
+    background: rgba(56, 245, 163, 0.09);
+    border-color: rgba(56, 245, 163, 0.3);
+}
+
+/* AVANCÉ */
+
+#skill .lvl-avance {
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.09);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+/* INTERMÉDIAIRE */
+
+#skill .lvl-intermediaire {
+    color: #ffeb60;
+    background: rgba(255, 235, 96, 0.09);
+    border-color: rgba(255, 235, 96, 0.3);
+}
+
+/* MAÎTRISÉ */
+
+#skill .lvl-maitrise {
+    color: #ff8b8b;
+    background: rgba(255, 77, 77, 0.09);
+    border-color: rgba(255, 77, 77, 0.3);
+}
+
+/* ==========================================================
+   PIED DU TABLEAU
+========================================================== */
+
+#skill .skill-details-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    margin-top: 30px;
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#skill .skill-details-footer > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+#skill .skill-details-footer > span i {
+    color: #38f5a3;
+    font-size: 18px;
+}
+
+#skill .skill-details-footer-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 10px 17px;
+
+    color: #fff;
+    background: transparent;
+
+    border: 1px solid rgba(0, 102, 255, 0.65);
+    border-radius: 5px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+#skill .skill-details-footer-close:hover {
+    background: #0066ff;
+}
+
+#skill .skill-details-footer-close i {
+    font-size: 17px;
+}
+
+/* ==========================================================
+   SECTION COMPÉTENCES — CSS COMPLET
+   PARTIE 3/3
+   RESPONSIVE — TABLETTES — MOBILES — ACCESSIBILITÉ
+========================================================== */
+
+/* ==========================================================
+   ÉCRANS MOYENS
+========================================================== */
+
+@media screen and (max-width: 1100px) {
+
+    #skill.skill-section {
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    #skill .skills-showcase-grid {
+        gap: 18px;
+    }
+
+    #skill .skill-showcase-card {
+        min-height: 430px;
+    }
+
+    #skill .skill-showcase-content {
+        padding: 23px;
+    }
+
+    #skill .skill-showcase-content h2 {
+        font-size: 19px;
+    }
+
+    #skill .skill-showcase-content p {
+        font-size: 13px;
+    }
+
+    #skill .skills-list {
+        gap: 13px;
+    }
+
+    #skill .skill-item {
+        padding: 13px;
+    }
+}
+
+/* ==========================================================
+   TABLETTES
+========================================================== */
+
+@media screen and (max-width: 850px) {
+
+    #skill.skill-section {
+        padding: 85px 5% 75px;
+    }
+
+    #skill .skill-section-header {
+        margin-bottom: 45px;
+    }
+
+    #skill .skills-showcase-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    #skill .skill-showcase-card {
+        min-height: 420px;
+    }
+
+    #skill .skill-showcase-card:last-child {
         grid-column: 1 / -1;
+        min-height: 390px;
     }
 
-    .skill-category--technique .skills-list {
-        display: grid;
+    #skill .skill-showcase-card:last-child .skill-showcase-content {
+        max-width: 600px;
+    }
+
+    #skill .skill-category {
+        padding: 24px;
+    }
+
+    #skill .skills-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-/* ==================== MOBILES ==================== */
+/* ==========================================================
+   MOBILES
+========================================================== */
 
-@media (max-width: 700px) {
+@media screen and (max-width: 600px) {
 
-    .skill-section {
-        padding: 58px 0;
+    #skill.skill-section {
+        padding: 75px 5% 60px;
     }
 
-    .skills-container {
-        width: min(100% - 28px, 540px);
+    #skill .skill-section-header {
+        margin-bottom: 35px;
     }
 
-    .skill-section-header {
-        margin-bottom: 28px;
+    #skill .skill-section-kicker {
+        font-size: 11px;
+        letter-spacing: 4px;
     }
 
-    .skills-row-grid {
+    /* CARTES */
+
+    #skill .skills-showcase-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 20px;
     }
 
-    .skill-category--technique {
+    #skill .skill-showcase-card,
+    #skill .skill-showcase-card:last-child {
         grid-column: auto;
+        min-height: 410px;
     }
 
-    .skill-category--technique .skills-list {
-        display: flex;
+    #skill .skill-showcase-content {
+        padding: 25px;
     }
 
-    .skill-category {
-        padding-inline: 13px;
+    #skill .skill-showcase-content h2 {
+        font-size: 21px;
     }
 
-    .skill-category-header {
-        margin-inline: -13px;
-        padding-inline: 13px;
+    #skill .skill-showcase-content p {
+        min-height: auto;
+        font-size: 13px;
     }
 
-    .skill-category-header::before {
-        left: 13px;
-    }
-}
-
-/* ==================== PETITS ÉCRANS ==================== */
-
-@media (max-width: 380px) {
-
-    .skills-container {
-        width: calc(100% - 20px);
+    #skill .skill-showcase-number {
+        width: 39px;
+        height: 39px;
+        font-size: 12px;
     }
 
-    .skill-category {
-        padding-inline: 10px;
-    }
+    /* NAVIGATION */
 
-    .skill-category-header {
-        margin-inline: -10px;
-        padding-inline: 10px;
-        gap: 8px;
-    }
-
-    .skill-category-header::before {
-        left: 10px;
-    }
-
-    .skill-item {
+    #skill .skill-details-navigation {
         align-items: flex-start;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 14px;
+
+        margin-bottom: 25px;
     }
 
-    .skill-info {
-        flex-wrap: wrap;
+    #skill .skill-details-back {
+        width: 100%;
+        min-height: 45px;
+    }
+
+    #skill .skill-details-reference {
+        font-size: 9px;
+    }
+
+    /* TABLEAU */
+
+    #skill .skill-category {
+        padding: 18px;
+        border-radius: 11px;
+    }
+
+    #skill .skill-category-header {
+        gap: 12px;
+        margin-bottom: 25px;
+        padding-bottom: 18px;
+    }
+
+    #skill .skill-category-number {
+        width: 40px;
+        height: 40px;
+        font-size: 13px;
+    }
+
+    #skill .skill-category-heading h2 {
+        font-size: 16px;
+    }
+
+    #skill .skill-category-count {
+        font-size: 10px;
+    }
+
+    #skill .skill-category-symbol {
+        width: 40px;
+        height: 40px;
+        font-size: 19px;
+    }
+
+    /* LISTE DES COMPÉTENCES */
+
+    #skill .skills-list {
+        grid-template-columns: 1fr;
+        gap: 11px;
+    }
+
+    #skill .skill-item {
+        min-height: 72px;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    #skill .skill-icon-box {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        font-size: 20px;
+    }
+
+    #skill .skill-name {
+        font-size: 13px;
+    }
+
+    #skill .skill-level {
+        padding: 5px 8px;
+        font-size: 9px;
+    }
+
+    /* PIED */
+
+    #skill .skill-details-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #skill .skill-details-footer > span {
+        font-size: 9px;
+        line-height: 1.6;
+    }
+
+    #skill .skill-details-footer-close {
+        width: 100%;
     }
 }
 
-/* ==================== ACCESSIBILITÉ ==================== */
+/* ==========================================================
+   PETITS MOBILES
+========================================================== */
+
+@media screen and (max-width: 380px) {
+
+    #skill .skill-showcase-card,
+    #skill .skill-showcase-card:last-child {
+        min-height: 390px;
+    }
+
+    #skill .skill-showcase-content {
+        padding: 20px;
+    }
+
+    #skill .skill-showcase-content h2 {
+        font-size: 18px;
+    }
+
+    #skill .skill-showcase-bottom {
+        gap: 10px;
+    }
+
+    #skill .skill-showcase-button {
+        gap: 7px;
+        padding: 0 12px;
+        font-size: 10px;
+    }
+
+    #skill .skill-category {
+        padding: 14px;
+    }
+
+    #skill .skill-category-symbol {
+        display: none;
+    }
+
+    #skill .skill-level {
+        max-width: 105px;
+        white-space: normal;
+    }
+}
+
+/* ==========================================================
+   ACCESSIBILITÉ
+========================================================== */
 
 @media (prefers-reduced-motion: reduce) {
 
-    .skill-category,
-    .skill-item {
-        animation: none !important;
-        transition: none !important;
-    }
-
-    .skill-category:hover,
-    .skill-item:hover {
-        transform: none !important;
+    #skill *,
+    #skill *::before,
+    #skill *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
+
+/* ==========================================================
+   FIN DU CSS COMPLET — SECTION COMPÉTENCES
+========================================================== */
+
+
+
 /* ==========================================================================
 12. SECTION COMPÉTENCES REVISÉE FIN
 ========================================================================== */
@@ -2265,53 +2972,57 @@ img {
 
 
 
-/*==========================================================================
-13. START FEAUTES CSS
-==========================================================================*/
-.Feautes {
-  padding: 60px 0 40px 0;
-  background: #020111;
-}
-.Feautes.index2 {
-  padding-top: 100px;
-}
-.Feautes.testimonial-page {
-  padding-top: 100px;
+/* ==========================================================================
+13. SECTION CONNAISSANCES TECHNIQUES (AVEC PROTECTION DES BORDURES ÉCRAN)
+========================================================================== */
+/* --- Sécurisation totale des boîtes uniquement pour cette zone --- */
+.Feautes,
+.Feautes *,
+.Feautes *::before,
+.Feautes *::after {
+  box-sizing: border-box !important;
 }
 
+.Feautes {
+  padding: 60px 0 40px 0; /* Padding vertical d'origine */
+  background-color: #ffffff; /* Fond blanc pur pour l'alternance */
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* PROTECTION DE LA GRILLE : Crée l'espace de sécurité indispensable avec les bords de l'écran */
+.Feautes .container {
+  max-width: 1200px; /* Largeur maximale fixe d'origine */
+  margin: 0 auto; /* Centre le bloc au milieu de l'écran */
+  padding: 0 30px; /* RECALIBRAGE : Éloigne physiquement les cartes des bords gauche et droit de l'écran */
+  width: 100%;
+}
+
+/* --- EN-TÊTE PRINCIPAL DE SECTION CENTRÉ --- */
 .Feautes .section-header {
   text-align: center;
   margin-bottom: 50px;
-}
-
-.Feautes .section-header span {
-  color: var(--white-color);
-}
-
-.Feautes .section-header p {
-  color: var(--text-color-light);
-  text-align: center;
-  margin: auto;
-  font-size: 15px;
-  padding-bottom: 60px;
-  width: 50%;
+  width: 100%;
 }
 
 .Feautes .section-header .section-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--white-color); 
-  letter-spacing: 2px;
+  color: #0066ff; /* Bleu éclatant conducteur */
+  font-size: 1.1rem;
+  font-weight: 700;
   text-transform: uppercase;
-  position: relative;
-  display: inline-block;
+  letter-spacing: 1.5px;
   margin: 0;
+  display: inline-block;
+  position: relative;
 }
 
+/* Petite barre bleue décorative parfaitement centrée en dessous */
 .Feautes .section-header .section-title::after {
   content: '';
   position: absolute;
-  bottom: -10px; 
+  bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
@@ -2320,91 +3031,99 @@ img {
   border-radius: 2px;
 }
 
-/* ==================== GRILLE DE PRESENTATION PUR CSS NATIF RESPONSIVE ==================== */
+/* ==================== GRILLE DE PRÉSENTATION PUR CSS NATIF RESPONSIVE ==================== */
 .feautes-grid-pure {
   display: grid;
-  /* 1. PAR DÉFAUT SUR MOBILE : 1 seule colonne verticale */
-  grid-template-columns: 1fr; 
-  gap: 3rem;
+  grid-template-columns: 1fr; /* 1. MOBILE : 1 seule colonne verticale */
+  gap: 2.5rem; /* Réduit pour éviter que les éléments ne poussent vers l'extérieur */
   width: 100%;
 }
 
-/* 2. SUR TABLETTE (max-width: 992px et min-width: 768px) : Strictement 2 colonnes par ligne */
+/* 2. FORMAT TABLETTE (Écrans intermédiaires de 768px à 992px) */
 @media screen and (min-width: 768px) {
   .feautes-grid-pure {
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 2rem; 
   }
 }
 
-/* 3. SUR ORDINATEUR (min-width: 992px) : Strictement 3 colonnes fixes et proportionnelles */
+/* 3. FORMAT ORDINATEUR / GRAND ÉCRAN (À partir de 992px) */
 @media screen and (min-width: 992px) {
   .feautes-grid-pure {
     grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem 2rem; /* Espace équilibré pour empêcher le collage sur les côtés */
   }
 }
 
 .feautes-item {
   width: 100%;
+  min-width: 0; /* Sécurité anti-débordement de cellule */
 }
 
+/* --- COMPOSANTS INTERNES DE LA CARTE TECHNIQUE --- */
 .Feautes .single-features {
   text-align: center;
   position: relative;
-  padding: 10px 20px;
-}
-
-.Feautes .single-features.last::before {
-  display: none;
+  padding: 10px 15px; /* Légèrement diminué pour aérer l'espace interne */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .Feautes .single-features .signle-icon {
   position: relative;
-}
-
-.Feautes .single-features .signle-icon i {
-  font-size: 50px;
-  color: #1a76d1;
-  position: absolute;
-  left: 50%;
-  margin-left: -50px;
-  top: 0;
   height: 100px;
   width: 100px;
-  line-height: 100px;
-  background: var(--big-font);
+  margin-bottom: 25px;
+}
+
+/* Style de la bulle circulaire de l'icône - AVEC LA COULEUR DE TES SERVICES ET ICONE BLANCHE */
+.Feautes .single-features .signle-icon i {
+  font-size: 50px; 
+  color: #ffffff; /* L'icône est blanche à l'intérieur au repos */
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  height: 100px;
+  width: 100px;
+  line-height: 100px; 
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%); /* Couleur exacte de ton dégradé services */
   text-align: center;
-  border: 1px solid rgba(0, 210, 255, 0.1);
-  border-radius: 100%;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  transition: all 0.4s ease;
+  border: none; /* Aucune bordure visible */
+  border-radius: 50%;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, background, color;
 }
 
+/* Animation au survol : Le fond dégradé ne bouge pas, seule l'icône passe au bleu sans bordure */
 .Feautes .single-features:hover .signle-icon i {
-  background: #ff0000;
-  color: #fff;
-  border-color: transparent;
-  -webkit-transform: scale(1.2);
-  transform: scale(1.2);
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%); /* Le fond garde sa couleur d'origine */
+  color: #0066ff; /* Seule l'icône s'allume en bleu quand on la touche */
+  border: none; /* Toujours aucune couleur de bordure */
+  transform: translateX(-50%) scale(1.2); 
+  box-shadow: 0 20px 25px -5px rgba(5, 2, 38, 0.2);
 }
 
+/* Titres des compétences diminués pour un rendu plus fin et sans débordement */
 .Feautes .single-features h3 {
-  padding-top: 128px;
-  color: #f1f5f9;
-  font-weight: 600;
-  font-size: 1.4rem;
+  color: #111111; 
+  font-weight: 600; 
+  font-size: 1.15rem; 
+  line-height: 1.4;
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: -0.2px;
 }
 
+/* Paragraphes de description diminués et affinés */
 .Feautes .single-features p {
-  margin-top: 20px;
-  color: #94a3b8; /* Couleur demandée pour la description */
-  font-size: 1.3rem;
-}
-
-.Feautes .single-features h2 {
-  color: #f1f5f9;
+  margin: 0;
+  color: #555555; 
+  font-size: 0.95rem; 
+  line-height: 1.6;
+  text-align: center;
 }
 
 /* ==================== SERVICES ADJACENTS ELEMENTS ==================== */
@@ -2416,51 +3135,44 @@ img {
 
 .Feautes .single-service i {
   font-size: 45px;
-  color: #1a76d1;
+  color: #0d093a;
   position: absolute;
   left: 0;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }
 
 .Feautes .single-service i:hover {
-  color: #ff0000;
-  -webkit-transform: scale(1.2);
+  color: #0066ff;
   transform: scale(1.2);
 }
 
 .Feautes .single-service h4 {
   text-transform: capitalize;
   margin-bottom: 25px;
-  color: #f1f5f9;
 }
 
 .Feautes .single-service h4 a {
-  color: #f1f5f9;
-  font-size: 1.4rem;
+  color: #111111;
+  font-size: 1.2rem;
   font-weight: 600;
-}
-
-.Feautes .single-service h4 a:hover {
-  color: #1A76D1;
   text-decoration: none;
 }
 
-.Feautes .single-service p {
-  color: #94a3b8; /* Couleur demandée pour la description */
-  font-size: 1.3rem;
+.Feautes .single-service h4 a:hover {
+  color: #0066ff;
 }
 
-/* Ajustements responsive complémentaires pour l'en-tête de section */
-@media screen and (max-width: 768px) {
-  .Feautes .section-header p {
-    width: 85%;
-  }
+.Feautes .single-service p {
+  color: #555555;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
+
 /*==========================================================================
 13. START FEAUTES CSS FIN
 ==========================================================================*/
+
+
 
 
 
@@ -2656,11 +3368,20 @@ img {
 
 
 
-/*==========================================================================
-15. SERVICES SECTION
-==========================================================================*/
+
+/* ==========================================================================
+15. SERVICES SECTION (HARMONISATION CLAIRE & REPARATION FINALE)
+========================================================================== */
+/* --- Sécurisation totale des boîtes uniquement pour cette zone --- */
+#services,
+#services *,
+#services *::before,
+#services *::after {
+  box-sizing: border-box !important;
+}
+
 #services {
-  background-color: #020111;
+  background-color: #ffffff; /* Le fond de la section passe au blanc pur comme demandé */
   padding: 50px 0 30px 0;
   box-shadow: var(--border-color);
   overflow: hidden;
@@ -2709,7 +3430,7 @@ img {
   box-sizing: border-box;
 }
 
-/* --- EN-TÊTE DE LA SECTION --- */
+/* --- EN-TÊTE DE LA SECTION CORRIGÉ --- */
 #services .services-section-header {
   text-align: center;
   margin-bottom: 40px;
@@ -2723,9 +3444,9 @@ img {
 }
 
 #services .services-section-header .services-section-title {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: var(--white-color);
+  font-size: 1.1rem;
+  font-weight: 700; 
+  color: #0066ff;  
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -2735,7 +3456,7 @@ img {
 
 @media (min-width: 768px) {
   #services .services-section-header .services-section-title {
-    font-size: 2.4rem;
+    font-size: 1.1rem;
   }
 }
 
@@ -2751,7 +3472,7 @@ img {
   border-radius: 2px;
 }
 
-/* --- STRUCTURE INTERNE DES BOÎTES (CORRIGÉE SANS VIDE EN BAS) --- */
+/* --- STRUCTURE INTERNE DES BOÎTES --- */
 #services .box {
   padding: 25px 20px 20px; /* Un padding du bas très serré pour couper le vide */
   position: relative;
@@ -2760,7 +3481,6 @@ img {
   
   /* La boîte épouse strictement la hauteur du texte, sans s'étirer inutilement */
   height: auto; 
-  /* Suppression du margin-bottom qui créait un double espace vide avec la grille */
   margin-bottom: 0; 
   
   box-sizing: border-box;
@@ -2776,12 +3496,12 @@ img {
   }
 }
 
-/* --- LE SURVOL --- */
+/* --- LE SURVOL SÉCURISÉ (ZÉRO CLIGNOTEMENT - UNIQUEMENT LE MOUVEMENT) --- */
 #services .box:hover {
-  transform: translateY(-5px);
-  background: var(--section-bg); 
-  border-color: #0066ff; 
-  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.3);
+  /* Seule l'animation de mouvement stable est conservée pour effacer le bug */
+  transform: translateY(-5px); 
+  border-color: #0066ff !important; 
+  box-shadow: 0 10px 25px rgba(0, 102, 255, 0.15);
 }
 
 /* Ligne animée supérieure */
@@ -2803,7 +3523,7 @@ img {
   transform: scaleX(1);
 }
 
-/* POSITIONNEMENT DE L'ICÔNE EN ANCRAGE ABSOLU (VOTRE CODE NATIF) */
+/* POSITIONNEMENT DE L'ICÔNE EN ANCRAGE ABSOLU */
 #services .icon {
   position: absolute;
   left: -10px;
@@ -2835,7 +3555,7 @@ img {
 
 /* --- TITRES --- */
 #services .title {
-  margin-left: 45px; /* Conserve votre décalage d'origine pour l'icône */
+  margin-left: 45px; /* Conserve ton décalage d'origine pour l'icône */
   font-weight: 700;
   margin-bottom: 10px;
   font-size: 1.25rem; 
@@ -2864,7 +3584,7 @@ img {
 
 /* --- DESCRIPTIONS --- */
 #services .description {
-  margin-left: 45px; /* Conserve votre décalage d'origine */
+  margin-left: 45px; /* Conserve ton décalage d'origine */
   line-height: 20px;
   margin-bottom: 0;
   text-align: justify;
@@ -2880,68 +3600,16 @@ img {
 }
 
 /* ==========================================================================
-SECTION SERVICES
+SECTION SERVICES CONFIGURATION SECONDAIRE
 ========================================================================== */
-
 #services .services-card {
   position: relative;
   width: 100%;
-  padding-right: 20px; /* Plus d'espace vide (gap) entre les blocs */
+  padding-right: 20px; 
   padding-left: 20px;
   box-sizing: border-box;
   flex: 0 0 100%;
   max-width: 100%; 
-}
-
-/* --- LES BOÎTES DE SERVICES (Version Sombre Dégradée) --- */
-#services .box {
-  padding: 40px 30px 35px; /* Un peu moins de padding vertical pour réduire la taille globale */
-  position: relative;
-  overflow: hidden;
-  border-radius: 1.2rem;   /* Arrondi légèrement plus discret */
-  margin-bottom: 40px;     /* Suppression des marges horizontales inutiles */
-  
-  /* Fond dégradé au repos (couleur du formulaire) */
-  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
-  
-  /* Bordure initiale discrète (bleu-gris fondu) */
-  border: 1px solid rgba(148, 163, 184, 0.12);
-  
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-#services .box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg,
-      var(--accent-purple),
-      var(--accent-blue),
-      var(--accent-green));
-  transform: scaleX(0);
-  transition: transform 0.4s ease;
-}
-
-#services .box:hover::before {
-  transform: scaleX(1);
-}
-
-/* --- LE SURVOL DES SERVICES --- */
-#services .box:hover {
-  transform: translateY(-5px);
-  
-  /* Le fond prend la couleur exacte de la section */
-  background: var(--section-bg);
-  
-  /* La bordure devient bleue */
-  border-color: #0066ff;
-  
-  /* Halo bleu très léger autour pour le contraste */
-  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 /* Positionnement de l'icône ancrée à gauche */
@@ -2958,14 +3626,16 @@ SECTION SERVICES
   transition: color 0.4s ease, transform 0.5s ease;
 }
 
-/* SURVOL DYNAMIQUE : L'icône prend la couleur de la bordure et l'écrase */
+/* SURVOL DYNAMIQUE */
 #services .box:hover .icon i {
-  color: #0066ff !important; /* Devient bleu et écrase la couleur du HTML */
+  color: #0066ff !important; 
 }
 
 /*==========================================================================
 15. SERVICES SECTION FIN
 ==========================================================================*/
+
+
 
 
 
@@ -2980,9 +3650,9 @@ SECTION SERVICES
 }
 
 .resume-section .section-header .section-title {
-  font-size: 1.9rem;
-  font-weight: 800;
-  color: var(--white-color);
+  font-size: 1.1rem;
+  font-weight: 700; 
+  color: #0066ff;  
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -3005,7 +3675,7 @@ SECTION SERVICES
 
 /* --- STRUCTURE GLOBALE ET BORDS TRÈS ESPACÉS --- */
 .resume-section {
-  background-color: #020111;
+  background-color: #ffffff;
   padding: 100px 80px;
   font-family: var(--body-font);
   font-size: var(--h5-font);
@@ -3045,7 +3715,7 @@ SECTION SERVICES
 }
 
 .resume-section .column-title h2 {
-  font-size: 1.6rem;
+  font-size: 1.1rem;
   font-weight: var(--font-semi-bold);
   color: #1a6ee4;
   margin: 0;
@@ -3093,7 +3763,7 @@ SECTION SERVICES
 /* --- BLOC BENTO BLANC COMPACT --- */
 .resume-section .resume-block.bento-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.02);
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
   padding: 40px 30px 30px; /* Grand espace en haut pour éviter que ça colle */
   border-radius: 8px;
   box-shadow: var(--box-shadow);
@@ -3103,15 +3773,15 @@ SECTION SERVICES
   transition: var(--transition-smooth);
 }
 
-/* Effet au survol : Décale à droite, fine bordure bleue */
+/* Effet au survol : Décale à droite, fine bordure bleue, SANS CLIGNOTEMENT */
 .resume-section .resume-block.bento-card:hover {
   transform: translateX(10px);
   
   /* La bordure devient bleue */
   border-color: #0066ff;
   
-  /* Le fond change pour prendre la couleur de la section */
-  background: var(--section-bg);
+  /* REPARATION : Maintien du dégradé d'origine au lieu de la variable manquante pour stopper le clignotement */
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
   
   /* Le halo bleu très léger autour pour le contraste */
   box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
@@ -3170,6 +3840,8 @@ SECTION SERVICES
   font-weight: var(--font-semi-bold);
   color: #94a3b8;
   margin: 0 0 4px 0;
+  margin-top: 5px;    /* Espace au-dessus */
+  margin-bottom: 5px; /* Espace en bas */
 }
 
 .resume-section .block-entity {
@@ -3186,7 +3858,8 @@ SECTION SERVICES
   gap: 6px;
   font-size: var(--small-font);
   color: #94a3b8;
-  margin-bottom: 10px;
+  margin-top: 10px;    /* Espace au-dessus */
+  margin-bottom: 10px; /* Espace en bas */
 }
 
 .resume-section .block-description-company {
@@ -3279,9 +3952,8 @@ SECTION SERVICES
 
 
 /* ==========================================================================
-17. SECTION CERTIFICATIONS & LANGUES (STYLE DASHBOARD ASYMÉTRIQUE)
+17. SECTION FORMATIONS & LANGUES - PARTIE 1 : STRUCTURE & EN-TÊTES
 ========================================================================== */
-/* --- Sécurisation totale des boîtes uniquement pour cette zone --- */
 .certlang-global-section,
 .certlang-global-section *,
 .certlang-global-section *::before,
@@ -3289,42 +3961,45 @@ SECTION SERVICES
   box-sizing: border-box !important;
 }
 
-/* --- LE FOND ULTRA-PÂLE DE LA SECTION --- */
 .certlang-global-section {
-  background-color: #020111;
-  padding: 100px 80px;
-  font-family: var(--body-font);
+  background-color: #ffffff;
+  padding: 110px 80px;
+  font-family: var(--body-font), system-ui, sans-serif;
   width: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .certlang-global-section .certlang-wrapper-box {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  position: relative;
 }
 
-/* --- STYLE EN-TÊTE DE LA SECTION (Inspiré de .skill) --- */
+/* En-tête de section principal centré au pixel près */
 .certlang-global-section .certlang-section-header {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 75px;
   width: 100%;
 }
 
 .certlang-global-section .certlang-section-title {
-  font-size: 1.9rem;
-  font-weight: 800;
-  color: var(--white-color);
-  letter-spacing: 2px;
+  color: #0066ff; /* Bleu éclatant demandé */
+  font-size: 1.1rem;
+  font-weight: 700;
   text-transform: uppercase;
-  position: relative;
-  display: inline-block;
+  letter-spacing: 1.5px;
   margin: 0;
+  display: inline-block;
+  position: relative;
 }
 
+/* Barre bleue décorative parfaitement centrée en dessous */
 .certlang-global-section .certlang-section-title::after {
   content: '';
   position: absolute;
-  bottom: -10px; 
+  bottom: -12px;
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
@@ -3333,333 +4008,307 @@ SECTION SERVICES
   border-radius: 2px;
 }
 
-/* --- DISPOSITION FLEXBOX ASYMÉTRIQUE TOTALEMENT UNIQUE --- */
+/* --- GRILLE ASYMÉTRIQUE PRINCIPALE --- */
 .certlang-global-section .certlang-split-dashboard {
-  display: flex;
-  gap: 50px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.certlang-global-section .certlang-main-column-left,
+.certlang-global-section .certlang-sidebar-column-right {
+  position: relative;
+  min-width: 0 !important;
+}
+
+/* Grille interne gérant les certifications sur deux sous-colonnes */
+.certlang-global-section .certlang-sub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
   width: 100%;
 }
 
-/* Sécurisation absolue contre le débordement Flexbox */
-.certlang-global-section .certlang-main-column-left {
-  flex: 1.8;
-  min-width: 0 !important;
+.certlang-global-section .certlang-column-headline-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 45px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  padding-bottom: 15px;
 }
 
-.certlang-global-section .certlang-sidebar-column-right {
-  flex: 1;
-  min-width: 0 !important;
-}
-
-/* Titres internes des colonnes */
 .certlang-global-section .certlang-column-headline {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 35px;
-  width: 100%;
 }
 
 .certlang-global-section .certlang-column-headline i {
-  font-size: var(--h2-font);
-  color: var(--color);
+  font-size: 1.5rem;
+  color: #1a4fdb;
 }
 
 .certlang-global-section .certlang-column-headline h2 {
   font-size: 1.6rem;
-  font-weight: var(--font-semi-bold);
-  color: #1a6ee4;;
+  font-weight: 700;
+  color: #111111;
   margin: 0;
 }
 
-/* --- LIGNE DE SUIVI (CERTIFICATS) --- */
+/* Numéros 01 et 02 stylisés uniquement en contour (Stroke) */
+.certlang-global-section .certlang-bg-watermark-large {
+  font-size: 4rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(26, 79, 219, 0.22);
+  user-select: none;
+  line-height: 1;
+  display: inline-block;
+}
+
+/* ==========================================================================
+17. SECTION FORMATIONS & LANGUES - PARTIE 2 : TIMELINE DES FORMATIONS
+========================================================================== */
 .certlang-global-section .certlang-vertical-track {
   position: relative;
-  border-left: 2px solid var(--color);
-  padding-left: 25px;
-  margin-left: 10px;
+  padding-left: 42px;
   width: 100%;
 }
 
-
-/* ==========================================================================
-SECTION CERTIFICATS / LIGNE TEMPORELLE
-========================================================================== */
+/* Ligne continue s'estompant élégamment vers le bas */
+.certlang-global-section .certlang-vertical-track::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  bottom: 0;
+  left: 16px;
+  width: 2px;
+  background: linear-gradient(to bottom, #e0e0e0 0%, #e0e0e0 80%, rgba(224, 224, 224, 0) 100%);
+}
 
 .certlang-global-section .certlang-track-node {
   position: relative;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .certlang-global-section .certlang-track-node:last-child {
   margin-bottom: 0;
 }
 
-.certlang-global-section .certlang-node-marker {
+/* Cercles bleus avec coches de validation */
+.certlang-global-section .certlang-node-icon {
   position: absolute;
-  left: -32px;
-  top: 20px;
-  width: 10px;
-  height: 10px;
+  left: -42px;
+  top: 2px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background-color: var(--color);
-  /* Bordure du marqueur adaptée au fond sombre */
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-/* --- LE BLOC EN DÉGRADÉ SOMBRE SÉCURISÉ --- */
-.certlang-global-section .certlang-inner-block-white {
-  position: relative;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(0, 210, 255, 0.1);
-  z-index: 1;
-  overflow: hidden; /* Empêche physiquement le débordement de tout élément */
-  width: 100%;
-  padding: 50px 30px 40px; /* Grand espace en haut pour éviter que ça colle */
-  transition: var(--transition-smooth);
-}
-
-/* --- LE SURVOL DES CERTIFICATS --- */
-.certlang-global-section .certlang-inner-block-white:hover {
-  transform: translateX(10px);
-  
-  /* La bordure devient bleue */
-  border-color: #0066ff;
-  
-  /* Le fond prend la couleur exacte de la section au survol */
-  background: var(--section-bg);
-  
-  /* Halo bleu très léger autour pour le contraste */
-  box-shadow: 0 0 15px rgba(0, 102, 255, 0.12), 0 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-.certlang-global-section .certlang-track-node:hover .certlang-node-marker {
-  background-color: var(--primary-color-hover);
-}
-
-/* Filigrane numéro en arrière-plan */
-.certlang-global-section .certlang-bg-watermark {
-  position: absolute;
-  right: 1rem;
-  bottom: -0.5rem;
-  font-size: 4.5rem;
-  font-weight: 900;
-  /* Couleur du numéro adaptée pour fond sombre (opacité très légère) */
-  color: rgba(255, 255, 255, 0.03);
-  user-select: none;
-  z-index: -1;
-  transition: var(--transition-smooth);
-}
-
-.certlang-global-section .certlang-inner-block-white:hover .certlang-bg-watermark {
-  color: rgba(0, 102, 255, 0.06);
-  transform: scale(1.05) translateY(-3px);
-}
-
-
-/* --- CONTENU DE LA CARTE DE CERTIFICAT --- */
-.certlang-global-section .certlang-block-top {
+  background-color: #ffffff;
+  border: 2px solid #1a4fdb;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 0.6rem;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.certlang-global-section .certlang-node-icon i {
+  color: #1a4fdb;
+  font-size: 0.9rem;
+}
+
+/* --- ARMATURE TECHNIQUE SÉCURISÉE TEXT-OVERFLOW --- */
+.certlang-global-section .certlang-node-content {
   width: 100%;
+  min-width: 0; /* Empêche physiquement le texte de pousser la boîte hors de l'écran */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.certlang-global-section .certlang-block-top i,
-.certlang-global-section .certlang-item-geo i {
-  font-size: 1.1em;
-  color: #ffffff;
-}
-
-.certlang-global-section .certlang-block-top i {
-  transition: transform var(--tran-0-3) ease;
-}
-
-/* L'icône tourne et grossit au survol (ton animation d'origine) */
-.certlang-global-section .certlang-inner-block-white:hover .certlang-block-top i {
-  transform: rotate(-10deg) scale(1.1);
-}
-
-.certlang-global-section .certlang-block-top h3 {
-  color: #e2e8f0;
-  font-size: var(--small-font);
-  font-weight: var(--font-medium);
-  margin: 0;
-}
-
-.certlang-global-section .certlang-item-subtitle {
-  font-size: var(--smaller-font);
-  font-weight: var(--font-semi-bold);
-  color: #94a3b8;
+/* Troncature stricte au repos pour éviter tout bug mobile */
+.certlang-global-section .certlang-node-content h3 {
+  color: #111111;
+  font-size: 1.15rem;
+  font-weight: 600;
   margin: 0 0 4px 0;
+  line-height: 1.35;
+  
+  display: block;
+  max-width: 100%;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  transition: white-space 0.15s ease;
 }
 
+/* Déploiement propre et passage automatique à la ligne au survol ou tactile */
+.certlang-global-section .certlang-track-node:hover .certlang-node-content h3,
+.certlang-global-section .certlang-track-node:active .certlang-node-content h3 {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  word-wrap: break-word;
+}
+
+.certlang-global-section .certlang-org {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666666;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.certlang-global-section .certlang-track-node:hover .certlang-org {
+  white-space: normal;
+}
 
 .certlang-global-section .certlang-item-geo {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--small-font);
-  color: var(--p-color);
-  margin-bottom: 10px;
-  width: 100%;
+  font-size: 0.8rem;
+  color: #999999;
 }
 
-/* --- BARRE LATÉRALE UNIQUE DES LANGUES --- */
+/* Animation de survol globale du nœud */
+.certlang-global-section .certlang-track-node:hover .certlang-node-icon {
+  background-color: #1a4fdb;
+  transform: scale(1.08);
+}
+
+.certlang-global-section .certlang-track-node:hover .certlang-node-icon i {
+  color: #ffffff;
+}
+
+/* ==========================================================================
+17. SECTION FORMATIONS & LANGUES - PARTIE 3 : LANGUES, BOUTON & RESPONSIVE
+========================================================================== */
 .certlang-global-section .certlang-sidebar-stack {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 100%;
+  gap: 22px;
+  position: relative;
+  z-index: 2;
 }
 
-.certlang-global-section .certlang-compact-card {
-  padding: 15px !important;
-}
-
-.certlang-global-section .certlang-header-row-lang {
+.certlang-global-section .certlang-home-text-row {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 0.5rem;
-  width: 100%;
+  gap: 1.2rem;
 }
 
+/* Boîtes carrées des langues */
 .certlang-global-section .certlang-icon-square-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  
-  /* MODIFICATION : Le fond prend notre bleu foncé au repos */
-  background-color: #0b3175;
-  
+  width: 36px;
+  height: 36px;
+  background-color: #ffffff;
   border-radius: 8px;
-  border: 1px solid rgba(0, 102, 255, 0.1);
-  flex-shrink: 0;
-  transition: var(--transition-smooth);
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
 }
 
 .certlang-global-section .certlang-icon-square-box i {
-  font-size: 1.2rem !important;
-  
-  /* MODIFICATION : L'icône prend une couleur visible au repos (blanc glacier) */
-  color: #e2e8f0 !important;
-  
-  transition: transform var(--tran-0-3) ease;
-}
-
-.certlang-global-section .certlang-inner-block-white:hover .certlang-icon-square-box {
-  /* MODIFICATION : Au survol, le carré prend la couleur de la section */
-  background-color: var(--section-bg);
-  
-  border-color: var(--color);
-}
-
-.certlang-global-section .certlang-inner-block-white:hover .certlang-icon-square-box i {
-  /* MODIFICATION : L'icône s'illumine en bleu au survol */
-  color: #0066ff !important;
-  
-  transform: scale(1.1) rotate(-10deg);
-}
-
-.certlang-global-section .certlang-text-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
+  font-size: 1rem !important;
+  color: #1a4fdb !important;
 }
 
 .certlang-global-section .certlang-text-meta h3 {
   margin: 0 !important;
-  font-size: var(--small-font);
-  font-weight: var(--font-medium);
-  color: #e2e8f0;
+  font-size: 1.05rem; /* Rendu compact demandé */
+  font-weight: 600;
+  color: #111111;
 }
 
 .certlang-global-section .certlang-text-level {
-  font-size: var(--smaller-font);
-  color: var(--p-color);
-  font-weight: #94a3b8;
+  font-size: 0.85rem;
+  color: #666666;
 }
 
-/* --- ARCHITECTURE INVIOLABLE DE LA BARRE DE PROGRESSION --- */
-.certlang-global-section .certlang-badge-holder-mauve {
-  background-color: rgba(255, 255, 255, 0.03);
-  padding: 10px 12px;
-  border-radius: 6px;
+.certlang-global-section .certlang-home-text-row:hover .certlang-icon-square-box {
+  background-color: #1a4fdb;
+  border-color: #1a4fdb;
+}
+
+.certlang-global-section .certlang-home-text-row:hover .certlang-icon-square-box i {
+  color: #ffffff !important;
+}
+
+/* --- COUPLAGE DU BOUTON EXTENSIBLE PROPRE "VOIR TOUT" --- */
+.certlang-global-section .certlang-btn-holder {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 100%;
+  justify-content: flex-start;
+  margin-top: 35px;
 }
 
-.certlang-global-section .certlang-badge-holder-title {
-  font-size: var(--smaller-font);
-  font-weight: var(--font-medium);
-  color: #94a3b8;
+.certlang-global-section .certlang-view-more-btn {
+  background: transparent;
+  border: none;
+  color: #1a4fdb;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.certlang-global-section .certlang-gauge-container-safe {
-  width: 100%;
-  display: block;
+.certlang-global-section .certlang-view-more-btn:hover {
+  color: #0066ff;
+  transform: translateX(4px);
 }
 
-.certlang-global-section .certlang-gauge-track-gray {
-  width: 100%;
-  height: 6px;
-  background-color: #110d42; /* Bleu de fond arrière plus fort et marqué */
-  border-radius: 10px;
-  overflow: hidden; /* Force le bleu à ne jamais déborder */
-  position: relative;
+.certlang-global-section .certlang-view-more-btn:focus {
+  outline: none;
 }
 
-.certlang-global-section .certlang-gauge-fill-blue {
-  height: 100%;
-  background: linear-gradient(90deg, #0066ff, #00a8ff); /* Jauge en dégradé bleu */
-  border-radius: 10px;
-  max-width: 100% !important; /* Bouclier technique ultime anti-débordement */
-  transition: box-shadow var(--tran-0-3);
+.certlang-global-section .certlang-dots-pattern {
+  width: 180px;
+  height: 120px;
+  background-image: radial-gradient(rgba(26, 79, 219, 0.2) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
 }
 
-.certlang-global-section .certlang-inner-block-white:hover .certlang-gauge-fill-blue {
-  box-shadow: 0 0 10px #00a8ff, 0 0 5px #0066ff;
+/* --- ADAPTATION RESPONSIVE DESIGN INTÉGRAL --- */
+@media (max-width: 1200px) {
+  .certlang-global-section { padding: 90px 40px; }
+  .certlang-global-section .certlang-split-dashboard { gap: 40px; }
+  .certlang-global-section .certlang-sub-grid { gap: 30px; }
 }
 
-/* --- RESPONSIVE DESIGN TOTALEMENT ISOLE --- */
 @media (max-width: 992px) {
-  .certlang-global-section {
-    padding: 60px 40px;
-  }
-
-  .certlang-global-section .certlang-split-dashboard {
-    gap: 30px;
-  }
+  .certlang-global-section .certlang-split-dashboard { grid-template-columns: 1fr; gap: 50px; }
+  .certlang-global-section .certlang-sidebar-column-right { margin-top: 10px; }
 }
 
-@media (max-width: 768px) {
-  .certlang-global-section {
-    padding: 50px 20px;
-  }
-
-  .certlang-global-section .certlang-split-dashboard {
-    flex-direction: column;
-  }
-
-  .certlang-global-section .certlang-main-column-left,
-  .certlang-global-section .certlang-sidebar-column-right {
-    flex: 1;
-    width: 100%;
-  }
+@media (max-width: 640px) {
+  /* Sur smartphone étroit, la sous-grille repasse en colonne verticale simple pour garder tout le texte visible */
+  .certlang-global-section .certlang-sub-grid { grid-template-columns: 1fr; gap: 32px; }
+  .certlang-global-section { padding: 60px 20px; }
+  .certlang-global-section .certlang-vertical-track { padding-left: 35px; }
 }
+
 /*==========================================================================
-16. 17. SECTION CERTIFICATIONS & LANGUES (STYLE DASHBOARD ASYMÉTRIQUE) FIN
-==========================================================================*/
+17. SECTION CERTIFICATIONS & LANGUES FIN
+========================================================================== */
 
 
 
@@ -3946,7 +4595,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 #portfolio {
   padding: 80px 0;
   /* Fond global en dégradé sombre */
-  background: #020111;
+  background: #ffffff;
   position: relative;
   overflow: hidden;
 }
@@ -3957,14 +4606,14 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 #portfolio .section-header .section-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #ffffff; 
-  letter-spacing: 2px;
-  text-transform: uppercase;
   position: relative;
-  display: inline-block;
+  color: #0066ff; /* Bleu éclatant de la maquette */
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
   margin: 0;
+  display: inline-block;
 }
 
 #portfolio .section-header .section-title::after {
@@ -4005,13 +4654,13 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   line-height: 1.5;
   
   /* MODIFICATION : Couleur argentée/blanc cassé pour le texte sur fond sombre */
-  color: #e2e8f0; 
+  color: #ffffff;
   
   /* MODIFICATION : Bordure bleu-gris très fondue et discrète */
   border: 1px solid rgba(148, 163, 184, 0.15); 
   
   /* MODIFICATION : Fond sombre translucide pour s'accorder au dégradé arrière */
-  background: rgba(148, 163, 184, 0.06);
+  background: #111111;
   
   border-radius: 30px;
   border-top-right-radius: 0;
@@ -4349,33 +4998,6 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   }
 }
 
-/* ==================== SPLASH SCREEN AUTOMATIQUE ==================== */
-.splash-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: #060608;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  animation: vanishOut 0.5s ease forwards 2.2s;
-}
-
-@keyframes vanishOut {
-  from {
-    opacity: 1;
-    visibility: visible;
-  }
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
 /* ==========================================================================
 18. SECTION PORTFOLIO FIN
 ========================================================================== */
@@ -4384,9 +5006,19 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 
 
 
+
+
 /* ==========================================================================
 19. START pf-details
 ========================================================================== */
+/* --- SÉCURISATION DES BOÎTES --- */
+.pf-details,
+.pf-details *,
+.pf-details *::before,
+.pf-details *::after {
+  box-sizing: border-box !important;
+}
+
 /* --- STRUCTURE DE LA GRILLE ADAPTATIVE (SANS BOOTSTRAP) --- */
 .pf-details .container-custom {
   max-width: 1200px;
@@ -4450,11 +5082,10 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   }
 }
 
-/* --- LE FOND DE SECTION APPLIQUÉ ICI --- */
+/* --- LE FOND DE SECTION BLANC PUR --- */
 .pf-details {
   padding: 60px 0 40px 0;
-  /* MODIFICATION : Le dégradé est appliqué uniquement sur le fond global de la section */
-  background: var(--section-bg);
+  background-color: #f9f9f9; /* Le fond de la section passe au blanc pur */
 }
 
 .pf-details .index2 {
@@ -4477,11 +5108,11 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 .pf-details .section-header span {
-  color: var(--white-color);
+  color: #111111;
 }
 
 .pf-details .section-header p {
-  color: var(--text-color-light);
+  color: #555555;
   text-align: center;
   margin: auto;
   font-size: 15px;
@@ -4490,9 +5121,9 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 }
 
 .pf-details .section-header .section-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--white-color); /* Ajusté en blanc pour être visible sur le nouveau fond sombre */
+  font-size: 1.1rem;
+  font-weight: 700; 
+  color: #0066ff;  
   letter-spacing: 2px;
   text-transform: uppercase;
   position: relative;
@@ -4522,7 +5153,7 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
 
 .pf-details .single-features .signle-icon i {
   font-size: 50px;
-  color: #1a76d1;
+  color: #050226; /* Couleur de base bleu nuit fort au repos */
   position: absolute;
   left: 50%;
   margin-left: -50px;
@@ -4533,85 +5164,88 @@ SECTION CERTIFICATS / LIGNE TEMPORELLE
   text-align: center;
   border: 1px solid #dddddd;
   border-radius: 100%;
-  transition: all 0.4s ease;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .pf-details .single-features:hover .signle-icon i {
-  background: #ff0000;
-  color: #fff;
+  background: #050226; 
+  color: #0066ff; /* L'icône de badge s'allume en bleu vif au survol */
   border-color: transparent;
   transform: rotate(15deg) scale(1.1);
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
 }
 
 .pf-details .single-features h3 {
   padding-top: 128px;
-  color: #f1f5f9; /* Ajusté pour fond sombre */
+  color: #111111; 
   font-weight: 600;
   font-size: 1.4rem;
 }
 
 .pf-details .single-features p {
   margin-top: 20px;
-  color: #94a3b8; /* Texte de description en bleu-gris doux */
+  color: #555555; 
   font-size: 1.3rem;
 }
 
 .pf-details .single-features h2 {
-  color: #f1f5f9;
+  color: #111111;
 }
 
-/* --- STRUCTURE D'ORIGINE DU COMPOSANT (SANS LE DÉGRADÉ DEDANS) --- */
+/* --- STRUCTURE DES CARTES D'APTITUDES --- */
 .pf-details .single-service {
   margin: 30px 0;
   position: relative;
   padding-left: 70px;
 }
 
-/* Style de base des icônes d'aptitudes */
+/* 1. COMPORTEMENT DE L'ICÔNE (AU REPOS ET SURVOL) */
 .pf-details .single-service i {
   font-size: 45px;
-  color: #1a76d1;
+  color: #050226; /* Au début : prend ta couleur bleu nuit forte */
   position: absolute;
   left: 0;
-  transition: all 0.4s ease;
+  transition: transform 0.35s ease, color 0.35s ease;
 }
 
+/* Quand on passe sur le bloc de l'aptitude, l'icône tourne et s'allume en bleu royal */
 .pf-details .single-service:hover i {
-  color: #ff0000;
+  color: #0066ff; /* Devient bleu royal éclatant */
   transform: rotate(15deg);
 }
 
-.pf-details .single-service:hover h4 a {
-  color: #ff0000;
-}
-
+/* 2. COMPORTEMENT DU TEXTE DU NOM (AU REPOS ET SURVOL) */
 .pf-details .single-service h4 {
   text-transform: capitalize;
   margin-bottom: 25px;
-  color: #f1f5f9; /* Ajusté pour fond sombre */
+  color: #111111; 
 }
 
 .pf-details .single-service h4 a {
-  color: #1a76d1;
+  color: #130e4d; /* Au début : le texte prend ta couleur bleu nuit forte */
   font-size: 1.4rem;
   font-weight: 600;
-  transition: all 0.4s ease;
-}
-
-.pf-details .single-service h4 a:hover {
+  transition: color 0.35s ease;
   text-decoration: none;
 }
 
-/* --- LE TEXTE POUR DÉCRIRE DEMANDÉ --- */
+/* Quand on passe sur le bloc, le texte du nom s'allume en bleu royal en même temps */
+.pf-details .single-service:hover h4 a {
+  color: #0066ff; /* Devient bleu royal éclatant */
+}
+
+/* --- LE TEXTE DE DESCRIPTION --- */
 .pf-details .single-service p {
-  /* MODIFICATION : Couleur de description appliquée strictement ici */
-  color: #94a3b8; 
+  color: #555555; /* Gris anthracite pour une lisibilité parfaite sur fond blanc */
   font-size: 1.3rem;
+  text-align: justify;
 }
 /* ==========================================================================
 19. START pf-details FIN
 ========================================================================== */
+
+
+
 
 
 
@@ -5255,7 +5889,7 @@ CARTES DE LA GALERIE (NOUVELLES PROPORTIONS PORTRAIT ACCRUES)
 }
 
 .section-realisations .section-title {
-  font-size: 2.2rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: #ffffff; 
   letter-spacing: 2px;
@@ -5738,107 +6372,139 @@ MEDIA QUERIES RESPONSIVE (MOBILES, TABLETTES ET ORDINATEURS)
 
 
 
+
+
+
 /* ==========================================================================
-24. SECTION FAQ & MAP ARCHITECTURE - THEME SOMBRE INFRASTRUCTURE (DARK TECH)
+24. SECTION FAQ & MAP - DESIGN MINIMALISTE ET PARALLÈLE SYMÉTRIQUE
 ========================================================================== */
-.faq-map-section {
-  background: var(--section-bg);
-  padding: 40px 16px;
-  width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  box-sizing: border-box;
+/* --- Sécurisation totale des boîtes uniquement pour cette zone --- */
+.faq-map-section,
+.faq-map-section *,
+.faq-map-section *::before,
+.faq-map-section *::after {
+  box-sizing: border-box !important;
 }
 
-.faq-map-section *, 
-.faq-map-section *::before, 
-.faq-map-section *::after {
-  box-sizing: border-box;
+/* --- LE FOND GRIS CLAIR CONFORME AU RESTE DU SITE --- */
+.faq-map-section {
+  background-color: #f9f9f9; /* Même fond épuré que les formations */
+  padding: 110px 80px;
+  width: 100%;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  position: relative;
+  overflow: hidden;
 }
 
 .faq-map-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* Alignement flex natif stable */
+/* En-tête global de section - Centré avec sa ligne décorative bleue */
+.faq-map-section .faq-section-header-global {
+  text-align: center;
+  margin-bottom: 75px;
+  width: 100%;
+}
+
+.faq-map-section .faq-section-title-global {
+  color: #0066ff; /* Bleu éclatant demandé */
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0;
+  display: inline-block;
+  position: relative;
+}
+
+.faq-map-section .faq-section-title-global::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #0066ff;
+  border-radius: 2px;
+}
+
+/* Alignement flex en double colonne natif stable et symétrique */
 .faq-map-row {
-display: flex;
-flex-direction: column;
-align-items: stretch;     /* Étire la carte à la même hauteur que la FAQ */
-gap: 32px;
-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Force les deux colonnes à démarrer et finir au même niveau */
+  gap: 50px;
+  width: 100%;
 }
 
 .faq-column {
-    width: 100%;
+  width: 100%;
 }
 
 .map-column {
   width: 100%;
-  display: flex;            /* Indispensable pour la hauteur de la carte */
+  display: flex;
 }
 
-/* En-tête */
+/* ==========================================================================
+24.1 ACCORDÉONS DE LA FAQ (STYLE FIN MINIATURE RÉORGANISÉ)
+========================================================================== */
 .faq-header {
-  margin-bottom: 24px;
-}
-
-.faq-badge {
-  color: #3b82f6;          /* Reste uniquement l'écriture bleue */
-  font-size: 1.2rem;       /* Petit texte */
-  font-weight: 600;
-  display: inline-block;
-  margin-bottom: 12px;
-  text-transform: uppercase; /* Optionnel : met en majuscules pour un style plus "badge" */
-  letter-spacing: 0.5px;    /* Optionnel : espace un peu les lettres pour l'esthétique */
+  margin-bottom: 40px;
 }
 
 .faq-main-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #ffffff;
+  font-size: 1.65rem; /* Diminué pour un effet plus fin et élégant */
+  font-weight: 700;
+  color: #111111;
   margin: 0 0 12px 0;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .faq-subtitle {
-  font-size: 1.35rem;
-  color: #94a3b8;
+  font-size: 0.95rem; /* Réduit pour plus de légèreté */
+  color: #666666;
   line-height: 1.6;
   margin: 0;
+  max-width: 750px;
+  text-align: justify;
 }
 
 /* Groupe Accordéon */
 .faq-accordion-group {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .faq-item {
-  background-color: #161c2a;
-  border: 1px solid #2e374a;
-  border-radius: 12px;
+  background-color: #ffffff; /* Cartes blanches sur fond gris clair */
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
   overflow: hidden;
-  transition: all 0.25s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .faq-item:hover,
 .faq-item[open] {
-  border-color: #3b82f6;
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.03);
+  border-color: #1a4fdb; /* Bordure bleue au focus */
+  box-shadow: 0 8px 25px rgba(26, 79, 219, 0.03);
 }
 
+/* Style affiné des intitulés de questions */
 .faq-summary {
-  padding: 20px;
+  padding: 18px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1.45rem;
-  color: #ffffff;
+  font-weight: 550; /* Allégé pour un style plus fin et élégant */
+  font-size: 1.05rem; /* Taille de police diminuée et compacte */
+  color: #222222;
   user-select: none;
   list-style: none;
 }
@@ -5847,215 +6513,1652 @@ width: 100%;
   display: none;
 }
 
-/* Gestion des icônes d'ouverture/fermeture */
-.faq-summary .icon-close {
-  display: none;
-}
-
-.faq-item[open] .faq-summary .icon-open {
-  display: none;
-}
+/* Icônes d'ouverture Font Awesome */
+.faq-summary .icon-close { display: none; }
+.faq-item[open] .faq-summary .icon-open { display: none; }
 
 .faq-item[open] .faq-summary .icon-close {
   display: block;
-  color: #3b82f6;
+  color: #1a4fdb;
+  font-size: 0.9rem;
+}
+
+.faq-summary .icon-open {
+  font-size: 0.9rem;
+  color: #777777;
 }
 
 .faq-item[open] .faq-summary {
-  color: #3b82f6;
+  color: #1a4fdb; /* S'illumine finement en bleu */
 }
 
-/* Zone de contenu */
+/* Zone de contenu des réponses */
 .faq-content {
-  padding: 0 20px 20px 20px;
+  padding: 0 22px 20px 22px;
   border-top: 1px solid transparent;
 }
 
 .faq-item[open] .faq-content {
-  border-top-color: #2e374a;
+  border-top-color: #f1f5f9;
 }
 
 .faq-content p {
-  font-size: 1.35rem;
-  color: #94a3b8;
-  line-height: 1.7;
+  font-size: 0.95rem; /* Taille affinée pour harmoniser le bloc */
+  color: #555555;
+  line-height: 1.6;
   margin: 12px 0 0 0;
+  text-align: justify;
 }
 
-.faq-content strong {
-  color: #ffffff;
-}
-
-/* --- STRUCTURE DE LA CARTE (COLONNE DROITE) --- */
+/* ==========================================================================
+24.2 LE PANNEAU UNIQUE GLOBAL SYMÉTRIQUE (CARTE EN HAUT + TEXTES EN BAS)
+========================================================================== */
 .side-bar-map {
   width: 100%;
-  display: flex;            /* CORRECTION : Ajout de la flexibilité intermédiaire */
-  flex-direction: column;   /* CORRECTION : Permet le comportement stretch vertical */
+  display: flex;
+  flex-direction: column;
   align-items: stretch;
-  flex-grow: 1;             /* CORRECTION : Permet à la colonne de s'étirer complètement */
+  height: 100%; /* Force la colonne à utiliser 100% de la hauteur de la FAQ */
 }
 
+/* --- LE CONTENEUR UNIQUE EN BLOC SOUDÉ --- */
 .map-location-card {
-  background-color: #161c2a;
-  border: 1px solid #2e374a;
-  padding: 22px;
-  border-radius: 16px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.02);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  flex-shrink: 0;
-}
-
-.map-location-card:hover {
-  border: 1.5px solid #3b82f6;
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.12);
-}
-
-.map-location-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(to bottom, #3b82f6, #60a5fa);
-  opacity: 0.7;
-}
-
-.location-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.location-main-icon {
-  font-size: 2.4rem;
-  color: #3b82f6;
-  transition: transform 0.3s ease;
-}
-
-.map-location-card:hover .location-main-icon {
-  transform: translateY(-2px) scale(1.1);
-}
-
-.location-title {
-  margin: 0;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-.location-description {
-  margin: 0 0 0 36px;
-  font-size: 1.35rem;
-  color: #94a3b8;
-  line-height: 1.6;
-}
-
-.location-sub-icon {
-  color: #3b82f6;
-  margin-right: 6px;
-  font-size: 1.4rem;
-}
-
-.location-highlight {
-  color: #ffffff;
-  font-weight: 600;
-  position: relative;
-  display: inline-block;
-}
-
-.location-highlight::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
+  box-sizing: border-box;
   width: 100%;
-  height: 1px;
-  background-color: rgba(59, 130, 246, 0.4);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1; /* S'étire dynamiquement pour se terminer pile au même niveau que la FAQ */
+  
+  /* Ajustement de l'épaisseur demandé : très fin et totalement invisible au repos */
+  border: 0.1rem solid transparent; 
+  transition: border-color 0.25s ease-out, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Conteneur Iframe Maps */
+/* Au survol du panneau, la fine bordure s'allume discrètement en bleu royal */
+.map-location-card:hover {
+  border-color: #1a4fdb; 
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(26, 79, 219, 0.08);
+}
+
+/* --- L'IFRAME GOOGLE MAPS (S'AJUSTE ET S'ÉTEND DYNAMIQUEMENT) --- */
 #map {
   width: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  border-radius: 23px;
   overflow: hidden;
-  border: 1px solid #2e374a;
-  flex-grow: 1;              /* S'étire sur toute la hauteur disponible */
-  min-height: 380px;         /* Hauteur de sécurité minimale sur smartphone */
+  border-bottom: 1px solid #e2e8f0; /* Ligne fine de séparation discrète */
+  
+  /* Absorbe le mouvement d'ouverture de la FAQ pour combler parfaitement le vide */
+  flex-grow: 1; 
+  min-height: 300px; /* Hauteur de sécurité minimale */
 }
 
 #map iframe {
   border: 0;
   display: block;
   width: 100%;
-  height: 100%;              /* S'ajuste dynamiquement à 100% de la FAQ */
-  filter: grayscale(1) invert(0.9) contrast(1.2);
-  opacity: 0.85;
-  transition: all 0.3s ease;
+  height: 100%; /* Reste collé à 100% du conteneur étiré */
+  filter: grayscale(0.6) contrast(1.05) opacity(0.95);
+  transition: all 0.4s ease;
 }
 
-#map:hover iframe {
+.map-location-card:hover #map iframe {
   filter: none;
-  opacity: 1;
+}
+
+/* --- LA ZONE DE COORDONNÉES TEXTE (RESTE ANCRÉE EN BAS) --- */
+.location-content-block {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Écartement régulier entre chaque bloc info */
+  background-color: #ffffff;
+  flex-shrink: 0; /* Protège le texte contre le tassement lors des redimensionnements */
+}
+
+.location-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.item-title-row i.text-blue {
+  color: #1a4fdb; /* Icônes Font Awesome en bleu royal conducteur */
+  font-size: 1rem;
+  width: 16px;
+  text-align: center;
+}
+
+.item-text {
+  margin: 0 0 0 26px; /* Alignement parfait en retrait sous le titre */
+  font-size: 0.88rem; /* Format affiné et miniature requis */
+  color: #555555;
+  line-height: 1.45;
 }
 
 /* ==========================================================================
-   MEDIA QUERIES COMPLÈTES (TABLETTES & ORDINATEURS)
-   ========================================================================== */
+24.3 LOGIQUE RESPONSIVE ET COMPORTEMENT SMARTPHONE
+========================================================================== */
+@media screen and (max-width: 1024px) {
+  .faq-map-section { padding: 80px 40px; }
+  .faq-map-row { gap: 40px; }
+}
 
-/* Écrans intermédiaires (Tablettes >= 768px) */
 @media screen and (min-width: 768px) {
-    .faq-map-section {
-        padding: 60px 24px;
-    }
-
-    .faq-map-row {
-        flex-direction: row;      /* Double colonne */
-        align-items: stretch;     /* Alignement parfait de la hauteur */
-        gap: 32px;
-    }
-
-    .faq-column {
-        flex: 1;
-    }
-
-    .map-column {
-        width: 340px;             /* Largeur équilibrée pour tablettes */
-        flex-shrink: 0;
-    }
-
-    .faq-main-title {
-        font-size: 2.8rem;
-    }
+  .faq-map-row {
+    flex-direction: row; /* Active l'affichage côte à côte horizontal */
+    align-items: stretch; /* Déclenche la symétrie parfaite de hauteur */
+  }
+  .faq-column { flex: 1; }
+  .map-column { width: 360px; flex-shrink: 0; }
 }
 
-/* Grands écrans (Ordinateurs >= 1024px) */
 @media screen and (min-width: 1024px) {
-    .faq-map-section {
-        padding: 80px 32px;
-    }
-
-    .faq-map-row {
-        gap: 48px;
-    }
-
-    .map-column {
-        width: 460px;             /* Largeur fixe idéale sur PC */
-        position: sticky;
-        top: 40px;                /* Reste fixe au défilement */
-    }
-    
-    .faq-main-title {
-        font-size: 3.2rem;
-    }
+  .faq-map-row { gap: 60px; }
+  .map-column { 
+    width: 460px; 
+    position: sticky; 
+    top: 110px; /* Reste aimanté de manière fluide lors du défilement */
+  } 
 }
+
+@media screen and (max-width: 640px) {
+  .faq-map-section { padding: 60px 20px; }
+  .faq-main-title { font-size: 1.45rem; }
+  .faq-summary { padding: 16px 14px; font-size: 0.95rem; }
+  .faq-content { padding: 0 14px 16px 14px; }
+  .map-location-card { border-width: 0.1rem; } 
+  #map { height: 280px; flex-grow: 0; } /* Désactive la flexibilité sur mobile pour éviter les sauts */
+  .location-content-block { padding: 18px; }
+}
+
 /* ==========================================================================
 24. SECTION FAQ & MAP ARCHITECTURE - THEME SOMBRE INFRASTRUCTURE (DARK TECH) FIN
 ========================================================================== */
+
+
+
+/* ==========================================================================
+   CORRECTIONS (competences, certifications, politique de confidentialite, splash)
+   Placees en fin de fichier : elles priment sur les regles precedentes.
+========================================================================== */
+
+/* ==========================================================================
+   1. SECTION COMPETENCES - CARTES (style de l'image : pastille en haut,
+      numero + trait en bas, bouton simple "Voir plus ->")
+========================================================================== */
+
+/* --- Carte --- */
+#skill .skill-showcase-card {
+  align-items: flex-end;
+  min-height: 480px;
+  border-radius: 24px;
+  background: #0b0b0f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+#skill .skill-showcase-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.4);
+}
+
+#skill .skill-showcase-overlay,
+#skill .skill-showcase-card:hover .skill-showcase-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.30) 0%,
+    rgba(0, 0, 0, 0.40) 40%,
+    rgba(0, 0, 0, 0.90) 100%
+  );
+}
+
+/* --- Pastille en haut a gauche (icone + libelle) --- */
+#skill .skill-showcase-badge {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 48px);
+  padding: 8px 16px 8px 12px;
+  color: #fff;
+  background: rgba(20, 20, 24, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+#skill .skill-showcase-badge .skill-showcase-icon,
+#skill .skill-showcase-card:hover .skill-showcase-badge .skill-showcase-icon {
+  width: auto;
+  height: auto;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  transform: none;
+  color: #38bdf8;
+  font-size: 15px;
+  line-height: 1;
+}
+
+#skill .skill-showcase-badge .skill-showcase-label {
+  display: inline;
+  margin: 0;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- Contenu (sans debordement) --- */
+#skill .skill-showcase-content {
+  padding: 30px;
+  min-width: 0;
+}
+
+#skill .skill-showcase-content h2 {
+  margin: 0 0 12px;
+  font-size: clamp(18px, 1.8vw, 23px);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+#skill .skill-showcase-content p {
+  min-height: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* --- Ligne du bas : bouton a gauche, numero + trait a droite --- */
+#skill .skill-showcase-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 28px;
+}
+
+/* --- Bouton simple "Voir plus ->" --- */
+#skill .skill-showcase-button {
+  min-height: 0;
+  padding: 0;
+  gap: 8px;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+#skill .skill-showcase-button:hover {
+  color: #fff;
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+}
+
+#skill .skill-showcase-button i {
+  font-size: 16px;
+}
+
+#skill .skill-showcase-button:hover i {
+  transform: translateX(6px);
+}
+
+/* --- Numero : pas de bleu, juste un trait fin + "01" --- */
+#skill .skill-showcase-number {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: auto;
+  height: auto;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+#skill .skill-showcase-number::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+@media screen and (max-width: 600px) {
+  #skill .skill-showcase-number {
+    width: auto;
+    height: auto;
+    font-size: 12px;
+  }
+  #skill .skill-showcase-badge {
+    top: 18px;
+    left: 18px;
+  }
+  #skill .skill-showcase-content {
+    padding: 22px;
+  }
+}
+
+
+/* ==========================================================================
+   1.b ESPACE DETAILS : la section est claire (#f9f9f9) mais les textes
+       etaient blancs -> invisibles. On les passe en sombre.
+========================================================================== */
+#skill .skill-details-navigation {
+  border-bottom-color: rgba(15, 23, 42, 0.12);
+}
+
+#skill .skill-details-reference {
+  color: #64748b;
+}
+
+#skill .skill-details-back:hover {
+  color: #0066ff;
+  background: transparent;
+}
+
+#skill .skill-details-footer {
+  border-top-color: rgba(15, 23, 42, 0.12);
+}
+
+#skill .skill-details-footer > span {
+  color: #475569;
+}
+
+#skill .skill-details-footer-close {
+  color: #0f172a;
+}
+
+#skill .skill-details-footer-close:hover {
+  color: #fff;
+}
+
+
+/* ==========================================================================
+   2. CERTIFICATIONS : bloc "VOIR TOUT" (classe .is-open au lieu de
+      style="display:none" + protection contre ScrollReveal)
+========================================================================== */
+.certlang-global-section .certlang-collapsed-hidden {
+  display: none;
+}
+
+.certlang-global-section .certlang-collapsed-hidden.is-open {
+  display: block;
+  margin-top: 40px;
+  animation: certlangUnfold 0.5s ease both;
+}
+
+.certlang-global-section .certlang-collapsed-hidden .certlang-sub-grid {
+  margin-top: 0;
+}
+
+/* Garantit que le texte reste visible meme si ScrollReveal l'a touche */
+.certlang-global-section .certlang-collapsed-hidden .certlang-track-node,
+.certlang-global-section .certlang-collapsed-hidden .certlang-node-content,
+.certlang-global-section .certlang-collapsed-hidden .certlang-node-content * {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+@keyframes certlangUnfold {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Les titres longs ne sont plus coupes par "..." (inutilisable sur mobile) */
+.certlang-global-section .certlang-node-content {
+  overflow: visible;
+}
+
+.certlang-global-section .certlang-node-content h3,
+.certlang-global-section .certlang-org {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+
+/* ==========================================================================
+   3. POLITIQUE DE CONFIDENTIALITE : texte plus petit + en-tete identique
+      aux autres sections du site (titre bleu majuscule + petite barre)
+========================================================================== */
+.privacy-section {
+  background-color: var(--p-bg-main);
+  padding: 60px 16px;
+}
+
+/* En-tete */
+.privacy-header {
+  margin-bottom: 50px;
+}
+
+.privacy-badge {
+  display: block;
+  margin: 0 0 14px;
+  color: #64748b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.privacy-title {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 30px;
+  color: #0066ff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.privacy-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #0066ff;
+  border-radius: 2px;
+}
+
+.privacy-subtitle {
+  max-width: 700px;
+  margin: 0 auto;
+  color: var(--p-text-muted);
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+/* Cartes */
+.privacy-card {
+  padding: 22px 24px;
+  border: 1px solid var(--p-border);
+}
+
+.privacy-card:hover {
+  border: 1px solid var(--p-primary);
+}
+
+.privacy-card h2 {
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.privacy-card p {
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  line-height: 1.65;
+}
+
+.privacy-card li {
+  margin-bottom: 6px;
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+.privacy-alert p {
+  font-size: 1.2rem;
+}
+
+.mini-card strong {
+  font-size: 1.3rem;
+}
+
+.mini-card p {
+  font-size: 1.2rem;
+}
+
+.p-badge {
+  font-size: 1.1rem;
+}
+
+.privacy-toc a {
+  font-size: 1.3rem;
+}
+
+.toc-title {
+  font-size: 1.2rem;
+}
+
+@media screen and (min-width: 768px) {
+  .privacy-section {
+    padding: 80px 32px;
+  }
+  .privacy-title {
+    font-size: 1.1rem; /* identique a toutes les autres sections */
+  }
+}
+
+
+/* ==========================================================================
+   SPLASH : masque quand deja vu pendant la session (classe posee dans le <head>)
+========================================================================== */
+html.splash-seen #splash-screen {
+  display: none !important;
+}
+
+
+/* ==========================================================================
+   CORRECTIONS 2
+   - liste des competences : ancien rendu (icone + nom + niveau sur une ligne)
+   - petit trait de couleur devant le numero (plus de grande ligne en haut)
+   - barre bleue sous COMPETENCES
+   - plus de ligne neon au survol des domaines (bordure bleue seulement)
+   - icones a la place des fleches du bouton VOIR TOUT / REDUIRE
+========================================================================== */
+
+/* Plus de grande ligne de couleur en haut des panneaux */
+#skill .skill-category--fondamentale,
+#skill .skill-category--specifique,
+#skill .skill-category--technique { border-top: 1px solid rgba(255,255,255,.1); }
+
+#skill .skill-category--fondamentale { --category-accent: #ffeb60; }
+#skill .skill-category--specifique   { --category-accent: #ff4d4d; }
+#skill .skill-category--technique    { --category-accent: #38bdf8; }
+
+/* Petit trait de couleur devant le numero */
+#skill .skill-category-number {
+    position: relative;
+    width: 46px; height: 46px;
+    margin-left: 12px;
+    color: #fff;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+}
+#skill .skill-category-number::before {
+    content: "";
+    position: absolute;
+    left: -12px; top: 50%;
+    width: 3px; height: 24px;
+    transform: translateY(-50%);
+    border-radius: 2px;
+    background: var(--category-accent, #0066ff);
+}
+#skill .skill-category--fondamentale .skill-category-number,
+#skill .skill-category--specifique .skill-category-number,
+#skill .skill-category--technique .skill-category-number {
+    color: #fff;
+    background: rgba(255,255,255,.06);
+}
+
+/* Liste : retour au rendu compact */
+#skill .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+#skill .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 43px;
+    padding: 7px 9px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: rgba(255,255,255,.025);
+    box-shadow: none;
+    overflow: visible;
+    transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+#skill .skill-item:hover {
+    transform: translateX(3px);
+    border-color: rgba(0,102,255,.28);
+    background: rgba(0,102,255,.065);
+    box-shadow: none;
+}
+#skill .skill-icon-box {
+    display: grid;
+    flex: 0 0 27px;
+    width: 27px; height: 27px; min-width: 27px;
+    place-items: center;
+    border: 0;
+    border-radius: 7px;
+    background: rgba(0,102,255,.09);
+    color: var(--category-accent, #0066ff);
+    font-size: 15px;
+}
+#skill .skill-item:hover .skill-icon-box {
+    color: var(--category-accent, #0066ff);
+    background: rgba(0,102,255,.09);
+}
+#skill .skill-info {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 5px;
+    min-width: 0;
+}
+#skill .skill-name {
+    display: block;
+    width: auto;
+    min-width: 0;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+#skill .skill-level {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 4px 7px;
+    border: 0;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+}
+#skill .skill-level.lvl-expert        { background: rgba(76,217,100,.08);  color: #248a3d; }
+#skill .skill-level.lvl-avance        { background: rgba(0,122,255,.08);   color: #0056b3; }
+#skill .skill-level.lvl-intermediaire { background: rgba(255,149,0,.08);   color: #b36b00; }
+#skill .skill-level.lvl-maitrise      { background: rgba(88,86,214,.08);   color: #3b3994; }
+
+/* Barre bleue sous COMPETENCES */
+#skill .skill-section-kicker {
+    position: relative;
+    margin-bottom: 28px;
+}
+#skill .skill-section-kicker::after {
+    content: "";
+    position: absolute;
+    bottom: -12px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 4px;
+    border-radius: 2px;
+    background: #0066ff;
+}
+
+/* Domaines : bordure bleue seulement, plus de ligne neon */
+#services .box::before,
+#services .box:hover::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Icones du bouton VOIR TOUT / REDUIRE */
+.certlang-global-section .certlang-view-more-btn i {
+    margin-left: 6px;
+    font-size: 1.1em;
+    vertical-align: middle;
+}
+
+
+/* ==========================================================================
+   CORRECTIONS 3 - boutons "RETOUR AUX CATEGORIES" et "RETOUR" (COMPETENCES)
+   et "Telecharger CV" au style des boutons de filtres du portfolio
+========================================================================== */
+.about-actions .btn-main,
+#skill .skill-details-back,
+#skill .skill-details-footer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  width: auto;
+  padding: 10px 28px;
+  min-height: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  color: #ffffff;
+  background: #111111;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 30px;
+  border-top-right-radius: 0;
+  box-shadow: none;
+  transform: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.about-actions .btn-main:hover,
+#skill .skill-details-back:hover,
+#skill .skill-details-footer-close:hover {
+  color: #0066ff;
+  background-color: rgba(0, 102, 255, 0.12);
+  border-color: rgba(0, 102, 255, 0.4);
+  box-shadow: none;
+  transform: none;
+  text-decoration: none;
+}
+
+#skill .skill-details-back i,
+#skill .skill-details-footer-close i { font-size: 1rem; transition: transform 0.3s ease; }
+#skill .skill-details-back:hover i,
+#skill .skill-details-footer-close:hover i { transform: translateX(-5px); }
+
+/* Mobile et tablette : barre de retour et pied centres, boutons pleine largeur (COMPETENCES) */
+@media screen and (max-width: 992px) {
+  #skill .skill-details-navigation,
+  #skill .skill-details-footer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+  }
+
+  #skill .skill-details-reference,
+  #skill .skill-details-footer > span {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  #skill .skill-details-back,
+  #skill .skill-details-footer-close {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+
+/* ==========================================================================
+   REFONTE : A PROPOS (onglets) / EXPERIENCE / FORMATION
+   Fond blanc / #f9f9f9, cartes "bento", boutons en dégradé bleu.
+   (Home et footer ne sont pas touchés.)
+========================================================================== */
+
+/* ---------- En-tête de section commun (titre + sous-titre identiques) ---------- */
+.sec-head { text-align: center; margin-bottom: 70px; }
+.sec-title {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  color: #0066ff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.sec-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 4px;
+  border-radius: 2px;
+  background: #0066ff;
+}
+.sec-subtitle {
+  max-width: 620px;
+  margin: 28px auto 0;
+  color: #64748b;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* ---------- Bouton dégradé (CV) ---------- */
+.btn-cv {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 30px;
+  color: #fff;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  border: 0;
+  border-radius: 30px;
+  border-top-right-radius: 0;
+  box-shadow: 0 10px 20px rgba(0, 102, 255, 0.15);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-cv:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(0, 102, 255, 0.3);
+  text-decoration: none;
+}
+.btn-cv i { transition: transform 0.3s ease; }
+.btn-cv:hover i { transform: translateY(2px); }
+
+/* ==========================================================================
+   A PROPOS DE MOI : onglets
+========================================================================== */
+.about-me-section {
+  padding: 100px 0;
+  background: #f9f9f9;
+  overflow: hidden;
+}
+.about-me-section .container { max-width: 1100px; }
+
+.aboutme-tabs {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  align-items: stretch;
+}
+
+/* Colonne gauche + ligne verticale */
+.aboutme-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0 28px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  border-right: 2px solid #e2e8f0;
+}
+.aboutme-nav li { position: relative; }
+
+.aboutme-tab {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 18px;
+  cursor: pointer;
+  text-align: left;
+  color: #334155;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  font-family: inherit;
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+}
+.aboutme-tab:hover {
+  color: #0066ff;
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+.aboutme-tab[aria-selected="true"] {
+  color: #0066ff;
+  background: #ffffff;
+  border-color: #0066ff;
+  box-shadow: 0 15px 35px rgba(0, 102, 255, 0.06);
+}
+.aboutme-tab:focus-visible { outline: 2px solid #0066ff; outline-offset: 2px; }
+
+.aboutme-tab-icon {
+  display: grid;
+  flex: 0 0 40px;
+  width: 40px; height: 40px;
+  place-items: center;
+  color: #0066ff;
+  background: rgba(0, 102, 255, 0.08);
+  border-radius: 12px;
+  font-size: 1.7rem;
+}
+.aboutme-tab-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.aboutme-tab-text small {
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* Indicateur (flèche) posé sur la ligne, vers l'élément actif */
+.aboutme-pointer {
+  position: absolute;
+  top: 50%; right: -43px;
+  display: grid;
+  width: 30px; height: 30px;
+  place-items: center;
+  color: #fff;
+  background: #0066ff;
+  border-radius: 50%;
+  box-shadow: 0 6px 14px rgba(0, 102, 255, 0.3);
+  font-size: 1.8rem;
+  opacity: 0;
+  transform: translateY(-50%) scale(.6);
+  transition: opacity .3s ease, transform .3s ease;
+  pointer-events: none;
+}
+.aboutme-tab[aria-selected="true"] + .aboutme-pointer {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Zone d'affichage */
+.aboutme-display {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  margin-left: 40px;
+  padding: 2.2rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.04);
+}
+.aboutme-empty { text-align: center; max-width: 340px; }
+.aboutme-empty[hidden] { display: none; }
+.aboutme-empty-icon {
+  display: grid;
+  width: 76px; height: 76px;
+  margin: 0 auto 18px;
+  place-items: center;
+  color: #0066ff;
+  background: rgba(0, 102, 255, 0.08);
+  border-radius: 50%;
+  font-size: 3.2rem;
+}
+.aboutme-empty p { margin: 0; color: #64748b; font-size: 1.4rem; line-height: 1.6; }
+.only-mobile { display: none; }
+
+.aboutme-content { position: relative; width: 100%; animation: aboutmeIn .45s ease both; }
+.aboutme-content[hidden] { display: none; }
+.aboutme-content-num {
+  position: absolute;
+  right: 0; top: -14px;
+  color: rgba(15, 23, 42, 0.05);
+  font-size: 6rem;
+  font-weight: 900;
+  line-height: 1;
+  user-select: none;
+}
+.aboutme-content h3 { margin: 0 0 14px; color: #0f172a; font-size: 2rem; font-weight: 800; }
+.aboutme-content p { margin: 0 0 22px; color: #475569; font-size: 1.4rem; line-height: 1.8; text-align: justify; }
+.aboutme-content .highlight-text,
+.aboutme-content .highlight-tech,
+.aboutme-content .highlight-marker { color: #0066ff; font-weight: 700; background: none; }
+.aboutme-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  cursor: pointer;
+  color: #0f172a;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 30px;
+  border-top-right-radius: 0;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  transition: all .3s ease;
+}
+.aboutme-close:hover { color: #0066ff; border-color: #0066ff; background: rgba(0, 102, 255, .06); }
+@keyframes aboutmeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* Mobile / tablette : onglets sur une ligne, ligne horizontale + flèche vers le bas */
+@media (max-width: 820px) {
+  .about-me-section { padding: 70px 0; }
+  .aboutme-tabs { grid-template-columns: 1fr; }
+  .aboutme-nav {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 0 22px;
+    border-right: 0;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  .aboutme-nav li { flex: 1 1 0; min-width: 0; }
+  .aboutme-tab {
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 6px;
+    text-align: center;
+  }
+  .aboutme-tab-icon { flex-basis: 34px; width: 34px; height: 34px; font-size: 1.5rem; }
+  .aboutme-tab-text { align-items: center; font-size: 1.15rem; }
+  .aboutme-tab-text small { font-size: .85rem; letter-spacing: 1px; }
+  .aboutme-pointer {
+    top: auto; bottom: -37px;
+    left: 50%; right: auto;
+    transform: translateX(-50%) scale(.6);
+  }
+  .aboutme-pointer i::before { content: "\f107"; }
+  .aboutme-tab[aria-selected="true"] + .aboutme-pointer { transform: translateX(-50%) scale(1); }
+  .aboutme-display { min-height: 280px; margin: 30px 0 0; padding: 1.6rem 1.3rem; }
+  .only-desktop { display: none; }
+  .only-mobile { display: inline; }
+  .aboutme-content p { text-align: left; font-size: 1.3rem; }
+  .aboutme-close { width: 100%; justify-content: center; }
+}
+
+/* ==========================================================================
+   EXPERIENCE ET FORMATION : 2 colonnes + timeline défilante
+========================================================================== */
+.parcours-section { padding: 100px 0; overflow: hidden; }
+.parcours-exp { background: #ffffff; }
+.parcours-edu { background: #f9f9f9; }
+.parcours-section .container { max-width: 1100px; }
+
+.parcours-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 56px;
+  align-items: center;
+}
+
+/* Colonne gauche */
+.parcours-side { display: flex; flex-direction: column; align-items: stretch; gap: 26px; }
+.parcours-photo {
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  background: #f8fafc;
+  box-shadow: 0 15px 35px rgba(15, 23, 42, 0.06);
+}
+.parcours-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.parcours-intro h3 { margin: 0; color: #0f172a; font-size: 2.2rem; font-weight: 800; line-height: 1.3; }
+.parcours-intro p { margin: 0; color: #475569; font-size: 1.45rem; line-height: 1.8; }
+
+/* Timeline : zone limitée à 2 éléments (hauteur exacte réglée en JS) */
+.timeline-viewport { position: relative; min-width: 0; }
+.timeline-viewport::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 70px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), var(--fade, #ffffff));
+  border-radius: 0 0 1.5rem 1.5rem;
+  transition: opacity .3s ease;
+}
+.parcours-edu .timeline-viewport { --fade: #f9f9f9; }
+.timeline-viewport.is-end::after { opacity: 0; }
+
+.timeline-scroll {
+  max-height: 560px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6px 18px 6px 4px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #0066ff #e2e8f0;
+  overscroll-behavior: contain;
+}
+.timeline-scroll::-webkit-scrollbar { width: 6px; }
+.timeline-scroll::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 3px; }
+.timeline-scroll::-webkit-scrollbar-thumb { background: #0066ff; border-radius: 3px; }
+.timeline-scroll:focus-visible { outline: 2px solid #0066ff; outline-offset: 2px; border-radius: 8px; }
+
+.parcours-section .timeline {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 58px;
+  border-left: 0;
+}
+.parcours-section .timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 2px;
+  background: #e2e8f0;
+}
+.parcours-section .timeline-fill {
+  position: absolute;
+  left: 20px; top: 0;
+  width: 3px; height: 0;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #00d2ff, #0066ff);
+  transition: height .25s ease-out;
+  z-index: 1;
+}
+.parcours-section .timeline-item { position: relative; margin-bottom: 28px; }
+.parcours-section .timeline-item:last-child { margin-bottom: 4px; }
+
+.parcours-section .timeline-icon {
+  position: absolute;
+  left: -58px; top: 22px;
+  z-index: 2;
+  display: grid;
+  width: 42px; height: 42px;
+  place-items: center;
+  color: #0066ff;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 50%;
+  font-size: 1.7rem;
+  transition: color .3s ease, background-color .3s ease, border-color .3s ease, box-shadow .3s ease;
+}
+.parcours-section .timeline-item.is-reached .timeline-icon {
+  color: #fff;
+  background: #0066ff;
+  border-color: #0066ff;
+  box-shadow: 0 6px 16px rgba(0, 102, 255, 0.3);
+}
+
+/* Carte : style bento (fond clair) */
+.parcours-section .parcours-card.bento-card {
+  padding: 1.8rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  box-shadow: none;
+}
+.parcours-edu .parcours-card.bento-card { background: #ffffff; }
+.parcours-section .parcours-card.bento-card:hover {
+  transform: translateX(10px);
+  border-color: #0066ff;
+  background: #ffffff;
+  box-shadow: 0 15px 35px rgba(0, 102, 255, 0.06);
+}
+.parcours-section .bento-number { color: rgba(15, 23, 42, 0.04); }
+.parcours-section .bento-header { display: flex; align-items: center; gap: 8px; margin-bottom: .6rem; }
+.parcours-section .bento-header i { color: #0066ff; font-size: 1.3rem; }
+.parcours-section .bento-header h3 { margin: 0; color: #0066ff; font-size: 1.2rem; font-weight: 700; }
+.parcours-section .block-post-title { margin: 6px 0; color: #0f172a; font-size: 1.6rem; font-weight: 700; line-height: 1.4; }
+.parcours-section .block-entity { display: inline-block; margin-bottom: 6px; color: #475569; font-size: 1.35rem; font-weight: 500; }
+.parcours-section .block-location { display: flex; align-items: center; gap: 6px; margin: 10px 0; color: #64748b; font-size: 1.25rem; }
+.parcours-section .block-location i { color: #0066ff; }
+.parcours-section .block-description-company { margin-bottom: 15px; color: #64748b; font-size: 1.25rem; line-height: 1.6; text-align: left; }
+.parcours-section .tech-container { display: flex; flex-direction: column; gap: 8px; padding: 12px; background: rgba(0, 102, 255, 0.04); border-radius: 10px; }
+.parcours-section .tech-title { color: #475569; font-size: 1.15rem; font-weight: 700; }
+.parcours-section .bento-sub-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; }
+.parcours-section .sub-item {
+  padding: 4px 10px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1.15rem;
+  font-weight: 500;
+  transition: border-color .3s ease, color .3s ease;
+}
+.parcours-section .parcours-card:hover .sub-item { color: #0066ff; border-color: rgba(0, 102, 255, .4); background: #fff; }
+
+/* Tablette / mobile */
+@media (max-width: 992px) {
+  .parcours-section { padding: 70px 0; }
+  .parcours-grid { grid-template-columns: 1fr; gap: 36px; }
+  .parcours-photo { aspect-ratio: 16 / 10; }
+  .btn-cv { width: 100%; text-align: center; }
+  .parcours-intro h3 { font-size: 1.9rem; }
+}
+@media (max-width: 576px) {
+  .parcours-section .container { padding: 0 1.5rem; }
+  .parcours-section .timeline { padding-left: 50px; }
+  .parcours-section .timeline::before, .parcours-section .timeline-fill { left: 16px; }
+  .parcours-section .timeline-icon { left: -50px; width: 34px; height: 34px; font-size: 1.4rem; }
+  .parcours-section .parcours-card.bento-card { padding: 1.3rem; }
+  .parcours-section .parcours-card.bento-card:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline-scroll { scroll-behavior: auto; }
+  .aboutme-content { animation: none; }
+}
+
+
+/* ==========================================================================
+   REFONTE 2 : cartes DOMAINES PROFESSIONNELS + CONNAISSANCES TECHNIQUES
+   meme style "bento" que les cartes Experience / Formation,
+   couleur de carte selon le fond de la section, bouton en degrade.
+========================================================================== */
+
+/* ---------- DOMAINES PROFESSIONNELS DE PREDILECTION (fond blanc -> carte #f8fafc) ---------- */
+#services { background-color: #ffffff; }
+
+#services .box {
+  padding: 1.8rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  box-shadow: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.4s ease;
+}
+#services .box:hover {
+  transform: translateX(10px);
+  background: #ffffff;
+  border-color: #0066ff !important;
+  box-shadow: 0 15px 35px rgba(0, 102, 255, 0.06);
+}
+#services .title a { color: #0f172a; }
+#services .box:hover .title a { color: #0066ff; }
+#services .description { color: #64748b; }
+
+/* ---------- CONNAISSANCES TECHNIQUES (fond #f9f9f9 -> carte blanche) ---------- */
+.Feautes { background-color: #f9f9f9; }
+
+.feautes-grid-pure { align-items: stretch; }
+.feautes-item { display: flex; }
+
+.Feautes .single-features {
+  height: 100%;
+  padding: 1.8rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.4s ease;
+}
+.Feautes .single-features:hover {
+  transform: translateX(10px);
+  border-color: #0066ff;
+  box-shadow: 0 15px 35px rgba(0, 102, 255, 0.06);
+}
+
+/* Bulle d'icone : degrade bleu */
+.Feautes .single-features .signle-icon i,
+.Feautes .single-features:hover .signle-icon i {
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(0, 102, 255, 0.15);
+}
+.Feautes .single-features:hover .signle-icon i {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 15px 25px rgba(0, 102, 255, 0.3);
+}
+.Feautes .single-features h3 { color: #0f172a; }
+.Feautes .single-features p { color: #64748b; }
+
+/* ---------- Bouton VOIR TOUT / REDUIRE : retour au simple texte anime (sans fond) ---------- */
+.certlang-global-section .certlang-view-more-btn i { display: inline-block; margin-left: 6px; transition: transform 0.3s ease; }
+.certlang-global-section .certlang-view-more-btn:hover i { transform: translateX(5px); }
+.certlang-global-section .certlang-view-more-btn[aria-expanded="true"]:hover i { transform: translateX(-5px); }
+
+/* ==========================================================================
+   REFONTE 3
+========================================================================== */
+
+/* ---------- RETOUR AUX CATEGORIES / RETOUR : identiques a "Fermer" (aboutme-close) ---------- */
+#skill .skill-details-back,
+#skill .skill-details-footer-close {
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 30px;
+  border-top-right-radius: 0;
+  box-shadow: none;
+}
+#skill .skill-details-back:hover,
+#skill .skill-details-footer-close:hover {
+  color: #0066ff;
+  background: rgba(0, 102, 255, 0.06);
+  border-color: #0066ff;
+}
+
+/* ---------- APTITUDES PERSONNELLES : cartes bento, icone / titre / texte en bleu ---------- */
+.pf-details .single-service {
+  margin: 0;
+  padding: 1.6rem 1.6rem 1.6rem 92px;
+  min-height: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
+}
+.pf-details .single-service:hover {
+  transform: translateX(10px);
+  border-color: #0066ff;
+  box-shadow: 0 15px 35px rgba(0, 102, 255, 0.06);
+}
+.pf-details .single-service i {
+  left: 1.6rem;
+  top: 1.6rem;
+  width: 52px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+  font-size: 28px;
+  color: #0066ff;
+  background: rgba(0, 102, 255, 0.08);
+  border-radius: 14px;
+}
+.pf-details .single-service:hover i { color: #ffffff; background: linear-gradient(135deg, #00d2ff, #0066ff); transform: rotate(10deg); }
+.pf-details .single-service h4 { margin-bottom: 12px; }
+.pf-details .single-service h4 a { color: #0066ff; }
+.pf-details .single-service:hover h4 a { color: #0066ff; }
+.pf-details .single-service p { color: #64748b; }
+.pf-details .aptitudes-card { display: flex; }
+.pf-details .aptitudes-card .single-service { width: 100%; }
+
+/* ---------- PROJETS REALISES : boutons de filtre en degrade ---------- */
+#portfolio #portfolio-flters li {
+  color: #ffffff;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  border: 0;
+  box-shadow: 0 8px 18px rgba(0, 102, 255, 0.15);
+  filter: saturate(0.75) brightness(0.95);
+}
+#portfolio #portfolio-flters li:hover {
+  color: #ffffff;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  filter: none;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 102, 255, 0.3);
+}
+#portfolio #portfolio-flters li.filter-active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  filter: none;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.18), 0 12px 24px rgba(0, 102, 255, 0.3);
+}
+.lightbox-close-btn {
+  color: #ffffff;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+}
+
+/* ==========================================================================
+   TRANSITIONS : sections qui "montent" les unes sur les autres,
+   barre de progression, transition entre les pages (index / privacy / 404 / futures pages)
+========================================================================== */
+
+/* Barre de progression de lecture */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  z-index: 10001;
+  pointer-events: none;
+  background: linear-gradient(90deg, #00d2ff, #0066ff);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* Seule la section A PROPOS (#about) monte sur l'accueil */
+main > #about {
+  position: relative;
+  z-index: 2;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -18px 40px rgba(15, 23, 42, 0.18);
+}
+
+/* Ordinateur : l'accueil reste en place et les sections montent dessus */
+@media (min-width: 992px) and (min-height: 640px) {
+  .home { position: sticky; top: 0; z-index: 0; }
+  .home .home-container,
+  .home .partners-footer {
+    transform: scale(calc(1 - var(--cover, 0) * 0.06));
+    opacity: calc(1 - var(--cover, 0) * 0.55);
+    transform-origin: 50% 0;
+    will-change: transform, opacity;
+  }
+}
+
+/* Transition entre pages : le rideau monte (sortie), puis repart vers le haut (arrivee) */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  pointer-events: none;
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  border-radius: 28px 28px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.55s cubic-bezier(0.7, 0, 0.2, 1);
+}
+html.page-leaving::after { transform: translateY(0); pointer-events: all; }
+
+html.page-entering::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100001;
+  pointer-events: none;
+  background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
+  border-radius: 0 0 28px 28px;
+  animation: pageCurtainOut 0.75s cubic-bezier(0.7, 0, 0.2, 1) 0.05s both;
+}
+html.page-entering body { animation: pageRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes pageCurtainOut { from { transform: translateY(0); } to { transform: translateY(-101%); } }
+@keyframes pageRise { from { transform: translateY(60px); } to { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html::after, html.page-entering::before { display: none; }
+  html.page-entering body { animation: none; }
+  .home .home-container, .home .partners-footer { transform: none !important; opacity: 1 !important; }
+}
+
+/* "clip" au lieu de "hidden" : le body ne devient pas un conteneur de défilement,
+   ce qui permet à l'accueil de rester collé (sticky) pendant que les sections montent dessus. */
+html, body { overflow-x: clip; }
+
+/* ==========================================================================
+   MOBILE : seul le nom "Glody-Claver" reste visible dans le header
+========================================================================== */
+@media screen and (max-width: 768px) {
+  .header .nav { justify-content: center; }
+  .header .logo-content .logo-icon,
+  .header .contact-content,
+  .header .navOpen-btn,
+  .header .menu-content { display: none !important; }
+  .header .logo-content { justify-content: center; }
+  .header .logo-text { font-size: 1.7rem; font-weight: 700; letter-spacing: 1px; }
+}
+
+
+/* ==========================================================================
+   REFONTE 4
+========================================================================== */
+
+/* ---------- RETOUR AUX CATEGORIES / RETOUR : degrade bleu ---------- */
+#skill .skill-details-back,
+#skill .skill-details-footer-close {
+  color: #ffffff;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  border: 0;
+  box-shadow: 0 10px 20px rgba(0, 102, 255, 0.15);
+}
+#skill .skill-details-back:hover,
+#skill .skill-details-footer-close:hover {
+  color: #ffffff;
+  background: linear-gradient(135deg, #00d2ff, #0066ff);
+  border: 0;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(0, 102, 255, 0.3);
+}
+
+/* ---------- RÉALISATIONS : elements plus petits ---------- */
+.section-realisations { padding: 50px 0; }
+.conteneur-flou { padding: 30px 24px; }
+.section-realisations .section-header { margin-bottom: 30px; }
+.section-realisations .section-title { font-size: 1.1rem; }
+.grille-statistiques {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.carte-stat { padding: 22px 14px; border-radius: 18px; }
+.nombre { font-size: 2.6rem; margin-bottom: 6px; }
+.label { font-size: 0.75rem; letter-spacing: 1px; }
+@media screen and (max-width: 992px) {
+  .section-realisations { padding: 40px 0; }
+  .section-realisations .section-title { font-size: 1.1rem; }
+  .nombre { font-size: 2.4rem; }
+}
+@media screen and (max-width: 576px) {
+  .grille-statistiques { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .carte-stat { padding: 18px 10px; }
+  .nombre { font-size: 2.1rem; }
+  .label { font-size: 0.68rem; }
+}
+
+/* ---------- GALERIE : carte du milieu plus grande, cotes plus petits, formes qui changent ---------- */
+.galerie-axe-defilement { padding: 56px 0 64px; perspective: none; }
+.galerie-ruban-images, .galerie-pack { align-items: center; }
+
+.galerie-photos-travail .galerie-carte {
+  --p: 0;
+  --s: 0.7;
+  --rt: 34px;
+  --rb: 34px;
+  width: 220px;
+  height: 320px;
+  flex: 0 0 auto;
+  border-radius: var(--rt) var(--rt) var(--rb) var(--rb) !important;
+  transform: scale(var(--s)) !important;
+  filter: brightness(calc(0.55 + 0.5 * var(--p))) grayscale(calc(25% - 25% * var(--p)));
+  transition: filter 0.3s ease, box-shadow 0.4s ease !important;
+  box-shadow: 0 calc(10px + 18px * var(--p)) calc(24px + 24px * var(--p)) rgba(0, 0, 0, 0.35);
+}
+.galerie-photos-travail .galerie-carte:hover,
+.galerie-photos-travail .galerie-carte:active {
+  transform: scale(calc(var(--s) * 1.05)) translateY(-8px) !important;
+  filter: brightness(1.1) grayscale(0%);
+}
+@media (max-width: 992px) {
+  .galerie-photos-travail .galerie-carte { width: 190px; height: 280px; }
+}
+@media (max-width: 576px) {
+  .galerie-photos-travail .galerie-carte { width: 150px; height: 230px; margin-right: 12px; }
+  .galerie-axe-defilement { padding: 40px 0 46px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .galerie-photos-travail .galerie-carte { --s: 0.9; transform: scale(0.9) !important; }
+}
+
+
+/* ==========================================================================
+   REFONTE 5
+========================================================================== */
+
+/* ---------- COMPETENCES : les elements sortent un par un, du haut vers le bas ---------- */
+@keyframes skillItemIn {
+  from { opacity: 0; transform: translateY(22px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes skillHeadIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes skillBadgePop {
+  0%   { transform: scale(0.4) rotate(-12deg); opacity: 0; }
+  70%  { transform: scale(1.12) rotate(3deg); opacity: 1; }
+  100% { transform: none; }
+}
+.skill-details-panel.is-entering .skill-category-header { animation: skillHeadIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.skill-details-panel.is-entering .skill-category-number { animation: skillBadgePop 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards; }
+.skill-details-panel.is-entering .skill-item {
+  animation: skillItemIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.25s + var(--i, 0) * 0.06s);
+}
+
+/* ---------- GALERIE : meme arrondi sur les 4 coins (pas de forme d'arche) ---------- */
+.galerie-photos-travail .galerie-carte {
+  border-radius: var(--rt) !important;
+}
+
+/* ---------- HOME : animations d'entree et de vie ---------- */
+:root { --home-delay: 2.3s; }
+html.splash-seen { --home-delay: 0.15s; }
+html.page-entering { --home-delay: 0.7s; }
+
+@keyframes homeUp    { from { opacity: 0; transform: translateY(34px); } to { opacity: 1; transform: none; } }
+@keyframes homeLeft  { from { opacity: 0; transform: translateX(-34px); } to { opacity: 1; transform: none; } }
+@keyframes homeRight { from { opacity: 0; transform: translateX(34px); } to { opacity: 1; transform: none; } }
+@keyframes homeWipe  { from { opacity: 0; clip-path: inset(0 100% 0 0); letter-spacing: 6px; } to { opacity: 1; clip-path: inset(0 0 0 0); letter-spacing: -3px; } }
+@keyframes homeAvatar { from { opacity: 0; transform: translateY(60px) scale(0.94); } to { opacity: 1; transform: none; } }
+@keyframes homeFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes homeNudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+@keyframes homeGlow  { 0%, 100% { text-shadow: 0 0 0 rgba(0, 210, 255, 0); } 50% { text-shadow: 0 0 28px rgba(0, 210, 255, 0.35); } }
+@keyframes homeLine  { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+.home .intro-content-wrapper { position: relative; border-left-color: transparent; }
+.home .intro-content-wrapper::before {            /* la ligne verticale se dessine */
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  transform-origin: top;
+  animation: homeLine 1s ease var(--home-delay) backwards;
+}
+
+.home .main-title {
+  animation: homeWipe 1.1s cubic-bezier(0.16, 1, 0.3, 1) var(--home-delay) backwards,
+             homeGlow 5s ease-in-out calc(var(--home-delay) + 1.4s) infinite;
+}
+.home .intro-text   { animation: homeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--home-delay) + 0.35s) backwards; }
+.home .hire-me-btn  { animation: homeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--home-delay) + 0.55s) backwards; }
+.home .hire-me-btn i { animation: homeNudge 1.8s ease-in-out calc(var(--home-delay) + 1.6s) infinite; }
+
+.home .social-item { animation: homeLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.home .social-item:nth-child(1) { animation-delay: calc(var(--home-delay) + 0.2s); }
+.home .social-item:nth-child(2) { animation-delay: calc(var(--home-delay) + 0.35s); }
+.home .social-item:nth-child(3) { animation-delay: calc(var(--home-delay) + 0.5s); }
+
+.home .avatar { animation: homeAvatar 1.2s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--home-delay) + 0.1s) backwards; }
+.home .avatar .img-fluid { animation: homeFloat 6s ease-in-out calc(var(--home-delay) + 1.5s) infinite; }
+
+.home .intro-skills { animation: homeRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--home-delay) + 0.45s) backwards; }
+
+.home .partner-logo {
+  animation: homeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.home .partner-logo:nth-child(1) { animation-delay: calc(var(--home-delay) + 0.7s); }
+.home .partner-logo:nth-child(2) { animation-delay: calc(var(--home-delay) + 0.8s); }
+.home .partner-logo:nth-child(3) { animation-delay: calc(var(--home-delay) + 0.9s); }
+.home .partner-logo:nth-child(4) { animation-delay: calc(var(--home-delay) + 1.0s); }
+.home .partner-logo:nth-child(5) { animation-delay: calc(var(--home-delay) + 1.1s); }
+.home .partner-logo:nth-child(6) { animation-delay: calc(var(--home-delay) + 1.2s); }
+.home .partner-logo:hover { color: #ffffff; transform: translateY(-4px); }
+.home .partner-logo:hover .logo-icon i { color: #00d2ff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home .main-title, .home .intro-text, .home .hire-me-btn, .home .hire-me-btn i,
+  .home .social-item, .home .avatar, .home .avatar .img-fluid, .home .intro-skills,
+  .home .partner-logo, .home .intro-content-wrapper::before { animation: none !important; }
+  .home .intro-content-wrapper { border-left-color: rgba(255, 255, 255, 0.15); }
+}
