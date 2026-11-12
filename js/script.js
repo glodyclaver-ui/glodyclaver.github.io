@@ -1334,10 +1334,15 @@
             { origin: 'right' }
         );
 
-        /* PARTENAIRES ET TIMELINES */
+        /* IDENTITÉ NUMÉRIQUE ET TIMELINES */
         sr.reveal(
-            '.partenaires-logos-section .logo-item-3d',
-            { origin: 'bottom', interval: 110, scale: 0.9 }
+            '.identity-section .identity-logo-card',
+            { origin: 'left', distance: '50px' }
+        );
+
+        sr.reveal(
+            '.identity-section .identity-text',
+            { origin: 'right', distance: '50px' }
         );
 
         sr.reveal(
@@ -1430,6 +1435,8 @@
         initPageTransitions();         // transition entre les pages
 
         initGalleryFocus();            // galerie : photo centrale agrandie
+
+        initPartnerLogos();            // logos partenaires
 
         document.documentElement.style.overflowX = 'hidden';
     }
@@ -1528,6 +1535,32 @@
                 // Le dégradé du bas disparaît en fin de liste
                 viewport.classList.toggle('is-end', max <= 2 || top >= max - 2);
             }
+
+            // Mobile : en bout de liste (haut ou bas), le défilement passe à la page.
+            // Sans cela, le doigt reste "accroché" à la liste et bloque la suite.
+            let touchY = 0;
+
+            scroller.addEventListener('touchstart', event => {
+                if (event.touches.length !== 1) return;
+                touchY = event.touches[0].clientY;
+            }, { passive: true });
+
+            scroller.addEventListener('touchmove', event => {
+                if (event.touches.length !== 1) return;
+
+                const y = event.touches[0].clientY;
+                const delta = touchY - y;               // > 0 : le doigt monte (on descend)
+                touchY = y;
+
+                const atTop = scroller.scrollTop <= 0;
+                const atBottom =
+                    scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+
+                if ((delta > 0 && atBottom) || (delta < 0 && atTop)) {
+                    if (event.cancelable) event.preventDefault();
+                    window.scrollBy({ top: delta, left: 0, behavior: 'instant' });
+                }
+            }, { passive: false });
 
             let ticking = false;
 
@@ -1696,6 +1729,32 @@
             visible = true;
             rafId = window.requestAnimationFrame(frame);
         }
+    }
+
+    /* ========================================================
+       20f. LOGOS PARTENAIRES : un logo introuvable est retiré
+       (sinon il laisserait un trou dans le défilement)
+    ======================================================== */
+
+    function initPartnerLogos() {
+        const images = Utils.safeQueryAll(
+            '.partenaires-logos-section .logo-item-3d img'
+        );
+
+        function hide(image) {
+            const item = image.closest('.logo-item-3d');
+
+            if (item) item.style.display = 'none';
+        }
+
+        images.forEach(image => {
+            if (image.complete && image.naturalWidth === 0 && image.getAttribute('src')) {
+                hide(image);
+                return;
+            }
+
+            image.addEventListener('error', () => hide(image), { once: true });
+        });
     }
 
     /* ========================================================

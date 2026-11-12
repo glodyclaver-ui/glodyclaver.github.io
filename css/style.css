@@ -998,7 +998,7 @@ img {
   .home .partners-footer { padding: 2.5rem 4rem; }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 900px) {
   .home-container {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
@@ -1911,7 +1911,7 @@ img {
 /* Remplacer les trois chemins par tes images réelles */
 
 #skill .skill-showcase-specifique .skill-showcase-image {
-    background-image: url("../images/travail/ton-travail17.png");
+    background-image: url("../images/travail/ton-travail2.jpg");
 }
 
 #skill .skill-showcase-fondamentale .skill-showcase-image {
@@ -7635,7 +7635,8 @@ html.splash-seen #splash-screen {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: #0066ff #e2e8f0;
-  overscroll-behavior: contain;
+  overscroll-behavior-y: auto;   /* le défilement passe à la page en fin de liste */
+  touch-action: pan-y;
 }
 .timeline-scroll::-webkit-scrollbar { width: 6px; }
 .timeline-scroll::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 3px; }
@@ -7925,7 +7926,7 @@ main > #about {
 
 /* Ordinateur : l'accueil reste en place et les sections montent dessus */
 @media (min-width: 992px) and (min-height: 640px) {
-  .home { position: sticky; top: 0; z-index: 0; }
+  .home { position: sticky; top: 0; z-index: -1; }
   .home .home-container,
   .home .partners-footer {
     transform: scale(calc(1 - var(--cover, 0) * 0.06));
@@ -8161,4 +8162,252 @@ html.page-entering { --home-delay: 0.7s; }
   .home .social-item, .home .avatar, .home .avatar .img-fluid, .home .intro-skills,
   .home .partner-logo, .home .intro-content-wrapper::before { animation: none !important; }
   .home .intro-content-wrapper { border-left-color: rgba(255, 255, 255, 0.15); }
+}
+
+
+/* ==========================================================================
+   REFONTE 6
+========================================================================== */
+
+/* ---------- HOME : mise en page PC conservee jusqu'a 901px (mode "Version ordinateur" mobile) ---------- */
+@media screen and (min-width: 901px) and (max-width: 1100px) {
+  .home-container { padding: 2rem 2.5rem; grid-template-columns: 1.3fr 1fr 0.7fr; gap: 1.5rem; }
+  .home .main-title { font-size: clamp(3rem, 5vw, 4.4rem); letter-spacing: -2px; }
+  .home .intro-content-wrapper { padding-left: 1.8rem; }
+  .home .partners-footer { padding: 2.2rem 2rem; flex-wrap: nowrap; justify-content: space-between; gap: 1rem; }
+  .home .partner-logo { font-size: 0.85rem; }
+}
+
+/* ---------- HOME mobile : une seule ligne droite horizontale, centree (plus de "L") ---------- */
+@keyframes homeLineX { from { transform: translateX(-50%) scaleX(0); } to { transform: translateX(-50%) scaleX(1); } }
+@media screen and (max-width: 768px) {
+  .home .intro-content-wrapper {
+    position: relative;
+    border-left: 0 !important;
+    border-top: 0 !important;
+    padding-left: 0;
+    padding-top: 2rem;
+  }
+  .home .intro-content-wrapper::before {
+    left: 50%;
+    right: auto;
+    top: 0;
+    bottom: auto;
+    width: min(260px, 60%);
+    height: 1px;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateX(-50%);
+    transform-origin: center;
+    animation: homeLineX 1s ease var(--home-delay) backwards;
+  }
+}
+
+/* ---------- COMPETENCES : la section ne s'etire plus (100vh trop grand en mode ordinateur) ---------- */
+#skill.skill-section { min-height: 0; }
+#skill .skills-showcase-grid { align-items: start; }
+
+/* ---------- REALISATIONS : meme titre que COMPETENCES ---------- */
+.section-realisations .section-header { display: flex; flex-direction: column; align-items: center; margin: 0 auto 60px; text-align: center; }
+.section-realisations .section-title {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 15px;
+  color: #0066ff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+.section-realisations .section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -12px; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 4px;
+  border-radius: 2px;
+  background: #0066ff;
+}
+@media screen and (max-width: 992px) {
+  .section-realisations .section-title { font-size: 13px; }
+}
+@media screen and (max-width: 600px) {
+  .section-realisations .section-header { margin-bottom: 45px; }
+  .section-realisations .section-title { font-size: 11px; letter-spacing: 4px; }
+}
+
+/* ---------- LOGOS PARTENAIRES : espacement regulier (gap + marge doublaient l'ecart) ---------- */
+.partenaires-decor-3d { padding: 20px 0; }
+@media (min-width: 577px) {
+  .partenaires-groupe { gap: 0; }
+  .logo-item-3d { margin-right: 80px; flex: 0 0 auto; }
+}
+
+/* ==========================================================================
+   SECTION IDENTITE NUMERIQUE (fond blanc, entre A PROPOS et COMPETENCES)
+========================================================================== */
+.identity-section { padding: 100px 0; background-color: #ffffff; overflow: hidden; }
+.identity-section .container { max-width: 1100px; }
+
+.identity-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 60px;
+  align-items: center;
+}
+
+.identity-logo-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1;
+  max-width: 380px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 12%;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
+}
+.identity-logo-card::before {                     /* halo bleu discret */
+  content: "";
+  position: absolute;
+  width: 70%; height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 102, 255, 0.14), transparent 70%);
+  z-index: 0;
+}
+.identity-logo-card:hover {
+  transform: translateY(-6px);
+  border-color: #0066ff;
+  box-shadow: 0 15px 35px rgba(0, 102, 255, 0.08);
+}
+.identity-logo-card img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.identity-text h3 { margin: 0 0 18px; color: #0f172a; font-size: 2.4rem; font-weight: 800; line-height: 1.3; }
+.identity-text p { margin: 0 0 16px; color: #475569; font-size: 1.45rem; line-height: 1.85; }
+.identity-text strong { color: #0066ff; font-weight: 700; }
+
+.identity-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 0; padding: 0; list-style: none; }
+.identity-tags li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: #334155;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 30px;
+  border-top-right-radius: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+.identity-tags li i { color: #0066ff; }
+.identity-tags li:hover { color: #0066ff; border-color: #0066ff; background: rgba(0, 102, 255, 0.06); }
+
+@media (max-width: 992px) {
+  .identity-section { padding: 70px 0; }
+  .identity-grid { grid-template-columns: 1fr; gap: 36px; }
+  .identity-logo-card { max-width: 280px; }
+  .identity-text { text-align: center; }
+  .identity-text h3 { font-size: 2.1rem; }
+  .identity-tags { justify-content: center; }
+}
+@media (max-width: 576px) {
+  .identity-section .container { padding: 0 1.5rem; }
+  .identity-text p { font-size: 1.35rem; }
+}
+
+
+/* ==========================================================================
+   REFONTE 7 : titre RÉALISATIONS = style de "Features" (.Feautes .section-header)
+========================================================================== */
+.section-realisations .section-header {
+  display: block;
+  text-align: center;
+  margin: 0 0 50px;
+  width: 100%;
+}
+.section-realisations .section-header .section-title {
+  color: #0066ff; /* Bleu éclatant conducteur */
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0;
+  display: inline-block;
+  position: relative;
+}
+.section-realisations .section-header .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: #0066ff;
+  border-radius: 2px;
+}
+@media screen and (max-width: 992px) {
+  .section-realisations .section-header .section-title { font-size: 1.1rem; letter-spacing: 1.5px; }
+}
+@media screen and (max-width: 600px) {
+  .section-realisations .section-header { margin-bottom: 50px; }
+  .section-realisations .section-header .section-title { font-size: 1.1rem; letter-spacing: 1.5px; }
+}
+
+/* ==========================================================================
+   REFONTE 8 : titre COMPETENCES = meme style que "Mon identite numerique" / "Experience professionnelle" (.sec-title)
+========================================================================== */
+#skill .skill-section-header {
+  display: block;
+  max-width: none;
+  margin: 0 auto 70px;
+  text-align: center;
+}
+#skill .skill-section-kicker {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  color: #0066ff;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+#skill .skill-section-kicker::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  border-radius: 2px;
+  background: #0066ff;
+}
+@media screen and (max-width: 850px) {
+  #skill .skill-section-header { margin-bottom: 70px; }
+}
+@media screen and (max-width: 600px) {
+  #skill .skill-section-header { margin-bottom: 70px; }
+  #skill .skill-section-kicker { font-size: 1.1rem; letter-spacing: 2px; }
 }

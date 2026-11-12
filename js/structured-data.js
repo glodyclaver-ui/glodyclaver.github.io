@@ -77,7 +77,7 @@
                     "R",
                     "SQL",
                     "C Sharp",
-                    "Pythonp",
+                    "Python",
                     "Visual Basic.Net",
                     "Typescript",
                     "JavaScript",
