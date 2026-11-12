@@ -1536,31 +1536,83 @@
                 viewport.classList.toggle('is-end', max <= 2 || top >= max - 2);
             }
 
-            // Mobile : en bout de liste (haut ou bas), le défilement passe à la page.
-            // Sans cela, le doigt reste "accroché" à la liste et bloque la suite.
-            let touchY = 0;
+            // Mobile : en bout de liste (haut ou bas), le defilement passe a la page
+            // IMMEDIATEMENT et continue avec l'inertie du doigt (aucun temps d'arret).
+            let touchY = 0, touchT = 0, velocity = 0, chained = false, momentumId = 0;
+            let lastFling = 0, flingTime = 0;
+
+            const stopMomentum = () => {
+                if (momentumId) window.cancelAnimationFrame(momentumId);
+                momentumId = 0;
+            };
+
+            const startMomentum = v => {
+                stopMomentum();
+                let last = performance.now();
+
+                const step = now => {
+                    const dt = Math.min(48, now - last);
+                    last = now;
+                    window.scrollBy({ top: v * dt, left: 0, behavior: 'instant' });
+                    v *= Math.pow(0.95, dt / 16);
+
+                    momentumId = Math.abs(v) > 0.03 ? window.requestAnimationFrame(step) : 0;
+                };
+
+                momentumId = window.requestAnimationFrame(step);
+            };
+
+            const atEdge = dir => dir > 0
+                ? scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1
+                : scroller.scrollTop <= 0;
 
             scroller.addEventListener('touchstart', event => {
+                stopMomentum();
                 if (event.touches.length !== 1) return;
                 touchY = event.touches[0].clientY;
+                touchT = event.timeStamp;
+                velocity = 0;
+                lastFling = 0;
+                chained = false;
             }, { passive: true });
 
             scroller.addEventListener('touchmove', event => {
                 if (event.touches.length !== 1) return;
 
                 const y = event.touches[0].clientY;
+                const dt = Math.max(1, event.timeStamp - touchT);
                 const delta = touchY - y;               // > 0 : le doigt monte (on descend)
+
+                velocity = 0.8 * (delta / dt) + 0.2 * velocity;
                 touchY = y;
+                touchT = event.timeStamp;
 
-                const atTop = scroller.scrollTop <= 0;
-                const atBottom =
-                    scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
-
-                if ((delta > 0 && atBottom) || (delta < 0 && atTop)) {
+                if (delta !== 0 && atEdge(delta)) {
+                    chained = true;
                     if (event.cancelable) event.preventDefault();
                     window.scrollBy({ top: delta, left: 0, behavior: 'instant' });
                 }
             }, { passive: false });
+
+            scroller.addEventListener('touchend', event => {
+                if (event.timeStamp - touchT > 80) velocity = 0;
+                lastFling = velocity;
+                flingTime = event.timeStamp;
+
+                // Le doigt a deja pousse la page : on garde l'elan
+                if (chained && Math.abs(velocity) > 0.05) startMomentum(velocity);
+            }, { passive: true });
+
+            // Elan natif de la liste qui arrive en bout : il continue dans la page
+            scroller.addEventListener('scroll', () => {
+                if (chained || momentumId || !lastFling) return;
+                if (performance.now() - flingTime > 1500) return;
+
+                if (Math.abs(lastFling) > 0.2 && atEdge(lastFling)) {
+                    startMomentum(lastFling * 0.7);
+                    lastFling = 0;
+                }
+            }, { passive: true });
 
             let ticking = false;
 
@@ -1600,6 +1652,14 @@
         const home = document.getElementById('home');
         let ticking = false;
 
+        // Accueil plus haut que l'ecran (mobile) : il reste colle par le BAS,
+        // la section suivante monte donc dessus sans jamais laisser de vide.
+        function setHomeTop() {
+            if (!home) return;
+            const top = Math.min(0, window.innerHeight - home.offsetHeight);
+            home.style.setProperty('--home-top', top + 'px');
+        }
+
         function update() {
             const doc = document.documentElement;
             const max = doc.scrollHeight - window.innerHeight;
@@ -1622,7 +1682,10 @@
             window.requestAnimationFrame(update);
         }, { passive: true });
 
-        window.addEventListener('resize', update);
+        window.addEventListener('resize', () => { setHomeTop(); update(); });
+        window.addEventListener('load', setHomeTop);
+        if (home && 'ResizeObserver' in window) new ResizeObserver(setHomeTop).observe(home);
+        setHomeTop();
         update();
     }
 

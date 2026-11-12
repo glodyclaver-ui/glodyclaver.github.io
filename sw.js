@@ -23,7 +23,7 @@
 // ============================================================
 
 const CACHE_PREFIX = 'glody_claver-portfolio-';
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
 // Délai maximum d'attente du réseau avant de servir le cache (ms).

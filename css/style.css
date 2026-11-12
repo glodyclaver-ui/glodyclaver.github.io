@@ -7925,8 +7925,8 @@ main > #about {
 }
 
 /* Ordinateur : l'accueil reste en place et les sections montent dessus */
+.home { position: sticky; top: var(--home-top, 0px); z-index: -1; }
 @media (min-width: 992px) and (min-height: 640px) {
-  .home { position: sticky; top: 0; z-index: -1; }
   .home .home-container,
   .home .partners-footer {
     transform: scale(calc(1 - var(--cover, 0) * 0.06));
@@ -7944,7 +7944,6 @@ html::after {
   z-index: 100001;
   pointer-events: none;
   background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
-  border-radius: 28px 28px 0 0;
   transform: translateY(100%);
   transition: transform 0.55s cubic-bezier(0.7, 0, 0.2, 1);
 }
@@ -7957,16 +7956,15 @@ html.page-entering::before {
   z-index: 100001;
   pointer-events: none;
   background: linear-gradient(135deg, #0d093a 0%, #050226 100%);
-  border-radius: 0 0 28px 28px;
   animation: pageCurtainOut 0.75s cubic-bezier(0.7, 0, 0.2, 1) 0.05s both;
 }
-html.page-entering body { animation: pageRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+html.page-entering main { animation: pageRise 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
 @keyframes pageCurtainOut { from { transform: translateY(0); } to { transform: translateY(-101%); } }
 @keyframes pageRise { from { transform: translateY(60px); } to { transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   html::after, html.page-entering::before { display: none; }
-  html.page-entering body { animation: none; }
+  html.page-entering main { animation: none; }
   .home .home-container, .home .partners-footer { transform: none !important; opacity: 1 !important; }
 }
 
@@ -8411,3 +8409,57 @@ html.page-entering { --home-delay: 0.7s; }
   #skill .skill-section-header { margin-bottom: 70px; }
   #skill .skill-section-kicker { font-size: 1.1rem; letter-spacing: 2px; }
 }
+
+
+/* ==========================================================================
+   REFONTE 9
+========================================================================== */
+
+/* La section qui suit l'accueil monte dessus sur TOUTES les pages (index, privacy, 404) */
+.home ~ .privacy-section,
+.home ~ .error-page {
+  position: relative;
+  z-index: 2;
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -18px 40px rgba(15, 23, 42, 0.18);
+}
+
+/* Les timelines ne font plus de defilement lisse natif (le relais vers la page est gere en JS) */
+.timeline-scroll { scroll-behavior: auto; overscroll-behavior-y: auto; }
+
+/* ---------- Mode "Version pour ordinateur" sur telephone ----------
+   js/splash-init.js ajoute html.desktop-mode : l'accueil garde STRICTEMENT la mise en page PC,
+   quelle que soit la largeur que le navigateur annonce (980px, 900px, 800px...). */
+html.desktop-mode .home-container {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 0.8fr;
+  gap: 0;
+  padding: 2rem 4rem;
+  text-align: left;
+}
+html.desktop-mode .home .intro-info { flex-direction: row; align-items: center; gap: 2.5rem; padding-right: 3rem; }
+html.desktop-mode .home .home-social-sidebar { flex-direction: column; gap: 3.5rem; }
+html.desktop-mode .home .intro-content-wrapper {
+  position: static;
+  align-items: flex-start;
+  border-left: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-top: 0 !important;
+  padding-left: 2.5rem;
+  padding-top: 0;
+}
+html.desktop-mode .home .intro-content-wrapper::before { display: none; }
+html.desktop-mode .home .main-title { font-size: clamp(3rem, 5vw, 4.4rem); letter-spacing: -2px; white-space: nowrap; text-align: left; }
+html.desktop-mode .home .intro-text { text-align: justify; max-width: 350px; margin: 1.5rem 0; }
+html.desktop-mode .home .intro-img { order: 0; }
+html.desktop-mode .home .avatar { max-width: 440px; }
+html.desktop-mode .home .avatar .fade-overlay { height: 120px; }
+html.desktop-mode .home .intro-skills { order: 0; grid-column: auto; justify-content: flex-end; text-align: right; margin-top: 0; }
+html.desktop-mode .home #typed-text { align-items: flex-end; }
+html.desktop-mode .home .partners-footer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2.2rem 4rem;
+}
+html.desktop-mode .home .partner-logo { justify-content: flex-start; width: auto; max-width: none; font-size: 1rem; }
