@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://glodyclaver-ui.github.io/glodyclaver.github.io/sitemap.xml

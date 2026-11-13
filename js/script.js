@@ -262,6 +262,9 @@
    6. EFFET D'ÉCRITURE AUTOMATIQUE AVEC ÉLÉVATION VERTICALE
    ========================================================================== */
 
+    // Traduction (site-widgets.js) : renvoie le texte tel quel tant que le français est actif
+    const tr = text => (window.gcT ? window.gcT(text) : text);
+
     const typingWords = [
         'DATA ANALYST',
         'DIGITAL MARKETING',
@@ -287,11 +290,11 @@
 
         // Mode accessibilité (sans animation)
         if (reducedMotion) {
-            container.innerHTML = `<div class="skill-line active-line">${typingWords[0]}</div>`;
+            container.innerHTML = `<div class="skill-line active-line">${tr(typingWords[0])}</div>`;
             return;
         }
 
-        const currentWord = typingWords[typingState.wordIndex];
+        const currentWord = tr(typingWords[typingState.wordIndex]);
 
         // Initialisation ou récupération de la ligne active
         let activeLine = container.querySelector('.skill-line.active-line');
@@ -424,7 +427,7 @@
                     const eased = 1 - Math.pow(1 - t, 3);
 
                     count.textContent =
-                        Math.round(total * eased) + ' compétences';
+                        Math.round(total * eased) + (tr('compétences') === 'compétences' ? ' compétences' : ' ' + tr('compétences'));
 
                     if (t < 1) window.requestAnimationFrame(tick);
                 })(start);

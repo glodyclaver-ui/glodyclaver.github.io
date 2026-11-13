@@ -5,7 +5,11 @@
 */
 
 // ============================================================
-// GOOGLE ANALYTICS 4 — INITIALISATION OPTIMISÉE POUR PWA
+// GOOGLE ANALYTICS 4 — CHARGÉ UNIQUEMENT APRÈS CONSENTEMENT (RGPD)
+// Le choix du visiteur est géré par js/site-widgets.js (bandeau cookies).
+//   - Aucun script Google ni cookie avant l'acceptation.
+//   - window.gcAnalytics.grant() : accepte et charge GA4
+//   - window.gcAnalytics.revoke() : refuse et coupe GA4
 // ============================================================
 
 (() => {
@@ -21,13 +25,13 @@
   const GA_SCRIPT_URL =
     'https://www.googletagmanager.com/gtag/js?id=' + GA_TRACKING_ID;
 
-  // Vérification de l'identifiant GA4.
+  const CONSENT_KEY = 'gc_cookie_consent';   // 'granted' | 'denied'
+
   if (!/^G-[A-Z0-9]+$/.test(GA_TRACKING_ID)) {
     console.warn('[Google Analytics] Identifiant invalide.');
     return;
   }
 
-  // Éviter une double initialisation.
   if (window.__GA4_INITIALIZED__) {
     return;
   }
@@ -35,154 +39,129 @@
   window.__GA4_INITIALIZED__ = true;
 
   // ==========================================================
-  // 2. INITIALISATION DU DATALAYER
+  // 2. DATALAYER, GTAG ET CONSENTEMENT PAR DÉFAUT (refusé)
   // ==========================================================
 
   window.dataLayer = window.dataLayer || [];
 
-  // ==========================================================
-  // 3. INITIALISATION DE GTAG
-  // ==========================================================
-
   window.gtag = window.gtag || function () {
-
     window.dataLayer.push(arguments);
-
   };
 
-  // ==========================================================
-  // 4. CONFIGURATION GOOGLE ANALYTICS 4
-  // ==========================================================
-
-  window.gtag('js', new Date());
-
-  window.gtag('config', GA_TRACKING_ID, {
-    send_page_view: true
+  window.gtag('consent', 'default', {
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
   });
 
+  // Désactivation côté Google tant que le visiteur n'a pas accepté.
+  window['ga-disable-' + GA_TRACKING_ID] = true;
+
   // ==========================================================
-  // 5. VÉRIFICATION DU SCRIPT GOOGLE ANALYTICS
+  // 3. CHARGEMENT DU SCRIPT (une seule fois)
   // ==========================================================
 
+  let started = false;
   let scriptLoading = false;
-
   let retryTimer = null;
 
   const RETRY_DELAY = 10000;
 
-  const scriptAlreadyExists = () => {
+  const scriptAlreadyExists = () =>
+    Array.from(document.scripts).some(script => script.src === GA_SCRIPT_URL);
 
-    return Array.from(document.scripts).some(script => {
+  const loadScript = () => {
 
-      return script.src === GA_SCRIPT_URL;
-
-    });
-
-  };
-
-  // ==========================================================
-  // 6. CHARGEMENT DE GOOGLE ANALYTICS
-  // ==========================================================
-
-  const loadGoogleAnalytics = () => {
-
-    // Éviter les chargements simultanés.
-    if (scriptLoading) {
-      return;
-    }
-
-    // Vérifier la connexion Internet.
-    if (!navigator.onLine) {
-      return;
-    }
-
-    // Éviter les scripts en double.
-    if (scriptAlreadyExists()) {
-      return;
-    }
+    if (scriptLoading || !navigator.onLine || scriptAlreadyExists()) return;
 
     scriptLoading = true;
 
-    // Création du script Google Analytics.
     const script = document.createElement('script');
 
     script.async = true;
-
     script.src = GA_SCRIPT_URL;
 
-    // Chargement réussi.
     script.onload = () => {
-
       scriptLoading = false;
-
-      console.info(
-        '[Google Analytics] GA4 chargé avec succès.'
-      );
-
     };
 
-    // Gestion des erreurs.
     script.onerror = () => {
-
       scriptLoading = false;
-
       script.remove();
 
-      console.warn(
-        '[Google Analytics] Échec du chargement. Nouvelle tentative programmée.'
-      );
-
-      // Programmer une nouvelle tentative.
       clearTimeout(retryTimer);
 
       retryTimer = setTimeout(() => {
-
-        if (navigator.onLine) {
-          loadGoogleAnalytics();
-        }
-
+        if (navigator.onLine && started) loadScript();
       }, RETRY_DELAY);
-
     };
 
-    // Insertion dans le document.
-    (document.head || document.documentElement)
-      .appendChild(script);
-
+    (document.head || document.documentElement).appendChild(script);
   };
 
   // ==========================================================
-  // 7. GESTION DE LA CONNEXION INTERNET
+  // 4. ACCEPTER / REFUSER
   // ==========================================================
+
+  const grant = () => {
+
+    window['ga-disable-' + GA_TRACKING_ID] = false;
+
+    window.gtag('consent', 'update', {
+      analytics_storage: 'granted'
+    });
+
+    if (!started) {
+      started = true;
+
+      window.gtag('js', new Date());
+      window.gtag('config', GA_TRACKING_ID, { send_page_view: true });
+    }
+
+    loadScript();
+  };
+
+  const revoke = () => {
+
+    window['ga-disable-' + GA_TRACKING_ID] = true;
+
+    window.gtag('consent', 'update', {
+      analytics_storage: 'denied'
+    });
+
+    // Supprime les cookies Google Analytics déjà déposés.
+    try {
+      const host = location.hostname;
+
+      document.cookie.split(';').forEach(cookie => {
+        const name = cookie.split('=')[0].trim();
+
+        if (name === '_ga' || name.indexOf('_ga_') === 0 || name === '_gid') {
+          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+          document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=' + host;
+        }
+      });
+    } catch (error) {}
+  };
+
+  window.gcAnalytics = { grant, revoke };
 
   window.addEventListener('online', () => {
-
-    console.info(
-      '[Google Analytics] Connexion Internet rétablie.'
-    );
-
-    clearTimeout(retryTimer);
-
-    loadGoogleAnalytics();
-
-  });
-
-  window.addEventListener('offline', () => {
-
-    console.info(
-      '[Google Analytics] Connexion Internet indisponible.'
-    );
-
+    if (started) {
+      clearTimeout(retryTimer);
+      loadScript();
+    }
   });
 
   // ==========================================================
-  // 8. INITIALISATION AU CHARGEMENT
+  // 5. CONSENTEMENT DÉJÀ ENREGISTRÉ
   // ==========================================================
 
-  if (navigator.onLine) {
-
-    loadGoogleAnalytics();
-
-  }
+  try {
+    if (localStorage.getItem(CONSENT_KEY) === 'granted') {
+      grant();
+    }
+  } catch (error) {}
 
 })();

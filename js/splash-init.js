@@ -22,3 +22,13 @@ try {
         document.documentElement.classList.add('desktop-mode');
     }
 } catch (e) {}
+
+/* Thème sombre : appliqué avant l'affichage pour éviter l'éclair blanc. */
+try {
+    if (localStorage.getItem('gc_theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+    if (localStorage.getItem('gc_lang') === 'en') {
+        document.documentElement.setAttribute('data-lang', 'en');
+    }
+} catch (e) {}
