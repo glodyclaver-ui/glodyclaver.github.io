@@ -178,6 +178,7 @@
         updateLangButton();
         updateThemeButton();
         buildLinks();
+        if (window.gcRefreshInstall) window.gcRefreshInstall();
     }
 
     /* ========================================================
@@ -225,6 +226,46 @@
         return m[lang] || m.fr || '';
     }
 
+    /* Message et libellé du bouton WhatsApp selon la section regardée */
+    var TOPICS = {
+        quote: {
+            fr: { label: 'Demander un devis', msg: 'Bonjour Glody-Claver, je souhaite un devis pour mon projet.' },
+            en: { label: 'Request a quote', msg: 'Hello Glody-Claver, I would like a quote for my project.' }
+        },
+        project: {
+            fr: { label: 'Parler de mon projet', msg: "Bonjour Glody-Claver, j'ai vu vos réalisations et j'aimerais discuter d'un projet web ou design." },
+            en: { label: 'Discuss my project', msg: 'Hello Glody-Claver, I saw your work and would like to discuss a web or design project.' }
+        },
+        support: {
+            fr: { label: 'Question ou support', msg: "Bonjour Glody-Claver, j'ai une question ou j'aurais besoin d'un support informatique." },
+            en: { label: 'Question or support', msg: 'Hello Glody-Claver, I have a question or need IT support.' }
+        }
+    };
+
+    var SECTION_TOPIC = {
+        'offres': 'quote',
+        'etudes-de-cas': 'project', 'methode': 'project', 'services': 'project', 'portfolio': 'project',
+        'section-realisations': 'project', 'skill': 'project',
+        'faq-zone': 'support'
+    };
+
+    var topic = null;
+
+    function topicInfo() {
+        if (!topic || !TOPICS[topic]) return null;
+        return TOPICS[topic][lang] || TOPICS[topic].fr;
+    }
+
+    function waMessage() {
+        var info = topicInfo();
+        return info ? info.msg : defaultMessage();
+    }
+
+    function waLabel() {
+        var info = topicInfo();
+        return info ? info.label : (lang === 'en' ? 'Chat on WhatsApp' : 'Discuter sur WhatsApp');
+    }
+
     function bookingConfigured() {
         return CFG.bookingUrl && CFG.bookingUrl.indexOf('VOTRE-LIEN') === -1;
     }
@@ -232,7 +273,14 @@
     function buildLinks() {
         var wa = document.querySelector('.wa-float');
 
-        if (wa) wa.setAttribute('href', waLink(defaultMessage()));
+        if (wa) {
+            wa.setAttribute('href', waLink(waMessage()));
+            wa.setAttribute('aria-label', waLabel());
+
+            var lab = wa.querySelector('.wa-float-label');
+
+            if (lab) lab.textContent = waLabel();
+        }
 
         document.querySelectorAll('[data-book-call]').forEach(function (a) {
             if (bookingConfigured()) {
@@ -352,7 +400,7 @@
 
         if (saved === 'granted' || saved === 'denied') return;
 
-        var delay = root.classList.contains('splash-seen') ? 900 : 3400;
+        var delay = root.classList.contains('splash-seen') ? 900 : 5200;
 
         window.setTimeout(showBanner, delay);
     }
@@ -392,7 +440,7 @@
 
         function close() {
             modal.classList.remove('is-open');
-            root.classList.remove('case-open');
+            root.classList.remove('case-modal-open');
 
             window.setTimeout(function () { modal.hidden = true; }, 250);
 
@@ -432,7 +480,8 @@
             buildLinks();
 
             modal.hidden = false;
-            root.classList.add('case-open');
+            root.classList.add('case-modal-open');
+            modal.querySelector('.case-modal-content').scrollTop = 0;
 
             window.requestAnimationFrame(function () {
                 modal.classList.add('is-open');
@@ -490,11 +539,249 @@
        7. DÉMARRAGE
     ======================================================== */
 
+    /* ========================================================
+       8. WHATSAPP SELON LA SECTION
+    ======================================================== */
+
+    function initWhatsAppContext() {
+        var wa = document.querySelector('.wa-float');
+        var raf = 0;
+        var hintTimer = 0;
+
+        if (!wa) return;
+
+        function sectionTopic() {
+            var el = document.elementFromPoint(window.innerWidth / 2, window.innerHeight * 0.5);
+
+            if (!el || !el.closest) return null;
+
+            var sec = el.closest('section, footer');
+
+            if (!sec) return null;
+            if (sec.tagName === 'FOOTER') return 'support';
+
+            return SECTION_TOPIC[sec.id] || null;
+        }
+
+        function update() {
+            raf = 0;
+
+            if (root.classList.contains('case-modal-open')) return;
+
+            var next = sectionTopic();
+
+            if (next === topic) return;
+
+            topic = next;
+            buildLinks();
+
+            // Le libellé s'affiche quelques secondes quand le sujet change
+            wa.classList.add('is-hinting');
+            window.clearTimeout(hintTimer);
+            hintTimer = window.setTimeout(function () { wa.classList.remove('is-hinting'); }, 3200);
+        }
+
+        window.addEventListener('scroll', function () {
+            if (!raf) raf = window.requestAnimationFrame(update);
+        }, { passive: true });
+
+        // premier calcul sans afficher le libellé
+        topic = sectionTopic();
+        buildLinks();
+    }
+
+    /* ========================================================
+       9. SQUELETTE DE CHARGEMENT DES IMAGES
+    ======================================================== */
+
+    function initSkeleton() {
+        document.querySelectorAll('main img, footer img').forEach(function (img) {
+            if (!img.getAttribute('src') || img.complete) return;
+
+            img.classList.add('gc-skel');
+
+            function done() { img.classList.remove('gc-skel'); }
+
+            img.addEventListener('load', done, { once: true });
+            img.addEventListener('error', done, { once: true });
+        });
+    }
+
+    /* ========================================================
+       10. MÉTHODE DE TRAVAIL (animation à l'apparition)
+    ======================================================== */
+
+    function initMethod() {
+        var list = document.querySelector('[data-method]');
+
+        if (!list) return;
+
+        if (!('IntersectionObserver' in window)) return;
+
+        list.classList.add('is-armed');
+
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+
+                list.classList.add('is-in');
+                io.disconnect();
+            });
+        }, { threshold: 0.25 });
+
+        io.observe(list);
+    }
+
+    /* ========================================================
+       11. BOUTON « INSTALLER L'APPLICATION » (PWA)
+    ======================================================== */
+
+    function initInstall() {
+        var KEY = 'gc_install_dismissed';
+        var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+        var deferred = null;
+        var btn = null;
+
+        if (standalone) return;
+
+        try {
+            var at = parseInt(localStorage.getItem(KEY) || '0', 10);
+
+            if (at && Date.now() - at < 7 * 24 * 3600 * 1000) return;
+        } catch (e) {}
+
+        function text() {
+            return lang === 'en'
+                ? { label: 'Install the app', close: 'Hide', ios: 'On iPhone: tap the Share button, then “Add to Home Screen”.' }
+                : { label: "Installer l'application", close: 'Masquer', ios: "Sur iPhone : touchez le bouton Partager, puis « Sur l'écran d'accueil »." };
+        }
+
+        function build() {
+            if (btn) return;
+
+            btn = document.createElement('div');
+            btn.className = 'pwa-install';
+            btn.innerHTML =
+                '<button type="button" class="pwa-install-main"><i class="fa fa-download" aria-hidden="true"></i><span class="pwa-install-label"></span></button>' +
+                '<button type="button" class="pwa-install-close"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+                '<p class="pwa-install-hint" role="status" hidden></p>';
+
+            document.body.appendChild(btn);
+            refresh();
+
+            btn.querySelector('.pwa-install-main').addEventListener('click', function () {
+                track('pwa_install_click', 'install_button');
+
+                if (deferred) {
+                    deferred.prompt();
+
+                    deferred.userChoice.then(function () {
+                        deferred = null;
+                        hide(false);
+                    });
+                } else if (ios) {
+                    var hint = btn.querySelector('.pwa-install-hint');
+
+                    hint.textContent = text().ios;
+                    hint.hidden = !hint.hidden;
+                }
+            });
+
+            btn.querySelector('.pwa-install-close').addEventListener('click', function () { hide(true); });
+        }
+
+        function refresh() {
+            if (!btn) return;
+
+            var tx = text();
+
+            btn.querySelector('.pwa-install-label').textContent = tx.label;
+            btn.querySelector('.pwa-install-close').setAttribute('aria-label', tx.close);
+        }
+
+        function hide(remember) {
+            if (!btn) return;
+
+            btn.classList.remove('is-visible');
+
+            if (remember) store(KEY, String(Date.now()));
+        }
+
+        // Affiche le bouton quand le bandeau cookies n'occupe plus l'écran
+        function show() {
+            build();
+
+            var tryShow = function () {
+                var cb = document.querySelector('.cookie-banner');
+
+                if (cb && !cb.hidden && cb.classList.contains('is-visible')) {
+                    window.setTimeout(tryShow, 2000);
+                    return;
+                }
+
+                btn.classList.add('is-visible');
+            };
+
+            window.setTimeout(tryShow, 4000);
+        }
+
+        window.addEventListener('beforeinstallprompt', function (event) {
+            event.preventDefault();
+            deferred = event;
+            show();
+        });
+
+        window.addEventListener('appinstalled', function () {
+            track('pwa_installed', 'app');
+            hide(true);
+        });
+
+        if (ios) show();
+
+        window.gcRefreshInstall = refresh;
+    }
+
+    /* ========================================================
+       12. STATISTIQUES : clics utiles (si Google Analytics est accepté)
+    ======================================================== */
+
+    function track(name, where) {
+        if (load(KEY_CONSENT) !== 'granted') return;
+        if (typeof window.gtag !== 'function') return;
+
+        try {
+            window.gtag('event', name, { event_category: 'engagement', event_label: where || '', page_location: location.href });
+        } catch (e) {}
+    }
+
+    function initTracking() {
+        document.addEventListener('click', function (event) {
+            var a = event.target.closest && event.target.closest('a, button');
+
+            if (!a) return;
+
+            var sec = a.closest('section, footer, header');
+            var where = sec ? (sec.id || sec.className.toString().split(' ')[0] || sec.tagName.toLowerCase()) : 'page';
+
+            if (a.classList.contains('wa-float')) track('click_whatsapp', topic || 'general');
+            else if (a.hasAttribute('data-book-call')) track('click_book_call', where);
+            else if (a.hasAttribute('data-quote')) track('click_quote', a.getAttribute('data-quote'));
+            else if (a.classList.contains('btn-cv')) track('click_cv_download', where);
+            else if (a.classList.contains('hire-me-btn')) track('click_contact_email', where);
+            else if (a.classList.contains('case-open')) track('open_case_study', a.getAttribute('data-case') || '');
+        });
+    }
+
     function init() {
         createWhatsAppButton();
         initAvailability();
         initCookies();
         initCases();
+        initMethod();
+        initSkeleton();
+        initInstall();
+        initTracking();
 
         var themeBtn = document.getElementById('theme-toggle');
         var langBtn = document.getElementById('lang-toggle');
@@ -519,6 +806,7 @@
         setLang(saved === 'en' ? 'en' : 'fr', false);
         updateThemeButton();
         buildLinks();
+        initWhatsAppContext();
     }
 
     if (document.readyState === 'loading') {

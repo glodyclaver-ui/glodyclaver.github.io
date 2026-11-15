@@ -95,14 +95,15 @@
 
 
 
-                <!-- Écran de démarrage Netflix Style -->
-                <div id="splash-screen" class="splash-container">
-                        <div class="splash-logo">
-                        <span class="letter">G</span>
-                        <span class="letter">C</span>
+                <!-- Écran de démarrage : GLODY CLAVER s'écrit, l'écran s'ouvre en deux, le logo apparaît puis disparaît -->
+                <div id="splash-screen" class="splash-container" aria-hidden="true">
+                        <div class="splash-stage">
+                                <img class="splash-logo-img" src="images/CLAVER%20LOGO.png" alt="" width="220" height="220" onerror="this.onerror=null;this.src='images/favicon-192.png'">
                         </div>
+                        <div class="splash-half splash-left"><span class="splash-word"><span class="splash-letter" style="--d:0.00s">G</span><span class="splash-letter" style="--d:0.30s">L</span><span class="splash-letter" style="--d:0.60s">O</span><span class="splash-letter" style="--d:0.90s">D</span><span class="splash-letter" style="--d:1.20s">Y</span></span></div>
+                        <div class="splash-half splash-right"><span class="splash-word"><span class="splash-letter" style="--d:1.20s">C</span><span class="splash-letter" style="--d:0.96s">L</span><span class="splash-letter" style="--d:0.72s">A</span><span class="splash-letter" style="--d:0.48s">V</span><span class="splash-letter" style="--d:0.24s">E</span><span class="splash-letter" style="--d:0.00s">R</span></span></div>
                 </div>
-                <!--/ Écran de démarrage Netflix Style Fin-->
+                <!--/ Écran de démarrage Fin-->
 
 
 
@@ -241,14 +242,8 @@
                                                 <div class="photo-frame">
                                                         <div class="laser-border"></div>
                                                         <div class="image-container">
-                                                                <img src="images/about-me-1.png" alt="Glodi-placide OLEKO DIOMBA" class="about-img Tilted-Rotate" loading="lazy" decoding="async">
+                                                                <img src="images/Badge.png" alt="Glody-Claver, badge professionnel" class="about-img Tilted-Rotate" loading="lazy" decoding="async">
                                                         </div>
-                                                </div>
-
-                                                                                                <!-- Badge de disponibilité -->
-                                                <div class="availability-badge" role="status">
-                                                        <span class="availability-dot" aria-hidden="true"></span>
-                                                        <span class="availability-text">Disponible pour missions</span>
                                                 </div>
 
                                                 <!-- Badge Cyber Holographique -->
@@ -1351,6 +1346,11 @@
                                                 <div class="parcours-side">
                                                         <figure class="parcours-photo">
                                                                 <img src="images/travail/ton-travail18.png" alt="Glody-Claver au travail devant son ordinateur" loading="lazy">
+                                                                <!-- Badge de disponibilité (réglable dans js/site-config.js) -->
+                                                                <div class="availability-badge" role="status">
+                                                                        <span class="availability-dot" aria-hidden="true"></span>
+                                                                        <span class="availability-text">Disponible pour missions</span>
+                                                                </div>
                                                         </figure>
                                                         <a href="documents/cv.pdf" class="btn-cv" download>
                                                                 <i class="fa fa-download"></i> Télécharger mon CV
@@ -1816,7 +1816,7 @@
 
                                                         <!-- galerie 1 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail1.jpg" alt="Activité 1" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail1.jpg" alt="Glody-Claver en activité professionnelle, photo n°1" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail1.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1827,7 +1827,7 @@
 
                                                         <!-- galerie 2 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail2.jpg" alt="Activité 2" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail2.jpg" alt="Glody-Claver en activité professionnelle, photo n°2" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail2.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1838,7 +1838,7 @@
 
                                                         <!-- galerie 3 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail3.jpg" alt="Activité 3" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail3.jpg" alt="Glody-Claver en activité professionnelle, photo n°3" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail3.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1849,7 +1849,7 @@
 
                                                         <!-- galerie 4 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail4.jpg" alt="Activité 4" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail4.jpg" alt="Glody-Claver en activité professionnelle, photo n°4" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail4.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1860,7 +1860,7 @@
 
                                                         <!-- galerie 5 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail5.jpg" alt="Activité 5" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail5.jpg" alt="Glody-Claver en activité professionnelle, photo n°5" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail5.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1871,7 +1871,7 @@
 
                                                         <!-- galerie 6 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail6.jpg" alt="Activité 6" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail6.jpg" alt="Glody-Claver en activité professionnelle, photo n°6" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail6.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1882,7 +1882,7 @@
 
                                                         <!-- galerie 7 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail7.jpg" alt="Activité 7" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail7.jpg" alt="Glody-Claver en activité professionnelle, photo n°7" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail7.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1893,7 +1893,7 @@
 
                                                         <!-- galerie 8 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail8.jpg" alt="Activité 8" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail8.jpg" alt="Glody-Claver en activité professionnelle, photo n°8" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail8.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1904,7 +1904,7 @@
 
                                                         <!-- galerie 9 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail9.webp" alt="Activité 9" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail9.webp" alt="Glody-Claver en activité professionnelle, photo n°9" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail9.webp')">
                                                                                 <i class="fa fa-search"></i>
@@ -1915,7 +1915,7 @@
 
                                                         <!-- galerie 10 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail10.jpg" alt="Activité 10" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail10.jpg" alt="Glody-Claver en activité professionnelle, photo n°10" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail10.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1926,7 +1926,7 @@
 
                                                         <!-- galerie 11 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail11.jpg" alt="Activité 11" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail11.jpg" alt="Glody-Claver en activité professionnelle, photo n°11" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail11.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1937,7 +1937,7 @@
 
                                                         <!-- galerie 12 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail12.jpg" alt="Activité 12" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail12.jpg" alt="Glody-Claver en activité professionnelle, photo n°12" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail12.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1948,7 +1948,7 @@
 
                                                         <!-- galerie 13 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail13.jpg" alt="Activité 13" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail13.jpg" alt="Glody-Claver en activité professionnelle, photo n°13" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail13.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1959,7 +1959,7 @@
 
                                                         <!-- galerie 14 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail14.jpg" alt="Activité 14" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail14.jpg" alt="Glody-Claver en activité professionnelle, photo n°14" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail14.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1970,7 +1970,7 @@
 
                                                         <!-- galerie 15 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail15.jpg" alt="Activité 15" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail15.jpg" alt="Glody-Claver en activité professionnelle, photo n°15" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail15.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1987,7 +1987,7 @@
 
                                                         <!-- galerie 1 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail1.jpg" alt="Activité 1" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail1.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail1.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -1998,7 +1998,7 @@
 
                                                         <!-- galerie 2 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail2.jpg" alt="Activité 2" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail2.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail2.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2009,7 +2009,7 @@
 
                                                         <!-- galerie 3 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail3.jpg" alt="Activité 3" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail3.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail3.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2020,7 +2020,7 @@
 
                                                         <!-- galerie 4 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail4.jpg" alt="Activité 4" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail4.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail4.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2031,7 +2031,7 @@
 
                                                         <!-- galerie 5 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail5.jpg" alt="Activité 5" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail5.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail5.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2042,7 +2042,7 @@
 
                                                         <!-- galerie 6 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail6.jpg" alt="Activité 6" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail6.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail6.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2053,7 +2053,7 @@
 
                                                         <!-- galerie 7 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail7.jpg" alt="Activité 7" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail7.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail7.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2064,7 +2064,7 @@
 
                                                         <!-- galerie 8 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail8.jpg" alt="Activité 8" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail8.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail8.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2075,7 +2075,7 @@
 
                                                         <!-- galerie 9 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail9.webp" alt="Activité 9" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail9.webp" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail9.webp')">
                                                                                 <i class="fa fa-search"></i>
@@ -2086,7 +2086,7 @@
 
                                                         <!-- galerie 10 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail10.jpg" alt="Activité 10" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail10.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail10.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2097,7 +2097,7 @@
 
                                                         <!-- galerie 11 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail11.jpg" alt="Activité 11" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail11.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail11.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2108,7 +2108,7 @@
 
                                                         <!-- galerie 12 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail12.jpg" alt="Activité 12" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail12.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail12.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2119,7 +2119,7 @@
 
                                                         <!-- galerie 13 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail13.jpg" alt="Activité 13" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail13.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail13.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2130,7 +2130,7 @@
 
                                                         <!-- galerie 14 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail14.jpg" alt="Activité 14" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail14.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail14.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2141,7 +2141,7 @@
 
                                                         <!-- galerie 15 -->
                                                         <div class="galerie-carte">
-                                                                <img src="images/travail/ton-travail15.jpg" alt="Activité 15" loading="lazy" decoding="async">
+                                                                <img src="images/travail/ton-travail15.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async">
                                                                 <div class="galerie-voile-couleur">
                                                                         <span class="cercle-icone" onclick="ouvrirAperçuGalerie('images/travail/ton-travail15.jpg')">
                                                                                 <i class="fa fa-search"></i>
@@ -2740,26 +2740,26 @@
                                         
                                                 <!-- Groupe 1 -->
                                                 <div class="partenaires-groupe">
-                                                        <div class="logo-item-3d"><img src="images/clients/logo1.png" alt="Logo A" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo2.png" alt="Logo B" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo3.png" alt="Logo C" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo4.png" alt="Logo D" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo5.png" alt="Logo E" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo6.png" alt="Logo F" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo7.png" alt="Logo G" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo8.png" alt="Logo H" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo1.png" alt="Logo du partenaire n°1" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo2.png" alt="Logo du partenaire n°2" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo3.png" alt="Logo du partenaire n°3" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo4.png" alt="Logo du partenaire n°4" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo5.png" alt="Logo du partenaire n°5" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo6.png" alt="Logo du partenaire n°6" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo7.png" alt="Logo du partenaire n°7" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo8.png" alt="Logo du partenaire n°8" loading="lazy" decoding="async"></div>
                                                 </div>
 
                                                 <!-- Doublon Miroir pour le defilement continu -->
                                                 <div class="partenaires-groupe" aria-hidden="true">
-                                                        <div class="logo-item-3d"><img src="images/clients/logo1.png" alt="Logo A" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo2.png" alt="Logo B" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo3.png" alt="Logo C" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo4.png" alt="Logo D" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo5.png" alt="Logo E" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo6.png" alt="Logo F" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo7.png" alt="Logo G" loading="lazy" decoding="async"></div>
-                                                        <div class="logo-item-3d"><img src="images/clients/logo8.png" alt="Logo H" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo1.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo2.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo3.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo4.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo5.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo6.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo7.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+                                                        <div class="logo-item-3d"><img src="images/clients/logo8.png" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
                                                 </div>
 
                                         </div>
@@ -2962,7 +2962,7 @@
                                                 <!-- Projet 1 : DESIGNER - Logo -->
                                                 <div class="portfolio-item filter-app">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logo/Tajir monde/logo1.jpg" alt="Projet 1" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logo/Tajir monde/logo1.jpg" alt="Logo Tajir Monde, identité visuelle réalisée par Glody-Claver" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DESIGNER</a></h4>
                                                                         <p>Logo</p>
@@ -2977,7 +2977,7 @@
                                                 <!-- Projet 2 : DIGITAL MARKETING - Affiche -->
                                                 <div class="portfolio-item filter-web">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Affiche/affiche3.jpg" alt="Projet 2" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Affiche/affiche3.jpg" alt="Affiche de communication digitale n°1" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DIGITAL MARKETING</a></h4>
                                                                         <p>Affiche</p>
@@ -2992,7 +2992,7 @@
                                                 <!-- Projet 3 : DESIGNER - Logo -->
                                                 <div class="portfolio-item filter-app">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logo/Aleron/logo1.png" alt="Projet 3" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logo/Aleron/logo1.png" alt="Logo Aleron, identité visuelle réalisée par Glody-Claver" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DESIGNER</a></h4>
                                                                         <p>Logo</p>
@@ -3007,7 +3007,7 @@
                                                 <!-- Projet 4 : UX-UI DESIGNER - Web -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Site-web/web1.png" alt="Projet 4" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Site-web/web1.png" alt="Maquette de site web conçue par Glody-Claver, page n°1" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">UX-UI DESIGNER</a></h4>
                                                                         <p>Web</p>
@@ -3022,7 +3022,7 @@
                                                 <!-- Projet 5 : DIGITAL MARKETING - Affiche -->
                                                 <div class="portfolio-item filter-web">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Affiche/affiche2.jpg" alt="Projet 5" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Affiche/affiche2.jpg" alt="Affiche de communication digitale n°2" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DIGITAL MARKETING</a></h4>
                                                                         <p>Affiche</p>
@@ -3037,7 +3037,7 @@
                                                 <!-- Projet 6 : DESIGNER - Logo -->
                                                 <div class="portfolio-item filter-app">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logo/geriatrie/logo1.jpg" alt="Projet 6" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logo/geriatrie/logo1.jpg" alt="Logo Gériatrie, identité visuelle réalisée par Glody-Claver" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DESIGNER</a></h4>
                                                                         <p>Logo</p>
@@ -3052,7 +3052,7 @@
                                                 <!-- Projet 7 : ANALYSTE PROGRAMMEUR - Logiciel -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logiciel/logi1.png" alt="Projet 7" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logiciel/logi1.png" alt="Capture d'écran d'un logiciel développé, interface n°1" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">ANALYSTE PROGRAMMEUR</a></h4>
                                                                         <p>Logiciel</p>
@@ -3067,7 +3067,7 @@
                                                 <!-- Projet 8 : ANALYSTE PROGRAMMEUR - Logiciel -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logiciel/logi2.png" alt="Projet 8" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logiciel/logi2.png" alt="Capture d'écran d'un logiciel développé, interface n°2" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">ANALYSTE PROGRAMMEUR</a></h4>
                                                                         <p>Logiciel</p>
@@ -3082,7 +3082,7 @@
                                                 <!-- Projet 9 : DIGITAL MARKETING - Affiche -->
                                                 <div class="portfolio-item filter-web">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Affiche/affiche1.png" alt="Projet 9" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Affiche/affiche1.png" alt="Affiche de communication digitale n°3" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DIGITAL MARKETING</a></h4>
                                                                         <p>Affiche</p>
@@ -3097,7 +3097,7 @@
                                                 <!-- Projet 10 : DESIGNER - Logo -->
                                                 <div class="portfolio-item filter-app">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logo/Parcours/Parcours.png" alt="Projet 10" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logo/Parcours/Parcours.png" alt="Logo Parcours, identité visuelle réalisée par Glody-Claver" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DESIGNER</a></h4>
                                                                         <p>Logo</p>
@@ -3112,7 +3112,7 @@
                                                 <!-- Projet 11 : DESIGNER - Logo -->
                                                 <div class="portfolio-item filter-app">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logo/Honnette etablissement/LOGO HONNETTE ETABLISSEMENT 1.png" alt="Projet 11" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logo/Honnette etablissement/LOGO HONNETTE ETABLISSEMENT 1.png" alt="Logo Honnette établissement, identité visuelle réalisée par Glody-Claver" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DESIGNER</a></h4>
                                                                         <p>Logo</p>
@@ -3127,7 +3127,7 @@
                                                 <!-- Projet 12 : DESIGNER - Logo -->
                                                 <div class="portfolio-item filter-app">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logo/Découverte Inspiration/Découverte Inspiration.png" alt="Projet 12" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logo/Découverte Inspiration/Découverte Inspiration.png" alt="Logo Découverte Inspiration, identité visuelle réalisée par Glody-Claver" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">DESIGNER</a></h4>
                                                                         <p>Logo</p>
@@ -3142,7 +3142,7 @@
                                                 <!-- Projet 13 : ANALYSTE PROGRAMMEUR - Logiciel -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logiciel/logi5-1.png" alt="Projet 13" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logiciel/logi5-1.png" alt="Capture d'écran d'un logiciel développé, interface n°3" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">ANALYSTE PROGRAMMEUR</a></h4>
                                                                         <p>Logiciel</p>
@@ -3157,7 +3157,7 @@
                                                 <!-- Projet 14 : ANALYSTE PROGRAMMEUR - Logiciel -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logiciel/logi3.png" alt="Projet 14" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logiciel/logi3.png" alt="Capture d'écran d'un logiciel développé, interface n°4" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">ANALYSTE PROGRAMMEUR</a></h4>
                                                                         <p>Logiciel</p>
@@ -3172,7 +3172,7 @@
                                                 <!-- Projet 15 : ANALYSTE PROGRAMMEUR - Logiciel -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logiciel/logi5.png" alt="Projet 15" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logiciel/logi5.png" alt="Capture d'écran d'un logiciel développé, interface n°5" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">ANALYSTE PROGRAMMEUR</a></h4>
                                                                         <p>Logiciel</p>
@@ -3187,7 +3187,7 @@
                                                 <!-- Projet 16 : ANALYSTE PROGRAMMEUR - Logiciel -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logiciel/logi6.png" alt="Projet 16" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logiciel/logi6.png" alt="Capture d'écran d'un logiciel développé, interface n°6" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">ANALYSTE PROGRAMMEUR</a></h4>
                                                                         <p>Système Multi-Currency</p>
@@ -3202,7 +3202,7 @@
                                                 <!-- Projet 17 : ANALYSTE PROGRAMMEUR - Logiciel -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Logiciel/logi3-1.png" alt="Projet 17" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Logiciel/logi3-1.png" alt="Capture d'écran d'un logiciel développé, interface n°7" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">ANALYSTE PROGRAMMEUR</a></h4>
                                                                         <p>Logiciel</p>
@@ -3217,7 +3217,7 @@
                                                 <!-- Projet 18 : UX-UI DESIGNER - Web -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Site-web/web2.png" alt="Projet 18" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Site-web/web2.png" alt="Maquette de site web conçue par Glody-Claver, page n°2" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">UX-UI DESIGNER</a></h4>
                                                                         <p>Web</p>
@@ -3232,7 +3232,7 @@
                                                 <!-- Projet 19 : UX-UI DESIGNER - Web -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Site-web/web3.png" alt="Projet 19" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Site-web/web3.png" alt="Maquette de site web conçue par Glody-Claver, page n°3" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">UX-UI DESIGNER</a></h4>
                                                                         <p>Web</p>
@@ -3247,7 +3247,7 @@
                                                 <!-- Projet 20 : UX-UI DESIGNER - Web -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Site-web/web4.png" alt="Projet 20" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Site-web/web4.png" alt="Maquette de site web conçue par Glody-Claver, page n°4" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">UX-UI DESIGNER</a></h4>
                                                                         <p>Web</p>
@@ -3262,7 +3262,7 @@
                                                 <!-- Projet 21 : UX-UI DESIGNER - Web -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Site-web/web5.png" alt="Projet 21" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Site-web/web5.png" alt="Maquette de site web conçue par Glody-Claver, page n°5" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">UX-UI DESIGNER</a></h4>
                                                                         <p>Web</p>
@@ -3277,7 +3277,7 @@
                                                 <!-- Projet 22 : UX-UI DESIGNER - Web -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Site-web/web7.png" alt="Projet 22" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Site-web/web7.png" alt="Maquette de site web conçue par Glody-Claver, page n°6" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">UX-UI DESIGNER</a></h4>
                                                                         <p>Web</p>
@@ -3292,7 +3292,7 @@
                                                 <!-- Projet 23 : UX-UI DESIGNER - Web -->
                                                 <div class="portfolio-item filter-card">
                                                         <div class="portfolio-wrap">
-                                                                <img src="images/portfolio/Site-web/web6.png" alt="Projet 23" loading="lazy" decoding="async">
+                                                                <img src="images/portfolio/Site-web/web6.png" alt="Maquette de site web conçue par Glody-Claver, page n°7" loading="lazy" decoding="async">
                                                                 <div class="portfolio-info">
                                                                         <h4><a href="#">UX-UI DESIGNER</a></h4>
                                                                         <p>Web</p>
@@ -3330,6 +3330,42 @@
 <!-- ======================================================================
      ÉTUDES DE CAS  (à personnaliser : texte, image, outils, résultat)
 ====================================================================== -->
+<section class="method-section" id="methode">
+        <div class="container">
+
+                <div class="sec-head">
+                        <h2 class="sec-title">Ma méthode de travail</h2>
+                        <p class="sec-subtitle">Quatre étapes simples, de votre première idée jusqu'à la livraison.</p>
+                </div>
+
+                <ol class="method-steps" data-method>
+                        <li class="method-step" style="--i:0">
+                                <span class="method-icon"><i class="fa fa-comments" aria-hidden="true"></i><b class="method-num">01</b></span>
+                                <h3 class="method-title">Échange</h3>
+                                <p class="method-text">On discute de votre besoin, de vos objectifs et de vos délais, par appel ou sur WhatsApp.</p>
+                        </li>
+                        <li class="method-step" style="--i:1">
+                                <span class="method-icon"><i class="fa fa-file-text-o" aria-hidden="true"></i><b class="method-num">02</b></span>
+                                <h3 class="method-title">Proposition</h3>
+                                <p class="method-text">Je vous envoie une solution claire : étapes, délais et tarif, sans mauvaise surprise.</p>
+                        </li>
+                        <li class="method-step" style="--i:2">
+                                <span class="method-icon"><i class="fa fa-cogs" aria-hidden="true"></i><b class="method-num">03</b></span>
+                                <h3 class="method-title">Réalisation</h3>
+                                <p class="method-text">Je conçois et développe votre projet, avec des points réguliers pour valider chaque avancée.</p>
+                        </li>
+                        <li class="method-step" style="--i:3">
+                                <span class="method-icon"><i class="fa fa-rocket" aria-hidden="true"></i><b class="method-num">04</b></span>
+                                <h3 class="method-title">Livraison</h3>
+                                <p class="method-text">Je livre un travail finalisé et testé, puis je reste disponible pour le suivi.</p>
+                        </li>
+                </ol>
+
+        </div>
+</section>
+
+
+
 <section class="cases-section" id="etudes-de-cas">
         <div class="container">
 

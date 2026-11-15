@@ -23,7 +23,7 @@
 // ============================================================
 
 const CACHE_PREFIX = 'glody_claver-portfolio-';
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v8';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
 
 // Délai maximum d'attente du réseau avant de servir le cache (ms).
@@ -74,6 +74,9 @@ const ASSETS_TO_CACHE = [
   './images/CLAVER%20LOGO.png',
   './images/about-me-2.png',
   './images/og-cover.png',
+  './images/favicon-48.png',
+  './images/favicon-192.png',
+  './favicon.ico',
 
   // Document
   './documents/cv.pdf'

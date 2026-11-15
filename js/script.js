@@ -12,7 +12,7 @@
     ======================================================== */
 
     const CONFIG = {
-        splashDuration: 2100,
+        splashDuration: 4700,
         typingSpeed: 65,
         deletingSpeed: 35,
         typingPause: 1800,
@@ -240,7 +240,7 @@
             window.setTimeout(() => {
                 splash.style.display = 'none';
                 unlockPage('splash');
-            }, 700);
+            }, 60);
         }
 
         splash.addEventListener('animationend', event => {
