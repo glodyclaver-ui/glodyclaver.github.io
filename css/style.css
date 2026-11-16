@@ -9237,3 +9237,164 @@ html[data-theme="dark"] .method-text { color: var(--dk-muted, #a9b6d3); }
 html[data-theme="dark"] img.gc-skel { background: linear-gradient(100deg, #17213a 30%, #223052 50%, #17213a 70%) 0 0 / 220% 100%; }
 html[data-theme="dark"] .pwa-install-hint { color: var(--dk-text, #e8eefc); background: var(--dk-card, #111a2e); border-color: var(--dk-border, #243049); }
 html[data-theme="dark"] .parcours-photo .availability-badge { background: rgba(17, 26, 46, 0.92); border-color: rgba(255, 255, 255, 0.12); }
+
+
+
+/* ==========================================================================
+   REFONTE 12
+   - "Reserver un appel" anime
+   - petites animations ajoutees (WhatsApp, themes, methode, cartes)
+========================================================================== */
+
+/* ---------- Reserver un appel ---------- */
+.book-call-link {
+  position: relative;
+  border-bottom: 0;
+  padding-bottom: 4px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.35), #00d2ff, rgba(255, 255, 255, 0.35)) 0 100% / 200% 1px no-repeat;
+  animation:
+    homeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--home-delay) + 0.55s) backwards,
+    bookSlide 3s linear calc(var(--home-delay) + 1.3s) infinite;
+}
+.book-call-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #00d2ff, #0066ff);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.book-call-link:hover::after, .book-call-link:focus-visible::after { transform: scaleX(1); }
+.book-call-link i {
+  display: inline-block;
+  transform-origin: 50% 20%;
+  animation: bookRing 3.4s ease-in-out calc(var(--home-delay) + 2s) infinite;
+}
+.book-call-link:hover i { animation-duration: 0.8s; }
+@keyframes bookSlide { from { background-position: 0 100%; } to { background-position: -200% 100%; } }
+@keyframes bookRing {
+  0%, 62%, 100% { transform: rotate(0); }
+  66% { transform: rotate(-16deg); }
+  70% { transform: rotate(14deg); }
+  74% { transform: rotate(-10deg); }
+  78% { transform: rotate(8deg); }
+  82% { transform: rotate(0); }
+}
+
+/* ---------- Bouton WhatsApp : apparition ---------- */
+.wa-float { animation: waPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--home-delay) + 1s) backwards; }
+@keyframes waPop { from { opacity: 0; transform: scale(0.3) translateY(20px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Boutons langue / theme ---------- */
+.theme-toggle svg, .lang-toggle-label { transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.theme-toggle:hover svg { transform: rotate(30deg) scale(1.1); }
+.lang-toggle:hover .lang-toggle-label { transform: scale(1.12); }
+
+/* ---------- Methode : survol ---------- */
+.method-icon { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease; }
+.method-step:hover .method-icon { transform: translateY(-6px) scale(1.06); box-shadow: 0 18px 34px rgba(0, 102, 255, 0.38); }
+
+/* ---------- Cartes etudes de cas / offres : icone qui reagit au survol ---------- */
+.offer-icon { transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.offer-card:hover .offer-icon { transform: rotate(-6deg) scale(1.08); }
+.offer-list li i { transition: transform 0.25s ease; }
+.offer-card:hover .offer-list li i { transform: scale(1.2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .book-call-link, .book-call-link i, .wa-float { animation: none !important; }
+}
+/* ==========================================================================
+   REFONTE 13 : section "Projet en detail" (pleine largeur, repliee par defaut)
+========================================================================== */
+.deep-section {
+  position: relative; isolation: isolate; overflow: hidden; padding: 80px 0;
+  background: radial-gradient(ellipse at 12% 15%, rgba(45,110,255,0.18), transparent 38%), radial-gradient(ellipse at 88% 80%, rgba(135,75,255,0.15), transparent 35%), linear-gradient(135deg, #070b17 0%, #0b1224 48%, #080d1c 100%) !important;
+  border-top: 1px solid rgba(120,180,255,0.13);
+  border-bottom: 1px solid rgba(120,180,255,0.13);
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #ffffff; width: 100%; max-width: 100%;
+}
+.deep-section .sec-head { margin-bottom: 40px; }
+.deep-section .sec-title, .deep-section .sec-subtitle, .deep-section .deep-body { font-family: "Poppins", sans-serif; }
+.deep-section .sec-subtitle { color: #aab6c9; }
+.deep-section .sec-head.is-open-head { margin-bottom: 40px; }
+
+.deep-toggle-wrap { display: flex; justify-content: center; }
+.deep-toggle { max-width: 100%; text-align: center; cursor: pointer; }
+.deep-toggle-icon { margin-left: 0.6rem; transition: transform 0.35s ease; }
+.deep-toggle[aria-expanded="true"] .deep-toggle-icon { transform: rotate(180deg); }
+
+/* Repliage fluide : grille 0fr -> 1fr */
+.deep-body { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.6s ease; }
+.deep-body.is-open { grid-template-rows: 1fr; opacity: 1; }
+.deep-body-inner { overflow: hidden; min-height: 0; padding-top: 0; transition: padding-top 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+.deep-body { will-change: grid-template-rows; }
+.deep-body.is-open .deep-body-inner { padding-top: 4rem; }
+
+.deep-shot { margin: 0 auto 4rem; max-width: 96rem; }
+.deep-shot video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #05080f; border-radius: 1.6rem; border: 1px solid rgba(120,180,255,0.2); box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+.deep-shot figcaption { margin-top: 1.2rem; text-align: center; font-size: 1.3rem; color: #aab6c9; line-height: 1.6; }
+
+.deep-compare { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2rem; align-items: stretch; margin-bottom: 4rem; }
+.deep-col { padding: 2.6rem; border-radius: 1.8rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
+.deep-before { background: rgba(197,48,48,0.1); border-color: rgba(229,115,115,0.3); }
+.deep-after { background: rgba(21,128,61,0.12); border-color: rgba(52,179,106,0.3); }
+.deep-col-title { margin: 0 0 1.6rem; font-size: 1.7rem; font-weight: 700; display: flex; align-items: center; gap: 0.8rem; color: #fff; }
+.deep-before .deep-col-title { color: #ff8a8a; }
+.deep-after .deep-col-title { color: #5fd38d; }
+.deep-col ul { list-style: none; margin: 0; padding: 0; }
+.deep-col li { position: relative; padding: 0.7rem 0 0.7rem 2rem; font-size: 1.4rem; line-height: 1.6; color: #e6ecf7; }
+.deep-col li::before { content: ""; position: absolute; left: 0; top: 1.5rem; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: currentColor; opacity: 0.6; }
+.deep-arrow { align-self: center; display: grid; place-items: center; width: 4.6rem; height: 4.6rem; border-radius: 50%; color: #fff; font-size: 2rem; background: linear-gradient(135deg, #0066ff, #874bff); }
+
+.deep-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3.2rem; }
+.deep-block { padding: 2.4rem; border-radius: 1.8rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(120,180,255,0.15); }
+.deep-block-title { margin: 0 0 1rem; font-size: 1.6rem; font-weight: 700; color: #6aa6ff; display: flex; align-items: center; gap: 0.8rem; }
+.deep-block p { margin: 0; font-size: 1.4rem; line-height: 1.7; color: #e6ecf7; }
+
+.deep-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; list-style: none; margin: 0 0 3.2rem; padding: 0; }
+.deep-tags li { padding: 0.6rem 1.4rem; font-size: 1.3rem; font-weight: 600; color: #e6ecf7; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(120,180,255,0.2); }
+
+.deep-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.4rem; padding-bottom: 0.4rem; }
+
+/* Cascade a l'ouverture */
+.deep-body .deep-shot, .deep-body .deep-compare, .deep-body .deep-grid, .deep-body .deep-tags, .deep-body .deep-cta { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.deep-body.is-open .deep-shot, .deep-body.is-open .deep-compare, .deep-body.is-open .deep-grid, .deep-body.is-open .deep-tags, .deep-body.is-open .deep-cta { opacity: 1; transform: none; }
+.deep-body.is-open .deep-shot { transition-delay: 0.15s; }
+.deep-body.is-open .deep-compare { transition-delay: 0.3s; }
+.deep-body.is-open .deep-grid { transition-delay: 0.45s; }
+.deep-body.is-open .deep-tags { transition-delay: 0.55s; }
+.deep-body.is-open .deep-cta { transition-delay: 0.65s; }
+
+/* Tablette */
+@media screen and (max-width: 992px) {
+  .deep-section { padding: 64px 0; }
+  .deep-compare { grid-template-columns: 1fr; gap: 1.4rem; }
+  .deep-arrow { transform: rotate(90deg); margin: 0 auto; }
+  .deep-grid { grid-template-columns: repeat(2, 1fr); }
+}
+/* Mobile */
+@media screen and (max-width: 560px) {
+  .deep-section { padding: 52px 0; }
+  .deep-section .sec-head { margin-bottom: 28px; }
+  .deep-toggle { width: 100%; }
+  .deep-grid { grid-template-columns: 1fr; gap: 1.4rem; }
+  .deep-col, .deep-block { padding: 2rem; }
+  .deep-shot video { border-radius: 1.2rem; }
+  .deep-cta .btn-cv { width: 100%; box-sizing: border-box; }
+  .deep-body.is-open .deep-body-inner { padding-top: 3rem; }
+}
+/* Cartes internes : apparition une par une */
+.deep-body .deep-col, .deep-body .deep-block, .deep-body .deep-tags li { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+.deep-body.is-open .deep-col, .deep-body.is-open .deep-block, .deep-body.is-open .deep-tags li { opacity: 1; transform: none; }
+.deep-body.is-open .deep-before { transition-delay: 0.4s; } .deep-body.is-open .deep-after { transition-delay: 0.55s; }
+.deep-body.is-open .deep-block:nth-child(1) { transition-delay: 0.5s; } .deep-body.is-open .deep-block:nth-child(2) { transition-delay: 0.6s; }
+.deep-body.is-open .deep-block:nth-child(3) { transition-delay: 0.7s; } .deep-body.is-open .deep-block:nth-child(4) { transition-delay: 0.8s; }
+@media (prefers-reduced-motion: reduce) {
+  .deep-body, .deep-body * { transition: none !important; }
+}

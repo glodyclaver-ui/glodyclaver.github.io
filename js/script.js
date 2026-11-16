@@ -1195,6 +1195,15 @@
 
         if (!sr) return;
 
+        /* SECTIONS AJOUTÉES : méthode, études de cas, offres, pied de page, pages légales */
+        sr.reveal('.method-section .sec-head, .cases-section .sec-head, .offers-section .sec-head', { origin: 'top', interval: 200 });
+        sr.reveal('.cases-section .case-card', { origin: 'bottom', interval: 160 });
+        sr.reveal('.offers-section .offer-card', { origin: 'bottom', interval: 160 });
+        sr.reveal('.offers-note', { origin: 'bottom', delay: 300 });
+        sr.reveal('.footer .footer-box', { origin: 'bottom', distance: '30px', interval: 140 });
+        sr.reveal('.privacy-header, .privacy-alert, .privacy-badge-group, .privacy-card', { origin: 'bottom', distance: '30px', interval: 110 });
+        sr.reveal('.error-inner', { origin: 'bottom', distance: '30px' });
+
         /* À PROPOS */
         sr.reveal(
             '.about .about-imageColumn.Slide-In-Left',
@@ -1654,6 +1663,9 @@
 
         const home = document.getElementById('home');
         let ticking = false;
+        let coverTarget = 0;
+        let coverNow = 0;
+        let coverRaf = 0;
 
         // Accueil plus haut que l'ecran (mobile) : il reste colle par le BAS,
         // la section suivante monte donc dessus sans jamais laisser de vide.
@@ -1670,13 +1682,30 @@
 
             bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
 
-            // L'accueil s'efface légèrement pendant que la section suivante monte dessus
+            // L'accueil s'efface légèrement pendant que la section suivante monte dessus.
+            // La valeur est LISSÉE : même si on défile très vite, l'image de l'accueil
+            // s'estompe progressivement au lieu de disparaître d'un coup.
             if (home && !reducedMotion) {
-                const cover = Math.max(0, Math.min(1, y / (home.offsetHeight || 1)));
-                home.style.setProperty('--cover', cover.toFixed(3));
+                coverTarget = Math.max(0, Math.min(1, y / (home.offsetHeight || 1)));
+                if (!coverRaf) coverRaf = window.requestAnimationFrame(easeCover);
             }
 
             ticking = false;
+        }
+
+        function easeCover() {
+            coverRaf = 0;
+
+            const diff = coverTarget - coverNow;
+
+            if (Math.abs(diff) < 0.002) {
+                coverNow = coverTarget;
+            } else {
+                coverNow += diff * 0.14;
+                coverRaf = window.requestAnimationFrame(easeCover);
+            }
+
+            home.style.setProperty('--cover', coverNow.toFixed(3));
         }
 
         window.addEventListener('scroll', () => {

@@ -244,7 +244,7 @@
 
     var SECTION_TOPIC = {
         'offres': 'quote',
-        'etudes-de-cas': 'project', 'methode': 'project', 'services': 'project', 'portfolio': 'project',
+        'etudes-de-cas': 'project', 'projet-detail': 'project', 'methode': 'project', 'services': 'project', 'portfolio': 'project',
         'section-realisations': 'project', 'skill': 'project',
         'faq-zone': 'support'
     };
@@ -611,6 +611,53 @@
        10. MÉTHODE DE TRAVAIL (animation à l'apparition)
     ======================================================== */
 
+    function initDeepCase() {
+        var btn = document.getElementById('deep-toggle');
+        var body = document.getElementById('deep-body');
+
+        if (!btn || !body) return;
+
+        var video = document.getElementById('deep-video');
+        var txt = btn.querySelector('.deep-toggle-text');
+        var playTimer = null;
+
+        function setOpen(open) {
+            body.classList.toggle('is-open', open);
+            body.setAttribute('aria-hidden', open ? 'false' : 'true');
+
+            if (open) { body.removeAttribute('inert'); } else { body.setAttribute('inert', ''); }
+
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+            var label = open ? btn.getAttribute('data-open-label') : btn.getAttribute('data-closed-label');
+
+            if (txt) txt.textContent = (window.gcT ? window.gcT(label) : label) || label;
+
+            if (video) {
+                if (open) {
+                    video.preload = 'auto';
+                    clearTimeout(playTimer);
+                    playTimer = setTimeout(function () {
+                        var p = video.play();
+                        if (p && p.catch) p.catch(function () {});
+                    }, 700);
+                } else {
+                    clearTimeout(playTimer);
+                    video.pause();
+                }
+            }
+
+            if (!open) {
+                var sec = document.getElementById('projet-detail');
+                if (sec && sec.getBoundingClientRect().top < 0) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        btn.addEventListener('click', function () {
+            setOpen(btn.getAttribute('aria-expanded') !== 'true');
+        });
+    }
+
     function initMethod() {
         var list = document.querySelector('[data-method]');
 
@@ -779,6 +826,7 @@
         initCookies();
         initCases();
         initMethod();
+        initDeepCase();
         initSkeleton();
         initInstall();
         initTracking();
