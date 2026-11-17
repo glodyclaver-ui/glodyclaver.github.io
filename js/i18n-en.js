@@ -536,7 +536,7 @@ window.GC_I18N_EN = {
  "Affiche de communication digitale": "Digital communication poster",
  "Logo et déclinaisons graphiques": "Logo and graphic variations",
  "Glody-Claver | Expert Solutions Digitales & Infrastructure IT": "Glody-Claver | Digital Solutions & IT Infrastructure Expert",
- "Portfolio de Glody-Claver, Expert Solutions Digitales & Infrastructure IT : Data Analyst, Développeur Logiciel, Analyste Programmeur, Administrateur Base de Données & Réseaux, IT Support et UX-UI/Webdesigner.": "Glody-Claver portfolio, Digital Solutions & IT Infrastructure Expert: Data Analyst, Software Developer, Analyst Programmer, Database & Network Administrator, IT Support and UX-UI/Web Designer.",
+ "Glody-Claver, Expert Solutions Digitales & IT : Data Analyst, Développeur Logiciel, Analyste Programmeur, Admin BDD & Réseaux, Support IT et UX/UI Designer.": "Glody-Claver, Digital & IT Solutions Expert: Data Analyst, Software Developer, Programmer Analyst, DB & Network Admin, IT Support, and UX/UI Designer.",
  "Glody-Claver | Politique de Confidentialité": "Glody-Claver | Privacy Policy",
  "compétences": "skills",
  "DÉVELOPPEUR LOGICIEL": "SOFTWARE DEVELOPER",
