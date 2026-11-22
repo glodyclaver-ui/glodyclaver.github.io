@@ -617,9 +617,29 @@
 
         if (!btn || !body) return;
 
-        var video = document.getElementById('deep-video');
         var txt = btn.querySelector('.deep-toggle-text');
-        var playTimer = null;
+
+        function tr(label) { return (window.gcT ? window.gcT(label) : label) || label; }
+
+        function clearVideos() {
+            body.querySelectorAll('.deep-video-frame iframe').forEach(function (f) { f.remove(); });
+            body.querySelectorAll('.deep-video-frame.is-playing').forEach(function (fr) { fr.classList.remove('is-playing'); });
+        }
+
+        function playVideo(frame) {
+            var id = frame.getAttribute('data-yt-id');
+
+            if (!id || frame.querySelector('iframe')) return;
+
+            var f = document.createElement('iframe');
+            f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1&playsinline=1&autoplay=1';
+            f.title = 'Vidéo de démonstration';
+            f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen';
+            f.setAttribute('allowfullscreen', '');
+            f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+            frame.classList.add('is-playing');
+            frame.appendChild(f);
+        }
 
         function setOpen(open) {
             body.classList.toggle('is-open', open);
@@ -629,25 +649,11 @@
 
             btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 
-            var label = open ? btn.getAttribute('data-open-label') : btn.getAttribute('data-closed-label');
-
-            if (txt) txt.textContent = (window.gcT ? window.gcT(label) : label) || label;
-
-            if (video) {
-                if (open) {
-                    video.preload = 'auto';
-                    clearTimeout(playTimer);
-                    playTimer = setTimeout(function () {
-                        var p = video.play();
-                        if (p && p.catch) p.catch(function () {});
-                    }, 700);
-                } else {
-                    clearTimeout(playTimer);
-                    video.pause();
-                }
-            }
+            if (txt) txt.textContent = tr(open ? btn.getAttribute('data-open-label') : btn.getAttribute('data-closed-label'));
 
             if (!open) {
+                clearVideos();
+
                 var sec = document.getElementById('projet-detail');
                 if (sec && sec.getBoundingClientRect().top < 0) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
@@ -655,6 +661,34 @@
 
         btn.addEventListener('click', function () {
             setOpen(btn.getAttribute('aria-expanded') !== 'true');
+        });
+
+        /* Vidéo : le lecteur YouTube ne se charge qu'au clic */
+        body.querySelectorAll('.deep-video-frame[data-yt-id]').forEach(function (frame) {
+            frame.addEventListener('click', function () { playVideo(frame); });
+            frame.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playVideo(frame); }
+            });
+        });
+
+        /* Détail déroulable de chaque projet */
+        body.querySelectorAll('.deep-more').forEach(function (more) {
+            more.addEventListener('click', function () {
+                var open = more.getAttribute('aria-expanded') !== 'true';
+                var sub = document.getElementById(more.getAttribute('aria-controls'));
+
+                if (!sub) return;
+
+                sub.classList.toggle('is-open', open);
+                sub.setAttribute('aria-hidden', open ? 'false' : 'true');
+
+                if (open) { sub.removeAttribute('inert'); } else { sub.setAttribute('inert', ''); }
+
+                more.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+                var t = more.querySelector('.deep-more-text');
+                if (t) t.textContent = tr(open ? more.getAttribute('data-open-label') : more.getAttribute('data-closed-label'));
+            });
         });
     }
 

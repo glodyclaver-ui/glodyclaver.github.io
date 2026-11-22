@@ -5,9 +5,11 @@
 */
 
 // ============================================================
-// GOOGLE ANALYTICS 4 — CHARGÉ UNIQUEMENT APRÈS CONSENTEMENT (RGPD)
+// GOOGLE ANALYTICS 4 — MODE CONSENTEMENT AVANCÉ (RGPD)
 // Le choix du visiteur est géré par js/site-widgets.js (bandeau cookies).
-//   - Aucun script Google ni cookie avant l'acceptation.
+//   - Avant l'acceptation : AUCUN cookie, AUCUN identifiant. Google reçoit seulement
+//     des signaux anonymes (sans cookie) qui permettent d'estimer l'audience et le pays.
+//   - Après l'acceptation : mesure complète avec cookies.
 //   - window.gcAnalytics.grant() : accepte et charge GA4
 //   - window.gcAnalytics.revoke() : refuse et coupe GA4
 // ============================================================
@@ -55,8 +57,7 @@
     ad_personalization: 'denied'
   });
 
-  // Désactivation côté Google tant que le visiteur n'a pas accepté.
-  window['ga-disable-' + GA_TRACKING_ID] = true;
+  // Mode avancé : pas de désactivation. Sans consentement, GA n'utilise aucun cookie.
 
   // ==========================================================
   // 3. CHARGEMENT DU SCRIPT (une seule fois)
@@ -104,27 +105,32 @@
   // 4. ACCEPTER / REFUSER
   // ==========================================================
 
-  const grant = () => {
+  const start = () => {
 
-    window['ga-disable-' + GA_TRACKING_ID] = false;
+    if (started) return;
 
-    window.gtag('consent', 'update', {
-      analytics_storage: 'granted'
+    started = true;
+
+    window.gtag('js', new Date());
+    window.gtag('config', GA_TRACKING_ID, {
+      send_page_view: true,
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false
     });
-
-    if (!started) {
-      started = true;
-
-      window.gtag('js', new Date());
-      window.gtag('config', GA_TRACKING_ID, { send_page_view: true });
-    }
 
     loadScript();
   };
 
-  const revoke = () => {
+  const grant = () => {
 
-    window['ga-disable-' + GA_TRACKING_ID] = true;
+    start();
+
+    window.gtag('consent', 'update', {
+      analytics_storage: 'granted'
+    });
+  };
+
+  const revoke = () => {
 
     window.gtag('consent', 'update', {
       analytics_storage: 'denied'
@@ -158,10 +164,13 @@
   // 5. CONSENTEMENT DÉJÀ ENREGISTRÉ
   // ==========================================================
 
-  try {
-    if (localStorage.getItem(CONSENT_KEY) === 'granted') {
-      grant();
-    }
-  } catch (error) {}
+  let saved = null;
+
+  try { saved = localStorage.getItem(CONSENT_KEY); } catch (error) {}
+
+  // La mesure sans cookie démarre toujours ; les cookies seulement si accepté.
+  start();
+
+  if (saved === 'granted') grant();
 
 })();
