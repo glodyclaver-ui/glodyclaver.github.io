@@ -611,6 +611,35 @@
        10. MÉTHODE DE TRAVAIL (animation à l'apparition)
     ======================================================== */
 
+    function initSkillCards() {
+        var cards = Array.prototype.slice.call(document.querySelectorAll('#skill .skill-showcase-card'));
+
+        if (!cards.length) return;
+
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function show(card, i) {
+            card.style.setProperty('--sk-d', (i * 0.18) + 's');
+            card.classList.remove('sk-armed');
+            card.classList.add('sk-in');
+        }
+
+        if (reduce || !('IntersectionObserver' in window)) return;
+
+        cards.forEach(function (c) { c.classList.add('sk-armed'); });
+
+        var seen = 0;
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                io.unobserve(e.target);
+                show(e.target, seen++ % cards.length);
+            });
+        }, { threshold: 0.15 });
+
+        cards.forEach(function (c) { io.observe(c); });
+    }
+
     function initDeepCase() {
         var btn = document.getElementById('deep-toggle');
         var body = document.getElementById('deep-body');
@@ -861,6 +890,7 @@
         initCases();
         initMethod();
         initDeepCase();
+        initSkillCards();
         initSkeleton();
         initInstall();
         initTracking();

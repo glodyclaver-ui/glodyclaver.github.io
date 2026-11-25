@@ -9468,3 +9468,52 @@ html[data-theme="dark"] .parcours-photo .availability-badge { background: rgba(1
   .deep-more, .deep-link { width: 100%; justify-content: center; box-sizing: border-box; }
   .deep-play i { width: 5.6rem; height: 5.6rem; font-size: 2.2rem; }
 }
+
+
+/* ==========================================================================
+   REFONTE 15 : animation des 3 cartes de Competences
+========================================================================== */
+#skill .skill-showcase-card.sk-armed { opacity: 0; }
+#skill .skill-showcase-card.sk-in { animation: skCardIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) var(--sk-d, 0s) backwards; }
+@keyframes skCardIn {
+  from { opacity: 0; transform: translateY(50px) scale(0.95); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Image : leger zoom lent en continu */
+#skill .skill-showcase-image { animation: skDrift 16s ease-in-out infinite alternate; will-change: transform; }
+#skill .skill-showcase-card:nth-child(2) .skill-showcase-image { animation-delay: -5s; }
+#skill .skill-showcase-card:nth-child(3) .skill-showcase-image { animation-delay: -10s; }
+@keyframes skDrift { from { transform: scale(1); } to { transform: scale(1.09); } }
+
+/* Reflet lumineux qui traverse la carte au survol */
+#skill .skill-showcase-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,0.16) 50%, transparent 65%);
+  transform: translateX(-120%);
+}
+#skill .skill-showcase-card:hover::after { transform: translateX(120%); transition: transform 1s ease; }
+
+/* Pastille d'icone qui respire */
+#skill .skill-showcase-icon { animation: skPulse 3.2s ease-in-out infinite; }
+@keyframes skPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,160,255,0.45); }
+  50%      { box-shadow: 0 0 0 10px rgba(0,160,255,0); }
+}
+
+/* Numero qui flotte doucement */
+#skill .skill-showcase-number { animation: skFloat 4s ease-in-out infinite; }
+@keyframes skFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* Fleche du bouton qui avance au survol de la carte */
+#skill .skill-showcase-button i { transition: transform 0.35s ease; }
+#skill .skill-showcase-card:hover .skill-showcase-button i { transform: translateX(6px); }
+
+@media (prefers-reduced-motion: reduce) {
+  #skill .skill-showcase-card.sk-armed { opacity: 1; }
+  #skill .skill-showcase-card.sk-in, #skill .skill-showcase-image, #skill .skill-showcase-icon, #skill .skill-showcase-number { animation: none !important; }
+}
