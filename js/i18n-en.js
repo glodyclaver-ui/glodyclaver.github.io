@@ -555,6 +555,8 @@ window.GC_I18N_EN = {
  "Affiche de communication digitale n°3": "Digital communication poster no. 3",
  "Logo Parcours, identité visuelle réalisée par Glody-Claver": "Logo Parcours, visual identity created by Glody-Claver",
  "Logo Honnette établissement, identité visuelle réalisée par Glody-Claver": "Logo Honnette établissement, visual identity created by Glody-Claver",
+ "Logo Gestion entreprise, identité visuelle réalisée par Glody-Claver": "Business Management logo, visual identity created by Glody-Claver",
+ "Logo NeuroSphère, identité visuelle réalisée par Glody-Claver": "NeuroSphère logo, visual identity created by Glody-Claver",
  "Logo Découverte Inspiration, identité visuelle réalisée par Glody-Claver": "Logo Découverte Inspiration, visual identity created by Glody-Claver",
  "Capture d'écran d'un logiciel développé, interface n°3": "Screenshot of developed software, interface no. 3",
  "Capture d'écran d'un logiciel développé, interface n°4": "Screenshot of developed software, interface no. 4",
